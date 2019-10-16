@@ -6,16 +6,17 @@
 I could get 2 LEDs (yellow) to light up in series before the voltage runs out. Instinctively this is what I assumed, which is good, but I struggle to prove it mathematicall. It should be simple... But I couldn't get my head around: if the resistance of the resistor is constant, and the current is also constant, why would the voltage over the resistor change as more LEDs are added to the circuit? I presume the current isn't constant, and the circuit draws more and shares it differently.. I should check this.
 
 Either way, it makes sense, as the ideal forward voltage for an LED is approx 2.2V, and with 5V maximum, there is only enough voltage for 2 LEDs to light up.
-[2LED](photos/2LED.jpg)
-[3LED](photos/2LED.jpg)
-[Series Maths](photos/my_series_maths.jpg)
-[Stu and Aleksi](photos/stu&aleksi.jpg)
-[Aleksi Maths](photos/aleksi_maths.jpg)
+
+![2LED](photos/2LED.jpg)
+![3LED](photos/2LED.jpg)
+![Series Maths](photos/my_series_maths.jpg)
+![Stu and Aleksi](photos/stu&aleksi.jpg)
+![Aleksi Maths](photos/aleksi_maths.jpg)
 
 #### Resistors in Parallel
 
 This was also a lot tricker that it first appeared... _My_ final maths got me to __13 LEDs__.
-[Parallel Maths](photos/my_parallel_maths.jpg)
+![Parallel Maths](photos/my_parallel_maths.jpg)
 
 ### Lab 01
 
