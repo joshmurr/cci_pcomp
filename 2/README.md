@@ -24,7 +24,7 @@ But Aleksi got 37 LEDs, which he, Stu and I all thought about for a while togeth
 
 ### Lab 01
 
-I spent __way__ too much time on this. Serial.read() is actually not a simple thing! Couple with the fact that manipulating char arrays in Arduino Language (C++) is also not that simple. I tried to get a simple text adventure style thing working, and it _nearly_ is, but something is not quite right. All the code is in the repo, and here is a video of the next best thing:
+I spent __way__ too much time on this. Serial.read() is actually not a simple thing! Couple with the fact that manipulating char arrays in Arduino Language is also not that simple. I tried to get a simple text adventure style thing working, and it _nearly_ is, but something is not quite right. All the code is in the repo, and here is a video of the next best thing:
 
 [![Roses are red](https://img.youtube.com/vi/WhojQjw3Kp0/0.jpg)](https://www.youtube.com/watch?v=WhojQjw3Kp0)
 
