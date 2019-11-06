@@ -29,6 +29,7 @@ Screen::Screen(int width, int height, int res){
     QUIT = false;
 }
 
+
 bool Screen::init() {
     // Init library, exit and log if failed
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -85,6 +86,13 @@ void Screen::handleEvents(){
 void Screen::clearScreen(){
     SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(m_renderer);
+}
+
+void Screen::drawChequeredBackround(SDL_Color c1, SDL_Color c2, SDL_Color c3, SDL_Color c4){
+    rect(0,0,SCREEN_WIDTH/2, SCREEN_HEIGHT/2, c1);
+    rect(SCREEN_WIDTH/2, 0,SCREEN_WIDTH/2, SCREEN_HEIGHT/2, c2);
+    rect(0,SCREEN_HEIGHT/2, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, c3);
+    rect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, c4);
 }
 
 void Screen::setAnimating(bool animating){
@@ -218,22 +226,17 @@ void Screen::update() {
 	SDL_RenderClear(m_renderer);
 }
 
-/*
- *void Screen::drawRect(int x, int y, int w, int h, int color){
- *    SDL_Rect rect;
- *
- *    rect.x = x;
- *    rect.y = y;
- *    rect.w = w;
- *    rect.h = h;
- *
- *    int bwcolor = 255*color;
- *
- *    SDL_SetRenderDrawColor(m_renderer, bwcolor, bwcolor, bwcolor, 255);
- *    SDL_RenderFillRect(m_renderer, &rect);
- *
- *}
- */
+void Screen::rect(int x, int y, int w, int h, SDL_Color color){
+    SDL_Rect rect;
+
+    rect.x = x;
+    rect.y = y;
+    rect.w = w;
+    rect.h = h;
+
+    SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(m_renderer, &rect);
+}
 
 void Screen::close() {
 	SDL_DestroyRenderer(m_renderer);

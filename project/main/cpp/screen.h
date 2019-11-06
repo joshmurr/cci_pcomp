@@ -11,6 +11,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <math.h>
+//#include "colors.h"
 
 #define PI 3.14159265359
 
@@ -41,6 +42,7 @@ public:
 	bool init();
 	void update();
     void clearScreen();
+    void drawChequeredBackround(SDL_Color c1, SDL_Color c2, SDL_Color c3, SDL_Color c4);
     SDL_Color makeColor(Uint8 r, Uint8 g, Uint8 b);
     void hideCursor();
     void setAnimating(bool);
@@ -48,6 +50,7 @@ public:
     void displayGrid();
 	void close();
     void writeInfo();
+    void rect(int x, int y, int w, int h, SDL_Color color);
     void circle(float x, float y, float r, int segs);
     void rose(float x, float y, float r, float segs, float p1, float p2);
     void bresenham_circle(int cx, int cy, int r, SDL_Color color);
@@ -57,6 +60,9 @@ public:
 
     float getMouseX();
     float getMouseY();
+
+public:
+
 };
 
 #endif /* SCREEN_H_ */
