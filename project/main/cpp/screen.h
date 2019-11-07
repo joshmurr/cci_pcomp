@@ -32,6 +32,7 @@ private:
     double getRoseY(int, float, float, float);
 
     void bresenham_draw_lines(int cx, int cy, int x, int y);
+    void init_colors();
 
 public:
 	Screen();
@@ -62,7 +63,21 @@ public:
     float getMouseY();
 
 public:
-
+    SDL_Color WHITE      ; 
+    SDL_Color RED        ;
+    SDL_Color ORANGE     ;
+    SDL_Color YELLOW     ;
+    SDL_Color LIGHT_GREEN;
+    SDL_Color GREEN      ;
+    SDL_Color TEAL       ;
+    SDL_Color CYAN       ;
+    SDL_Color LIGHT_BLUE ;
+    SDL_Color BLUE       ;
+    SDL_Color MAGENTA    ;
+    SDL_Color PINK       ;
+    SDL_Color GREY       ;
+    SDL_Color BLACK      ;
 };
 
 #endif /* SCREEN_H_ */
+

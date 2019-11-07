@@ -70,6 +70,22 @@ int Serial::serialport_writebyte(uint8_t b)
     return 0;
 }
 
+int Serial::serialport_writechar(unsigned char b)
+{
+    int n = write(fd,&b,sizeof(unsigned char));
+    if( n!=1)
+        return -1;
+    return 0;
+}
+
+int Serial::serialport_writetwobytes(uint16_t b)
+{
+    int n = write(fd,&b,sizeof(uint16_t));
+    if( n!=1)
+        return -1;
+    return 0;
+}
+
 int Serial::serialport_write(const char* str)
 {
     int len = strlen(str);

@@ -45,6 +45,7 @@ bool Screen::init() {
 
     COLS = SCREEN_WIDTH/RESOLUTION;
     ROWS = SCREEN_HEIGHT/RESOLUTION;
+    init_colors();
     return true;
 }
 
@@ -88,6 +89,23 @@ void Screen::clearScreen(){
     SDL_RenderClear(m_renderer);
 }
 
+void Screen::init_colors(){
+    WHITE       = makeColor(255, 255, 255);
+    RED         = makeColor(255,   0,   0);
+    ORANGE      = makeColor(255, 128,   0);
+    YELLOW      = makeColor(255, 255,   0);
+    LIGHT_GREEN = makeColor(128, 255,   0);
+    GREEN       = makeColor(  0, 255,   0);
+    TEAL        = makeColor(  0, 255, 128);
+    CYAN        = makeColor(  0, 255, 255);
+    LIGHT_BLUE  = makeColor(  0, 128, 255);
+    BLUE        = makeColor(  0,   0, 255);
+    MAGENTA     = makeColor(255,   0, 255);
+    PINK        = makeColor(255,   0, 127);
+    GREY        = makeColor(128, 128, 128);
+    BLACK       = makeColor(  0,   0,   0);
+}
+
 void Screen::drawChequeredBackround(SDL_Color c1, SDL_Color c2, SDL_Color c3, SDL_Color c4){
     rect(0,0,SCREEN_WIDTH/2, SCREEN_HEIGHT/2, c1);
     rect(SCREEN_WIDTH/2, 0,SCREEN_WIDTH/2, SCREEN_HEIGHT/2, c2);
@@ -110,8 +128,6 @@ void Screen::hideCursor(){
 
 
 void Screen::displayGrid(){
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(m_renderer);
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     // Draw row lines
     for(int i=0; i<ROWS; i++){
@@ -121,14 +137,10 @@ void Screen::displayGrid(){
     for(int i=0; i<COLS; i++){
         SDL_RenderDrawLine(m_renderer, RESOLUTION*i, 0, RESOLUTION*i, SCREEN_HEIGHT);
     }
-    SDL_RenderPresent(m_renderer);
 }
 
 void Screen::circle(float x, float y, float r, int segs){
     float spacing = (PI*2)/segs;
-
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(m_renderer);
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 
     float currentX = x+(cos(0) * r);
@@ -141,7 +153,6 @@ void Screen::circle(float x, float y, float r, int segs){
         currentY = nextY;
     }
     SDL_RenderDrawLine(m_renderer, currentX, currentY, x+(cos(0) * r), y+(sin(0) * r));
-    SDL_RenderPresent(m_renderer);
 }
 
 void Screen::bresenham_draw_lines(int cx, int cy, int x, int y){
@@ -168,7 +179,6 @@ void Screen::bresenham_circle(int cx, int cy, int r, SDL_Color color){
         }
         bresenham_draw_lines(cx, cy, x, y);
     }
-    SDL_RenderPresent(m_renderer);
 }
 
 double Screen::getRoseX(int i, float s, float p1, float p2){
@@ -181,8 +191,6 @@ double Screen::getRoseY(int i, float s, float p1, float p2){
 void Screen::rose(float x, float y, float r, float segs, float p1, float p2){
     float spacing = (PI*2)/segs;
 
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(m_renderer);
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 
     float currentX = x + getRoseX(0, spacing, p1, p2)*r;
@@ -196,7 +204,6 @@ void Screen::rose(float x, float y, float r, float segs, float p1, float p2){
         currentY = nextY;
     }
     SDL_RenderDrawLine(m_renderer, currentX, currentY, x + getRoseX(0, spacing, p1, p2)*r, y+getRoseY(0, spacing, p1, p2)*r);
-    SDL_RenderPresent(m_renderer);
 }
 
 float Screen::getMouseX(){

@@ -21,7 +21,9 @@ class Serial{
         bool setup(int argc, char* argv[]);
         int serialport_init(const char* serialport, int baud);
         int serialport_writebyte(uint8_t b);
+        int serialport_writetwobytes(uint16_t b);
         int serialport_write(const char* str);
+        int serialport_writechar(unsigned char b);
         int serialport_read_until(char until);
         int serialport_read_int_until(char until, int& data);
 
