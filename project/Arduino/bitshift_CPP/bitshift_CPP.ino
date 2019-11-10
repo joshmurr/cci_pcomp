@@ -4,8 +4,6 @@ const int latchPin = 8;
 const int clockPin = 12;
 ////Pin connected to Data in (DS) of 74HC595
 const int dataPin = 11;
-char rx_buf[8];
-uint8_t rx_byte[2];
 unsigned char rx_char[1];
 
 void setup() {
