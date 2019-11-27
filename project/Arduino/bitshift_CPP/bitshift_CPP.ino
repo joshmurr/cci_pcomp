@@ -1,9 +1,9 @@
 //Pin connected to latch pin (ST_CP) of 74HC595
-const int latchPin = 8;
+const int latchPin = 8; // YELLOW WIRE to pin 12
 //Pin connected to clock pin (SH_CP) of 74HC595
-const int clockPin = 12;
+const int clockPin = 12; // GREEN WIRE - to pin 11
 ////Pin connected to Data in (DS) of 74HC595
-const int dataPin = 11;
+const int dataPin = 11; // BLUE WIRE - to pin 14
 unsigned char rx_char[1];
 
 void setup() {
@@ -28,6 +28,8 @@ void loop() {
     //rx = atoi(rx_buf);
   }
   //Serial.println((int)rx_byte[0]);
+
+  //rx_char[0] = 0b00000000;
   
   digitalWrite(latchPin, 0);
   shiftOut(dataPin, clockPin, *rx_char);

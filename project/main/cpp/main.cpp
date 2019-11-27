@@ -117,8 +117,8 @@ int main(int argc, char *argv[]) {
  *        }    
  */
 
-        theta += 0.002;
-        theta2 -= 0.005;
+        theta += 0.006;
+        theta2 -= 0.008;
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
