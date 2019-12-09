@@ -232,6 +232,33 @@ void Screen::draw3Dpoint(float x, float y, float z){
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
+void Screen::starfield(std::vector<Star> &stars){
+    float FOV = 200.0;
+    float x3d=0.0, y3d=0.0, z3d=0.0;
+    for(std::vector<Star>::iterator s=stars.begin(); s!=stars.end(); ++s){
+        z3d = s->z;
+        z3d -= 2.0;
+        if(z3d < -FOV) z3d += SCREEN_WIDTH/2;
+        s->z = z3d;
+
+        x3d = s->x;
+        y3d = s->y;
+        
+        float scale = FOV / (FOV + z3d);
+        float x2d = (x3d*scale)+SCREEN_WIDTH/2;
+        float y2d = (y3d*scale)+SCREEN_HEIGHT/2;
+
+        int dColor = 255 - floor(z3d + 200);
+        if(dColor < 1) dColor = 0;
+        if(dColor > 254) dColor = 255;
+
+        SDL_SetRenderDrawColor(m_renderer, dColor, dColor, dColor, SDL_ALPHA_OPAQUE);
+        SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
+        SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
+    }
+
+}
+
 void Screen::writeInfo(){
     std::cout << "SCREEN_WIDTH: " << SCREEN_WIDTH << '\n';
     std::cout << "SCREEN_HEIGHT: " << SCREEN_HEIGHT << '\n';

@@ -9,11 +9,19 @@
 #define SCREEN_H_
 
 #include <SDL2/SDL.h>
+#include <stdio.h>
 #include <iostream>
+#include <vector>
 #include <math.h>
 //#include "colors.h"
 
 #define PI 3.14159265359
+
+struct Star {
+    float x;
+    float y;
+    float z;
+};
 
 class Screen {
 private:
@@ -59,6 +67,7 @@ public:
     
     // 3D Stuff:
     void draw3Dpoint(float x, float y, float z);
+    void starfield(std::vector<Star> &stars);
 
     int getWidth();
     int getHeight();

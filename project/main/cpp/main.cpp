@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 int main(int argc, char *argv[]) {
     Serial arduino(argc, argv);
     Screen screen(600, 400, 10);
@@ -98,11 +99,27 @@ int main(int argc, char *argv[]) {
         usleep(10000);
     }
 
+    vector<Star> stars;
+
+    if(arduino.DEBUG){
+        // Make stars
+        for(int i=0; i<1000; i++){
+            Star s = {
+                rand()%width - width/2,
+                rand()%height - height/2,
+                rand()%200 - 100
+            };
+            stars.push_back(s);
+        }
+    }
+
+
     while(running && arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        screen.draw3Dpoint(0.0, 0.0, (sin(ticks*0.005)*40.0)-150.0);
+        //screen.draw3Dpoint(0.0, 0.0, (sin(ticks*0.005)*40.0)-150.0);
+        screen.starfield(stars);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
