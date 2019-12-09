@@ -37,6 +37,7 @@ class Serial{
 
     public:
         char buf[256];
+        bool DEBUG;
 
     private:
         char* argv[];

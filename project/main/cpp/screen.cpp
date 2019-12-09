@@ -10,8 +10,8 @@
 Screen::Screen(){
     m_window = NULL;
     m_renderer = NULL;
-    SCREEN_WIDTH = 600;
-    SCREEN_HEIGHT = 400;
+    SCREEN_WIDTH = 800;
+    SCREEN_HEIGHT = 600;
     RESOLUTION = 20;
     ANIMATING = false;
     ANIMATION_RATE = 60; // 50 mSeconds
@@ -86,6 +86,11 @@ void Screen::handleEvents(){
 
 void Screen::clearScreen(){
     SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(m_renderer);
+}
+
+void Screen::clearBlackScreen(){
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(m_renderer);
 }
 
@@ -212,6 +217,19 @@ float Screen::getMouseX(){
 
 float Screen::getMouseY(){
     return mouseY;
+}
+
+void Screen::draw3Dpoint(float x, float y, float z){
+    float FOV = 200.0;
+
+    float scale = FOV / (FOV + z);
+
+    float x2d = (x*scale)+SCREEN_WIDTH/2;
+    float y2d = (y*scale)+SCREEN_HEIGHT/2;
+
+    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
+    SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
 void Screen::writeInfo(){

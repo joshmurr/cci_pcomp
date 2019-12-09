@@ -23,10 +23,6 @@ int main(int argc, char *argv[]) {
     }
 
     int data;
-    string send_string;
-    char send_buf[256];
-    int rc,n;
-    bool init_done = false;
     bool running = false;
 
     int width = screen.getWidth();
@@ -61,10 +57,9 @@ int main(int argc, char *argv[]) {
     float theta2 = 3.142;
     int x2, y2;
 
-    while(running && !screen.QUIT){
+    while(running && !arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
         screen.clearScreen();
-        //screen.drawChequeredBackround(screen.RED, screen.GREEN, screen.BLUE, screen.YELLOW);
         targets.draw(screen);
 
         string input;
@@ -91,34 +86,23 @@ int main(int argc, char *argv[]) {
 
         screen.bresenham_circle(x, y, 10, screen.PINK);
         screen.bresenham_circle(x2, y2, 10, screen.LIGHT_BLUE);
-/*
- *        if(x<width/2 && y<height/2){
- *            // TOP LEFT
- *            screen.bresenham_circle(x, y, 10, screen.ORANGE);
- *            send_buf[0] = 'o';
- *            arduino.serialport_write(send_buf);
- *        } else if(x>width/2 && y<height/2) {
- *            // TOP RIGHT
- *            screen.bresenham_circle(x, y, 10, screen.LIGHT_BLUE);
- *            send_buf[0] = 'x';
- *            arduino.serialport_write(send_buf);
- *
- *        }else if(x<width/2 && y>height/2) {
- *            // BOTTOM LEFT
- *            screen.bresenham_circle(x, y, 10, screen.LIGHT_GREEN);
- *            send_buf[0] = 'x';
- *            arduino.serialport_write(send_buf);
- *
- *        } else {
- *            // BOTTOM RIGHT
- *            screen.bresenham_circle(x, y, 10, screen.PINK);
- *            send_buf[0] = 'o';
- *            arduino.serialport_write(send_buf);
- *        }    
- */
-
         theta += 0.006;
         theta2 -= 0.008;
+
+        if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
+            ticks = SDL_GetTicks();
+        }
+
+        screen.update();
+
+        usleep(10000);
+    }
+
+    while(running && arduino.DEBUG && !screen.QUIT){
+        screen.handleEvents();
+        screen.clearBlackScreen();
+
+        screen.draw3Dpoint(100.0, 100.0, 20*sin(ticks));
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

@@ -43,6 +43,7 @@ public:
 	bool init();
 	void update();
     void clearScreen();
+    void clearBlackScreen();
     void drawChequeredBackround(SDL_Color c1, SDL_Color c2, SDL_Color c3, SDL_Color c4);
     SDL_Color makeColor(Uint8 r, Uint8 g, Uint8 b);
     void hideCursor();
@@ -55,6 +56,9 @@ public:
     void circle(float x, float y, float r, int segs);
     void rose(float x, float y, float r, float segs, float p1, float p2);
     void bresenham_circle(int cx, int cy, int r, SDL_Color color);
+    
+    // 3D Stuff:
+    void draw3Dpoint(float x, float y, float z);
 
     int getWidth();
     int getHeight();

@@ -8,7 +8,7 @@ Serial::Serial(int argc, char* argv[]){
     argv = argv;
     fd = 0;
     baudrate = B9600;
-
+    DEBUG = false;
 }
 
 void Serial::usage(void) {
@@ -18,10 +18,6 @@ void Serial::usage(void) {
     "  -h, --help                   Print this help message\n"
     "  -p, --port=serialport        Serial port Arduino is on\n"
     "  -b, --baud=baudrate          Baudrate (bps) of Arduino\n"
-    "  -s, --send=data              Send data to Arduino\n"
-    "  -r, --receive                Receive data from Arduino & print it out\n"
-    "  -n  --num=num                Send a number as a single byte\n"
-    "  -d  --delay=millis           Delay for specified milliseconds\n"
     "\n"
     "Note: Order is important. Set '-b' before doing '-p'. \n"
     "      Used to make series of actions:  '-d 2000 -s hello -d 100 -r' \n"
@@ -34,13 +30,13 @@ bool Serial::setup(int argc, char* argv[]){
     int option_index = 0, opt;
     static struct option loptions[] = {
         {"help",       no_argument,       0, 'h'},
+        {"debug",      no_argument,       0, 'd'},
         {"port",       required_argument, 0, 'p'},
         {"baud",       required_argument, 0, 'b'},
     };
     
     while(1) {
-        opt = getopt_long (argc, argv, "hp:b:s:rn:d:",
-                           loptions, &option_index);
+        opt = getopt_long (argc, argv, "hp:b:d", loptions, &option_index);
         if (opt==-1){
            return false;
         }
@@ -56,6 +52,10 @@ bool Serial::setup(int argc, char* argv[]){
             serialport = optarg;
             fd = serialport_init(optarg, baudrate);
             if(fd==-1) return false;
+            break;
+        case 'd':
+            cout << "**TESTING WITH NO ARDUINO**" << endl;
+            DEBUG = true;
             break;
         }
         return true;
