@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        screen.draw3Dpoint(100.0, 100.0, 20*sin(ticks));
+        screen.draw3Dpoint(0.0, 0.0, (sin(ticks*0.005)*40.0)-150.0);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
