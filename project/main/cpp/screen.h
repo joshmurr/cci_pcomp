@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include "vec3d.h"
 //#include "colors.h"
 
 #define PI 3.14159265359
@@ -67,6 +68,7 @@ public:
     
     // 3D Stuff:
     void draw3Dpoint(float x, float y, float z);
+    void drawVec3d(std::vector<Vec3d> &obj);
     void starfield(std::vector<Star> &stars);
 
     int getWidth();

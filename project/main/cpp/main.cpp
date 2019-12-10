@@ -4,6 +4,7 @@
 #include <math.h>
 #include "serial.h"
 #include "screen.h"
+#include "vec3d.h"
 #include "targets.h"
 
 using namespace std;
@@ -99,17 +100,33 @@ int main(int argc, char *argv[]) {
         usleep(10000);
     }
 
-    vector<Star> stars;
+/*
+ *    vector<Star> stars;
+ *
+ *    if(arduino.DEBUG){
+ *        // Make stars
+ *        for(int i=0; i<1000; i++){
+ *            Star s = {
+ *                rand()%width - width/2,
+ *                rand()%height - height/2,
+ *                rand()%200 - 100
+ *            };
+ *            stars.push_back(s);
+ *        }
+ *    }
+ */
 
-    if(arduino.DEBUG){
-        // Make stars
-        for(int i=0; i<1000; i++){
-            Star s = {
-                rand()%width - width/2,
-                rand()%height - height/2,
-                rand()%200 - 100
-            };
-            stars.push_back(s);
+    // MAKE RING
+    vector<Vec3d> ring;
+
+    if(arduino.DEBUG) {
+        float size = 100.0;
+        double spacing = (PI * 2) / 8.0;
+        for(int i=0; i<8; i++){
+            double x = size * cos(spacing * i);
+            double z = size * sin(spacing * i);
+            Vec3d p(x, 20.0, z);
+            ring.push_back(p);
         }
     }
 
@@ -119,7 +136,8 @@ int main(int argc, char *argv[]) {
         screen.clearBlackScreen();
 
         //screen.draw3Dpoint(0.0, 0.0, (sin(ticks*0.005)*40.0)-150.0);
-        screen.starfield(stars);
+        //screen.starfield(stars);
+        screen.drawVec3d(ring);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

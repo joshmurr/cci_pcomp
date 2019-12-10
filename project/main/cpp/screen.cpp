@@ -232,6 +232,25 @@ void Screen::draw3Dpoint(float x, float y, float z){
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
+void Screen::drawVec3d(std::vector<Vec3d> &obj){
+    float FOV = 200.0;
+
+    for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
+        float scale = FOV / (FOV + p->z);
+
+        float x2d = (p->x*scale)+SCREEN_WIDTH/2;
+        float y2d = (p->y*scale)+SCREEN_HEIGHT/2;
+
+        int dColor = 255 - floor(p->z + 200);
+        if(dColor < 1) dColor = 0;
+        if(dColor > 254) dColor = 255;
+
+        SDL_SetRenderDrawColor(m_renderer, 255, 255, 255-dColor, SDL_ALPHA_OPAQUE);
+        SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
+        SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
+    }
+}
+
 void Screen::starfield(std::vector<Star> &stars){
     float FOV = 200.0;
     float x3d=0.0, y3d=0.0, z3d=0.0;
