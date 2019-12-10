@@ -101,40 +101,12 @@ int main(int argc, char *argv[]) {
         usleep(10000);
     }
 
-/*
- *    vector<Star> stars;
- *
- *    if(arduino.DEBUG){
- *        // Make stars
- *        for(int i=0; i<1000; i++){
- *            Star s = {
- *                rand()%width - width/2,
- *                rand()%height - height/2,
- *                rand()%200 - 100
- *            };
- *            stars.push_back(s);
- *        }
- *    }
- */
-
     // MAKE RING
     Object headset;
     headset.makeHeadset();
-    // MAKE WALL
-    vector<Vec3d> wall;
-
-
-    if(arduino.DEBUG) {
-        { // RING
-        }
-
-        { // WALL
-        }
-    }
-
+    // MAKE ROOM
     Object room;
     room.makeSimpleRoom(200, 20);
-
 
     while(running && arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
@@ -142,6 +114,9 @@ int main(int argc, char *argv[]) {
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
+        headset.setVelocity(0.1);
+
+        headset.update();
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

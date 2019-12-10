@@ -13,9 +13,13 @@ class Object{
         Object(); // Blank Object
         Object(std::vector<Vec3d> &points); // Predefined points
         void draw(Screen &screen, SDL_Color col);
+        void update();
+        void setVelocity(float v);
+        void setFollowMouse(bool t);
         void makeHeadset();
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(float width, float spacing);
+        void makeStarField(float width, float height);
 
     private:
 
@@ -24,6 +28,9 @@ class Object{
         std::vector<Vec3d> *referredPoints;
 
     private:
+        Vec3d origin;
+        float velocity;
+        bool followMouse;
 
 };
 

@@ -1,7 +1,7 @@
 #include "object.h"
 
 Object::Object(){
-
+    this->velocity = 0.0;
 }
 
 Object::Object(std::vector<Vec3d> &points){
@@ -10,6 +10,23 @@ Object::Object(std::vector<Vec3d> &points){
 
 void Object::draw(Screen &screen, SDL_Color col){
     screen.drawObject(this->points, col);
+}
+
+void Object::update(){
+    if(this->velocity){
+        for(std::vector<Vec3d>::iterator p=points.begin(); p!=points.end(); ++p){
+            *p = *p + Vec3d(0.0, 0.1, 0.0);
+        }
+    }
+
+}
+
+void Object::setVelocity(float v){
+    this->velocity = v;
+}
+
+void Object::setFollowMouse(bool t){
+    this->followMouse = t;
 }
 
 void Object::makeHeadset(){
@@ -50,5 +67,16 @@ void Object::makeSimpleRoom(float width, float spacing){
         points.push_back(p_R);
         points.push_back(p_T);
         points.push_back(p_B);
+    }
+}
+
+void Object::makeStarField(float width, float height){
+    for(int i=0; i<100; i++){
+        Vec3d s(
+            rand()%(int)width - width/2,
+            rand()%(int)height - height/2,
+            rand()%200 - 100
+        );
+        points.push_back(s);
     }
 }
