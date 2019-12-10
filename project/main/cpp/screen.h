@@ -68,7 +68,7 @@ public:
     
     // 3D Stuff:
     void draw3Dpoint(float x, float y, float z);
-    void drawVec3d(std::vector<Vec3d> &obj);
+    void drawObject(std::vector<Vec3d> &obj, SDL_Color col);
     void starfield(std::vector<Star> &stars);
 
     int getWidth();

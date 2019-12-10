@@ -54,6 +54,43 @@ void Screen::handleEvents(){
     SDL_Event event;
 
     while(SDL_PollEvent(&event)){
+
+        switch(event.type){
+            case SDL_QUIT:
+                std::cout << "Quitting..." << std::endl;
+                QUIT = true;
+            case SDL_KEYDOWN:
+                std::cout << "key pressed" << std::endl;
+                if (event.key.keysym.sym == SDLK_SPACE){
+                    // SPACEBAR
+                    ANIMATING = false;
+                } else if (event.key.keysym.sym == SDLK_c) {
+                    // c Button
+                } else if (event.key.keysym.sym == SDLK_q){
+                    ANIMATING = false;
+                    QUIT = true;
+                }
+                break;
+            case SDL_MOUSEMOTION:
+                // Mouse Move
+                mouseX = event.motion.x;
+                mouseY = event.motion.y;
+                // Mouse DRAG
+                if(event.motion.state & (SDL_BUTTON_LMASK | SDL_BUTTON_RMASK)){
+                    mouseX = event.motion.x;
+                    mouseY = event.motion.y;
+                }
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                // Mouse CLICK
+                //std::cout << "Mouse click" << std::endl;
+                mouseClickX = event.motion.x;
+                mouseClickY = event.motion.y;
+                break;
+
+        }
+
+/*
         if(event.type == SDL_QUIT){
             QUIT = true;
         } else if (event.type == SDL_MOUSEMOTION){
@@ -81,6 +118,7 @@ void Screen::handleEvents(){
                 QUIT = true;
             }
         }
+        */
     }
 }
 
@@ -232,7 +270,7 @@ void Screen::draw3Dpoint(float x, float y, float z){
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
-void Screen::drawVec3d(std::vector<Vec3d> &obj){
+void Screen::drawObject(std::vector<Vec3d> &obj, SDL_Color col){
     float FOV = 200.0;
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
@@ -245,7 +283,7 @@ void Screen::drawVec3d(std::vector<Vec3d> &obj){
         if(dColor < 1) dColor = 0;
         if(dColor > 254) dColor = 255;
 
-        SDL_SetRenderDrawColor(m_renderer, 255, 255, 255-dColor, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(m_renderer, col.r, col.g, col.b-dColor, SDL_ALPHA_OPAQUE);
         SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
         SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
     }

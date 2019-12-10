@@ -6,6 +6,7 @@
 #include "screen.h"
 #include "vec3d.h"
 #include "targets.h"
+#include "object.h"
 
 using namespace std;
 
@@ -117,27 +118,30 @@ int main(int argc, char *argv[]) {
  */
 
     // MAKE RING
-    vector<Vec3d> ring;
+    Object headset;
+    headset.makeHeadset();
+    // MAKE WALL
+    vector<Vec3d> wall;
+
 
     if(arduino.DEBUG) {
-        float size = 100.0;
-        double spacing = (PI * 2) / 8.0;
-        for(int i=0; i<8; i++){
-            double x = size * cos(spacing * i);
-            double z = size * sin(spacing * i);
-            Vec3d p(x, 20.0, z);
-            ring.push_back(p);
+        { // RING
+        }
+
+        { // WALL
         }
     }
+
+    Object room;
+    room.makeSimpleRoom(200, 20);
 
 
     while(running && arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        //screen.draw3Dpoint(0.0, 0.0, (sin(ticks*0.005)*40.0)-150.0);
-        //screen.starfield(stars);
-        screen.drawVec3d(ring);
+        headset.draw(screen, screen.YELLOW);
+        room.draw(screen, screen.RED);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
