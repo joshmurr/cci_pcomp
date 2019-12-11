@@ -15,7 +15,8 @@ class Object{
         void draw(Screen &screen, SDL_Color col);
         void update();
         void setVelocity(float v);
-        void setFollowMouse(bool t);
+        //void setFollowMouse(bool t);
+        void followMouse(const Vec3d _mouse);
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);
@@ -30,7 +31,7 @@ class Object{
     private:
         Vec3d origin;
         float velocity;
-        bool followMouse;
+        //bool followMouse;
 
 };
 

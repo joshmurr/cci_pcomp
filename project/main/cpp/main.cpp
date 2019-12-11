@@ -114,7 +114,8 @@ int main(int argc, char *argv[]) {
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
-        headset.setVelocity(0.1);
+        headset.followMouse(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
+        //headset.setVelocity(0.1);
 
         headset.update();
 

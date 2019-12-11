@@ -13,25 +13,29 @@ void Object::draw(Screen &screen, SDL_Color col){
 }
 
 void Object::update(){
-    if(this->followMouse){
-        for(std::vector<Vec3d>::iterator p=points.begin(); p!=points.end(); ++p){
-            *p = *p + Vec3d(0.0, 0.1, 0.0);
-        }
-    }
     if(this->velocity){
-        for(std::vector<Vec3d>::iterator p=points.begin(); p!=points.end(); ++p){
-            *p = *p + Vec3d(0.0, 0.1, 0.0);
-        }
+        this->origin = this->origin + Vec3d(0.0, 0.1, 0.0);
     }
+
+}
+
+void Object::followMouse(const Vec3d _mouse){
+    //this.p = p_;
+    //this.dir = location.sub(this.p.location);
+    //this.d = this.dir.length();
+    //this.dir.normalise();
+    //this.force = this.G/(this.mass*this.d*this.d);
+    //this.dir.mult(this.force);
+    //return this.dir;
+    
+    Vec3d dir = this->origin - _mouse;
+    dir.normalise();
+    this->origin = this->origin + dir; 
 
 }
 
 void Object::setVelocity(float v){
     this->velocity = v;
-}
-
-void Object::setFollowMouse(bool t){
-    this->followMouse = t;
 }
 
 void Object::makeHeadset(Vec3d _origin){
