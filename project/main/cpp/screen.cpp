@@ -270,14 +270,14 @@ void Screen::draw3Dpoint(float x, float y, float z){
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
-void Screen::drawObject(std::vector<Vec3d> &obj, SDL_Color col){
+void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color col){
     float FOV = 200.0;
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
         float scale = FOV / (FOV + p->z);
 
-        float x2d = (p->x*scale)+SCREEN_WIDTH/2;
-        float y2d = (p->y*scale)+SCREEN_HEIGHT/2;
+        float x2d = (p->x*scale)+_origin.x;
+        float y2d = (p->y*scale)+_origin.y;
 
         int dColor = 255 - floor(p->z + 200);
         if(dColor < 1) dColor = 0;

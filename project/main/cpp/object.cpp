@@ -9,10 +9,15 @@ Object::Object(std::vector<Vec3d> &points){
 }
 
 void Object::draw(Screen &screen, SDL_Color col){
-    screen.drawObject(this->points, col);
+    screen.drawObject(this->points, this->origin, col);
 }
 
 void Object::update(){
+    if(this->followMouse){
+        for(std::vector<Vec3d>::iterator p=points.begin(); p!=points.end(); ++p){
+            *p = *p + Vec3d(0.0, 0.1, 0.0);
+        }
+    }
     if(this->velocity){
         for(std::vector<Vec3d>::iterator p=points.begin(); p!=points.end(); ++p){
             *p = *p + Vec3d(0.0, 0.1, 0.0);
@@ -29,7 +34,8 @@ void Object::setFollowMouse(bool t){
     this->followMouse = t;
 }
 
-void Object::makeHeadset(){
+void Object::makeHeadset(Vec3d _origin){
+    this->origin = _origin;
     float size = 20.0;
     double spacing = (M_PI * 2.0) / 8.0;
     for(int i=0; i<8; i++){
@@ -55,7 +61,8 @@ void Object::makeWall(Vec3d pos, float width, float height, float spacing){
 
 }
 
-void Object::makeSimpleRoom(float width, float spacing){
+void Object::makeSimpleRoom(Vec3d _origin, float width, float spacing){
+    this->origin = _origin;
     float offset_x = width/2.0;
     float offset_y = width/2.0;
     for(float i=0.0; i<width; i+=spacing){

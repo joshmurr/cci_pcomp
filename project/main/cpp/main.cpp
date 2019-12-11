@@ -103,10 +103,10 @@ int main(int argc, char *argv[]) {
 
     // MAKE RING
     Object headset;
-    headset.makeHeadset();
+    headset.makeHeadset(Vec3d(100.0, 100.0, 0.0));
     // MAKE ROOM
     Object room;
-    room.makeSimpleRoom(200, 20);
+    room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
 
     while(running && arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
