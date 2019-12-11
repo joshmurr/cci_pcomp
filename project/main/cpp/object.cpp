@@ -2,6 +2,15 @@
 
 Object::Object(){
     this->velocity = 0.0;
+    this->dataArray[0] = 0x00; //0b00000000
+    this->dataArray[1] = 0x80; //0b10000000
+    this->dataArray[2] = 0x40; //0b01000000
+    this->dataArray[3] = 0x20; //0b00100000
+    this->dataArray[4] = 0x10; //0b00010000
+    this->dataArray[5] = 0x08; //0b00001000
+    this->dataArray[6] = 0x04; //0b00000100
+    this->dataArray[7] = 0x02; //0b00000010
+    this->dataArray[8] = 0x01; //0b00000001
 }
 
 Object::Object(std::vector<Vec3d> &points){
@@ -72,22 +81,13 @@ void Object::makeSimpleRoom(Vec3d _origin, float width, float spacing){
 }
 
 bool Object::checkOriginCollision(Object &obj){
-    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
-        Vec3d pUpdate = *p + this->origin;
-        double dist = pUpdate.dist(Vec3d(100.0,100.0,0.0));
-        std::cout << dist << std::endl;
-        if(dist < 10.0) return true;
-    }
+    double dist = this->origin.dist(obj.origin);
+    if(dist < 10.0) return true;
     return false;
-    //Vec3d p = points[1];
-
-    //double dist = p.dist(obj.origin);
-    //std::cout << dist << std::endl;
-    //if(dist < 10.0) return true;
-    //else return false;
 }
 
-bool Object::checkCollisions(Screen &screen, Object &obj){
+bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj){
+    unsigned char b = 0x00;
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         for(std::vector<Vec3d>::iterator q=obj.points.begin(); q!=obj.points.end(); ++q){
             Vec3d pUpdate = *p + this->origin;
@@ -96,10 +96,13 @@ bool Object::checkCollisions(Screen &screen, Object &obj){
             //std::cout << dist << std::endl;
             if(dist < 20.0) {
                 screen.drawLine(pUpdate, qUpdate);
-                //return true;
+                // VIBRATE MOTOR FUNCTION
+                b = b + this->dataArray[p-points.begin()];
             }
         }
     }
+    arduino.serialport_writechar(b);
+    b = 0x00;
     return false;
 }
 

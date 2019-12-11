@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include "screen.h"
+#include "serial.h"
 #include "vec3d.h"
 
 class Object{
@@ -20,7 +21,7 @@ class Object{
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);
-        bool checkCollisions(Screen &screen, Object &obj);
+        bool checkCollisions(Screen &screen, Serial &arduino, Object &obj);
         bool checkOriginCollision(Object &obj);
         void makeStarField(float width, float height);
 
@@ -34,6 +35,8 @@ class Object{
         Vec3d origin;
         float velocity;
         //bool followMouse;
+        unsigned char dataArray[9];
+
 
 };
 

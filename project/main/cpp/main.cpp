@@ -49,48 +49,31 @@ int main(int argc, char *argv[]) {
     running = arduino.setup(argc, argv);
 
     screen.hideCursor();
+    
+    // MAKE RING
+    Object headset;
+    headset.makeHeadset(Vec3d(100.0, 100.0, 0.0));
+    // MAKE ROOM
+    Object room;
+    room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
 
     Targets targets(width/2, height/2, 8, 150);
 
-    // CIRCLE ANIMATION
-    int r = 150;
-    float theta = 0.0;
-    int x, y;
-    // 2nd CIRCLE ANIMATION
-    float theta2 = 3.142;
-    int x2, y2;
 
     while(running && !arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
-        screen.clearScreen();
-        targets.draw(screen);
+        screen.clearBlackScreen();
 
-        string input;
-        int num;
         if(arduino.serialport_read_int_until('\n', data)){
             //cout << data << endl;
         }
 
-        x = r*cos(theta) + width/2;
-        y = r*sin(theta) + height/2;
-        x2 = r*cos(theta2) + width/2;
-        y2 = r*sin(theta2) + height/2;
+        headset.draw(screen, screen.YELLOW);
+        room.draw(screen, screen.RED);
+        headset.follow(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
+        headset.update();
 
-        unsigned char whichTarget = targets.contact(x, y);
-        unsigned char whichTarget2 = targets.contact(x2, y2);
-        unsigned char prevTarget;
-        unsigned char prevTarget2;
-        arduino.serialport_writechar(dataArray[whichTarget] + dataArray[whichTarget2]);
-        //if(prevTarget != whichTarget && !prevTarget) cout << "1: " << (int)whichTarget << endl;
-        //if(prevTarget2 != whichTarget2 && !prevTarget2) cout << "2: " << (int)whichTarget2 << endl;
-
-        prevTarget = whichTarget;
-        prevTarget2 = whichTarget2;
-
-        screen.bresenham_circle(x, y, 10, screen.PINK);
-        screen.bresenham_circle(x2, y2, 10, screen.LIGHT_BLUE);
-        theta += 0.006;
-        theta2 -= 0.008;
+        if(headset.checkCollisions(screen, arduino, room)) cout << "Collision!" << std::endl;
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
@@ -101,12 +84,6 @@ int main(int argc, char *argv[]) {
         usleep(10000);
     }
 
-    // MAKE RING
-    Object headset;
-    headset.makeHeadset(Vec3d(100.0, 100.0, 0.0));
-    // MAKE ROOM
-    Object room;
-    room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
 
     while(running && arduino.DEBUG && !screen.QUIT){
         screen.handleEvents();
@@ -117,7 +94,7 @@ int main(int argc, char *argv[]) {
         headset.follow(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
         headset.update();
 
-        if(headset.checkCollisions(screen, room)) cout << "Collision!" << std::endl;
+        if(headset.checkCollisions(screen, arduino, room)) cout << "Collision!" << std::endl;
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
