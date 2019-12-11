@@ -19,6 +19,7 @@ class Vec3d{
         double dot(const Vec3d &v);
         double length();
         void normalise();
+        double dist(const Vec3d &v);
 
     private:
 

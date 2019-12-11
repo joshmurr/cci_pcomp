@@ -13,25 +13,15 @@ void Object::draw(Screen &screen, SDL_Color col){
 }
 
 void Object::update(){
-    if(this->velocity){
-        this->origin = this->origin + Vec3d(0.0, 0.1, 0.0);
-    }
-
+    //if(this->velocity){
+        //this->origin = this->origin + Vec3d(0.0, 0.1, 0.0);
+    //}
 }
 
-void Object::followMouse(const Vec3d _mouse){
-    //this.p = p_;
-    //this.dir = location.sub(this.p.location);
-    //this.d = this.dir.length();
-    //this.dir.normalise();
-    //this.force = this.G/(this.mass*this.d*this.d);
-    //this.dir.mult(this.force);
-    //return this.dir;
-    
-    Vec3d dir = this->origin - _mouse;
+void Object::follow(const Vec3d &v){
+    Vec3d dir = this->origin - v;
     dir.normalise();
     this->origin = this->origin + dir; 
-
 }
 
 void Object::setVelocity(float v){
@@ -45,7 +35,7 @@ void Object::makeHeadset(Vec3d _origin){
     for(int i=0; i<8; i++){
         double x = size * cos(spacing * i);
         double y = size * sin(spacing * i);
-        Vec3d p(x, y, 20.0);
+        Vec3d p(x, y, 0.0);
         points.push_back(p);
     }
 }
@@ -73,12 +63,44 @@ void Object::makeSimpleRoom(Vec3d _origin, float width, float spacing){
         Vec3d p_L(-offset_x, -offset_y+i, 0.0);
         Vec3d p_R(offset_x, -offset_y+i, 0.0);
         Vec3d p_T(-offset_x+i, -offset_y, 0.0);
-        Vec3d p_B(-offset_x+i, offset_y, 0.0);
+        Vec3d p_B(-offset_x+i, offset_y-spacing, 0.0);
         points.push_back(p_L);
         points.push_back(p_R);
         points.push_back(p_T);
         points.push_back(p_B);
     }
+}
+
+bool Object::checkOriginCollision(Object &obj){
+    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
+        Vec3d pUpdate = *p + this->origin;
+        double dist = pUpdate.dist(Vec3d(100.0,100.0,0.0));
+        std::cout << dist << std::endl;
+        if(dist < 10.0) return true;
+    }
+    return false;
+    //Vec3d p = points[1];
+
+    //double dist = p.dist(obj.origin);
+    //std::cout << dist << std::endl;
+    //if(dist < 10.0) return true;
+    //else return false;
+}
+
+bool Object::checkCollisions(Screen &screen, Object &obj){
+    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
+        for(std::vector<Vec3d>::iterator q=obj.points.begin(); q!=obj.points.end(); ++q){
+            Vec3d pUpdate = *p + this->origin;
+            Vec3d qUpdate = *q + obj.origin;
+            double dist = pUpdate.dist(qUpdate);
+            //std::cout << dist << std::endl;
+            if(dist < 20.0) {
+                screen.drawLine(pUpdate, qUpdate);
+                //return true;
+            }
+        }
+    }
+    return false;
 }
 
 void Object::makeStarField(float width, float height){

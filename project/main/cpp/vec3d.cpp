@@ -47,3 +47,7 @@ void Vec3d::normalise(){
     this->y /= len;
     this->z /= len;
 }
+
+double Vec3d::dist(const Vec3d &v){
+    return sqrt(pow((this->x-v.x), 2.0)+pow((this->y-v.y),2.0)+pow((this->z-v.z),2.0));
+}

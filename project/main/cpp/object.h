@@ -16,10 +16,12 @@ class Object{
         void update();
         void setVelocity(float v);
         //void setFollowMouse(bool t);
-        void followMouse(const Vec3d _mouse);
+        void follow(const Vec3d &v);
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);
+        bool checkCollisions(Screen &screen, Object &obj);
+        bool checkOriginCollision(Object &obj);
         void makeStarField(float width, float height);
 
     private:

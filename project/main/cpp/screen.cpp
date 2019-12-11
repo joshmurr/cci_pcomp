@@ -347,6 +347,11 @@ void Screen::rect(int x, int y, int w, int h, SDL_Color color){
     SDL_RenderFillRect(m_renderer, &rect);
 }
 
+void Screen::drawLine(const Vec3d &v1, const Vec3d &v2){
+    SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderDrawLine(m_renderer, v1.x, v1.y, v2.x, v2.y);
+}
+
 void Screen::close() {
 	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);

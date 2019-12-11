@@ -114,10 +114,10 @@ int main(int argc, char *argv[]) {
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
-        headset.followMouse(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
-        //headset.setVelocity(0.1);
-
+        headset.follow(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
         headset.update();
+
+        if(headset.checkCollisions(screen, room)) cout << "Collision!" << std::endl;
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
