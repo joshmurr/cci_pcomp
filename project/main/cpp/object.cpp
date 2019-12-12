@@ -17,7 +17,7 @@ Object::Object(std::vector<Vec3d> &points){
     referredPoints = &points;
 }
 
-void Object::draw(Screen &screen, SDL_Color col){
+void Object::draw(Screen &screen, const SDL_Color &col){
     screen.drawObject(this->points, this->origin, col);
 }
 
@@ -31,6 +31,11 @@ void Object::follow(const Vec3d &v){
     Vec3d dir = this->origin - v;
     dir.normalise();
     this->origin = this->origin + dir; 
+}
+
+void Object::moveUpAndDown(const Uint32 &ticks){
+    Vec3d ud(0.0, 0.0, 20.0*sin(ticks*0.01));
+    this->origin = this->origin + ud; 
 }
 
 void Object::setVelocity(float v){
@@ -95,7 +100,7 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
             Vec3d pUpdate = *p + this->origin;
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
-            if(dist < 50.0) {
+            if(dist < 25.0) {
                 screen.draw3Dline(pUpdate, qUpdate);
                 // VIBRATE MOTOR FUNCTION
                 b = b + this->dataArray[p-points.begin()];

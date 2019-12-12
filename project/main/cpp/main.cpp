@@ -55,7 +55,9 @@ int main(int argc, char *argv[]) {
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
-        headset.follow(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
+        headset.follow(screen.getMouseVec());
+
+        //headset.moveUpAndDown(ticks);
         headset.update();
 
         if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) cout << "Collision!" << std::endl;

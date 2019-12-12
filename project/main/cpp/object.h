@@ -13,7 +13,7 @@ class Object{
     public:
         Object(); // Blank Object
         Object(std::vector<Vec3d> &points); // Predefined points
-        void draw(Screen &screen, SDL_Color col);
+        void draw(Screen &screen, const SDL_Color &col);
         void update();
         void setVelocity(float v);
         //void setFollowMouse(bool t);
@@ -24,6 +24,9 @@ class Object{
         bool checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);
         bool checkOriginCollision(Object &obj);
         void makeStarField(float width, float height);
+
+        void moveUpAndDown(const Uint32 &ticks);
+
 
     private:
 

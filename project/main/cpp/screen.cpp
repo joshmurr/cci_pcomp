@@ -75,10 +75,14 @@ void Screen::handleEvents(){
                 mouseX = event.motion.x;
                 mouseY = event.motion.y;
                 // Mouse DRAG
-                if(event.motion.state & (SDL_BUTTON_LMASK | SDL_BUTTON_RMASK)){
-                    mouseX = event.motion.x;
-                    mouseY = event.motion.y;
+                if(event.motion.state & (SDL_BUTTON_LMASK)){
+                    mouseVec.x = event.motion.x;
+                    mouseVec.y = event.motion.y;
+                } else if(event.motion.state & (SDL_BUTTON_RMASK)){
+                    //std::cout << "Right Click, reducing mouse.z" << std::endl;
+                    mouseVec.z += 1.0;
                 }
+
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 // Mouse CLICK
@@ -225,13 +229,17 @@ float Screen::getMouseY(){
     return mouseY;
 }
 
-void Screen::draw3Dpoint(float x, float y, float z){
+Vec3d Screen::getMouseVec(){
+    return mouseVec;
+}
+
+void Screen::draw3Dpoint(const Vec3d &v){
     float FOV = 200.0;
 
-    float scale = FOV / (FOV + z);
+    float scale = FOV / (FOV + v.z);
 
-    float x2d = (x*scale)+SCREEN_WIDTH/2;
-    float y2d = (y*scale)+SCREEN_HEIGHT/2;
+    float x2d = (v.x*scale);
+    float y2d = (v.y*scale);
 
     SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
@@ -253,11 +261,12 @@ void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2){
     SDL_RenderDrawLine(m_renderer, v1_x2d, v1_y2d, v2_x2d, v2_y2d);
 }
 
-void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color col){
+void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color &col){
     float FOV = 200.0;
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
         Vec3d pUpdate = *p + _origin;
+        std::cout << pUpdate.z << std::endl;
         float scale = FOV / (FOV + pUpdate.z);
 
         float x2d = (pUpdate.x*scale);
