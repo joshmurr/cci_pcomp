@@ -21,7 +21,7 @@ class Object{
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);
-        bool checkCollisions(Screen &screen, Serial &arduino, Object &obj);
+        bool checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);
         bool checkOriginCollision(Object &obj);
         void makeStarField(float width, float height);
 

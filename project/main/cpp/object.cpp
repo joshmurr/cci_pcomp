@@ -69,14 +69,16 @@ void Object::makeSimpleRoom(Vec3d _origin, float width, float spacing){
     float offset_x = width/2.0;
     float offset_y = width/2.0;
     for(float i=0.0; i<width; i+=spacing){
-        Vec3d p_L(-offset_x, -offset_y+i, 0.0);
-        Vec3d p_R(offset_x, -offset_y+i, 0.0);
-        Vec3d p_T(-offset_x+i, -offset_y, 0.0);
-        Vec3d p_B(-offset_x+i, offset_y-spacing, 0.0);
-        points.push_back(p_L);
-        points.push_back(p_R);
-        points.push_back(p_T);
-        points.push_back(p_B);
+        for(float z=0.0; z<width/2.0; z+=spacing){
+            Vec3d p_L(-offset_x, offset_y-i, z);
+            Vec3d p_R(offset_x, -offset_y+i, z);
+            Vec3d p_T(-offset_x+i, -offset_y, z);
+            Vec3d p_B(offset_x-i, offset_y, z);
+            points.push_back(p_L);
+            points.push_back(p_R);
+            points.push_back(p_T);
+            points.push_back(p_B);
+        }
     }
 }
 
@@ -86,22 +88,21 @@ bool Object::checkOriginCollision(Object &obj){
     return false;
 }
 
-bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj){
+bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG){
     unsigned char b = 0x00;
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         for(std::vector<Vec3d>::iterator q=obj.points.begin(); q!=obj.points.end(); ++q){
             Vec3d pUpdate = *p + this->origin;
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
-            //std::cout << dist << std::endl;
-            if(dist < 20.0) {
-                screen.drawLine(pUpdate, qUpdate);
+            if(dist < 50.0) {
+                screen.draw3Dline(pUpdate, qUpdate);
                 // VIBRATE MOTOR FUNCTION
                 b = b + this->dataArray[p-points.begin()];
             }
         }
     }
-    arduino.serialport_writechar(b);
+    if(!DEBUG)arduino.serialport_writechar(b);
     b = 0x00;
     return false;
 }

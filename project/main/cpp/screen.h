@@ -62,6 +62,7 @@ public:
 	void close();
     void writeInfo();
     void drawLine(const Vec3d &v1, const Vec3d &v2);
+    void draw3Dline(const Vec3d &v1, const Vec3d &v2);
     void rect(int x, int y, int w, int h, SDL_Color color);
     void circle(float x, float y, float r, int segs);
     void rose(float x, float y, float r, float segs, float p1, float p2);

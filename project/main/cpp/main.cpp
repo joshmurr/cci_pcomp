@@ -31,18 +31,6 @@ int main(int argc, char *argv[]) {
     int width = screen.getWidth();
     int height = screen.getHeight();
 
-    unsigned char dataArray[9];
-
-    dataArray[0] = 0x00; //0b00000000
-    dataArray[1] = 0x80; //0b10000000
-    dataArray[2] = 0x40; //0b01000000
-    dataArray[3] = 0x20; //0b00100000
-    dataArray[4] = 0x10; //0b00010000
-    dataArray[5] = 0x08; //0b00001000
-    dataArray[6] = 0x04; //0b00000100
-    dataArray[7] = 0x02; //0b00000010
-    dataArray[8] = 0x01; //0b00000001
-
     screen.setAnimating(true);
     ticks = SDL_GetTicks();
 
@@ -52,49 +40,25 @@ int main(int argc, char *argv[]) {
     
     // MAKE RING
     Object headset;
-    headset.makeHeadset(Vec3d(100.0, 100.0, 0.0));
+    headset.makeHeadset(Vec3d(width/2.0, height/2.0, 50.0));
     // MAKE ROOM
     Object room;
     room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
 
-    Targets targets(width/2, height/2, 8, 150);
-
-
-    while(running && !arduino.DEBUG && !screen.QUIT){
+    while(running  && !screen.QUIT){
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        if(arduino.serialport_read_int_until('\n', data)){
-            //cout << data << endl;
-        }
+        //if(arduino.serialport_read_int_until('\n', data)){
+            ////cout << data << endl;
+        //}
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
         headset.follow(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
         headset.update();
 
-        if(headset.checkCollisions(screen, arduino, room)) cout << "Collision!" << std::endl;
-
-        if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
-            ticks = SDL_GetTicks();
-        }
-
-        screen.update();
-
-        usleep(10000);
-    }
-
-
-    while(running && arduino.DEBUG && !screen.QUIT){
-        screen.handleEvents();
-        screen.clearBlackScreen();
-
-        headset.draw(screen, screen.YELLOW);
-        room.draw(screen, screen.RED);
-        headset.follow(Vec3d(screen.getMouseX(), screen.getMouseY(), 0.0));
-        headset.update();
-
-        if(headset.checkCollisions(screen, arduino, room)) cout << "Collision!" << std::endl;
+        if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) cout << "Collision!" << std::endl;
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

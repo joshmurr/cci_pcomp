@@ -60,7 +60,6 @@ void Screen::handleEvents(){
                 std::cout << "Quitting..." << std::endl;
                 QUIT = true;
             case SDL_KEYDOWN:
-                std::cout << "key pressed" << std::endl;
                 if (event.key.keysym.sym == SDLK_SPACE){
                     // SPACEBAR
                     ANIMATING = false;
@@ -87,38 +86,7 @@ void Screen::handleEvents(){
                 mouseClickX = event.motion.x;
                 mouseClickY = event.motion.y;
                 break;
-
         }
-
-/*
-        if(event.type == SDL_QUIT){
-            QUIT = true;
-        } else if (event.type == SDL_MOUSEMOTION){
-            // Mouse Move
-            mouseX = event.motion.x;
-            mouseY = event.motion.y;
-            // Mouse DRAG
-            if(event.motion.state & (SDL_BUTTON_LMASK | SDL_BUTTON_RMASK)){
-                mouseX = event.motion.x;
-                mouseY = event.motion.y;
-            }
-        } else if (event.type == SDL_MOUSEBUTTONDOWN){
-            // Mouse CLICK
-            mouseClickX = event.motion.x;
-            mouseClickY = event.motion.y;
-            
-        } else if (event.type == SDL_KEYDOWN){
-            if (event.key.keysym.sym == SDLK_SPACE){
-                // SPACEBAR
-                ANIMATING = false;
-            } else if (event.key.keysym.sym == SDLK_c) {
-                // c Button
-            } else if (event.key.keysym.sym == SDLK_q){
-                ANIMATING = false;
-                QUIT = true;
-            }
-        }
-        */
     }
 }
 
@@ -270,14 +238,30 @@ void Screen::draw3Dpoint(float x, float y, float z){
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
+void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2){
+    float FOV = 200.0;
+    float scale1 = FOV / (FOV + v1.z);
+    float scale2 = FOV / (FOV + v2.z);
+
+    float v1_x2d = (v1.x*scale1);
+    float v1_y2d = (v1.y*scale1);
+
+    float v2_x2d = (v2.x*scale2);
+    float v2_y2d = (v2.y*scale2);
+
+    SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderDrawLine(m_renderer, v1_x2d, v1_y2d, v2_x2d, v2_y2d);
+}
+
 void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color col){
     float FOV = 200.0;
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
-        float scale = FOV / (FOV + p->z);
+        Vec3d pUpdate = *p + _origin;
+        float scale = FOV / (FOV + pUpdate.z);
 
-        float x2d = (p->x*scale)+_origin.x;
-        float y2d = (p->y*scale)+_origin.y;
+        float x2d = (pUpdate.x*scale);
+        float y2d = (pUpdate.y*scale);
 
         int dColor = 255 - floor(p->z + 200);
         if(dColor < 1) dColor = 0;
