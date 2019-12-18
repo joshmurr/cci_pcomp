@@ -49,9 +49,9 @@ int main(int argc, char *argv[]) {
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        //if(arduino.serialport_read_int_until('\n', data)){
-            ////cout << data << endl;
-        //}
+        if(arduino.serialport_read_int_until('\n', data)){
+            cout << data << endl;
+        }
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);

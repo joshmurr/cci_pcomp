@@ -45,13 +45,30 @@ void Object::setVelocity(float v){
 void Object::makeHeadset(Vec3d _origin){
     this->origin = _origin;
     float size = 20.0;
-    double spacing = (M_PI * 2.0) / 8.0;
-    for(int i=0; i<8; i++){
+    int i=0;
+    int num=8;
+    double spacing = (M_PI * 2.0) / (float)num;
+    //Main Ring
+    for(; i<num; i++){
         double x = size * cos(spacing * i);
         double y = size * sin(spacing * i);
         Vec3d p(x, y, 0.0);
         points.push_back(p);
     }
+    // Mid Ring
+    size = 12.0;
+    num = 6;
+    spacing = (M_PI * 2.0) / (float)num;
+    for(i=0; i<num; i++){
+        double x = size * cos(spacing * i);
+        double y = size * sin(spacing * i);
+        Vec3d p(x, y, -4.0);
+        points.push_back(p);
+    }
+    // Top
+    Vec3d p(0.0, 0.0, -10.0);
+    points.push_back(p);
+    
 }
 
 void Object::makeWall(Vec3d pos, float width, float height, float spacing){
@@ -94,7 +111,7 @@ bool Object::checkOriginCollision(Object &obj){
 }
 
 bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG){
-    unsigned char b = 0x00;
+    unsigned char byte1 = 0x00, byte2 = 0x00;
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         for(std::vector<Vec3d>::iterator q=obj.points.begin(); q!=obj.points.end(); ++q){
             Vec3d pUpdate = *p + this->origin;
@@ -102,13 +119,19 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
             double dist = pUpdate.dist(qUpdate);
             if(dist < 25.0) {
                 screen.draw3Dline(pUpdate, qUpdate);
-                // VIBRATE MOTOR FUNCTION
-                b = b + this->dataArray[p-points.begin()];
+                // VIBRATE MOTORS
+                int collision = p-points.begin();
+                if(collision < 8) byte1 = byte1 + this->dataArray[p-points.begin()];
+                else byte2 = byte2 + this->dataArray[p-points.begin()];
             }
         }
     }
-    if(!DEBUG)arduino.serialport_writechar(b);
-    b = 0x00;
+    if(!DEBUG){
+        arduino.serialport_writechar(byte1);
+        arduino.serialport_writechar(byte2);
+        byte1 = 0x00;
+        byte2 = 0x00;
+    }
     return false;
 }
 

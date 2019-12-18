@@ -266,7 +266,6 @@ void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
         Vec3d pUpdate = *p + _origin;
-        std::cout << pUpdate.z << std::endl;
         float scale = FOV / (FOV + pUpdate.z);
 
         float x2d = (pUpdate.x*scale);
