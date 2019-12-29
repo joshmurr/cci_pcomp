@@ -18,6 +18,7 @@ class Object{
         void setVelocity(float v);
         //void setFollowMouse(bool t);
         void follow(const Vec3d &v);
+        void rotate(double w, double ax, double ay, double az);
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);

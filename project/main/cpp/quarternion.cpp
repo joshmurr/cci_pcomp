@@ -1,5 +1,7 @@
 #include "quarternion.h"
 
+const double Quarternion::testQuat[] = {0.7071068, 0, 0, 0.7071068};
+
 Quarternion::Quarternion(){
     this->x = 0.0;
     this->y = 0.0;
@@ -35,6 +37,13 @@ void Quarternion::toAxisAngle(){
 
         //return axis;
     }
+}
+
+void Quarternion::TESTAxisAngle(){
+    this->axis[0] = acos(this->testQuat[0])*2.0; // Theta
+    this->axis[1] = testQuat[1] / sin(acos(this->testQuat[0]));
+    this->axis[2] = testQuat[2] / sin(acos(this->testQuat[0]));
+    this->axis[3] = testQuat[3] / sin(acos(this->testQuat[0]));
 }
 
 void Quarternion::parseTeapotPacket(uint8_t* teapot){

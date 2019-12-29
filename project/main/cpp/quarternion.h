@@ -17,8 +17,10 @@ class Quarternion{
         void parseTeapotPacket(uint8_t* teapot);
         void printQuat();
         void printAxis();
+        void TESTAxisAngle();
 
     private:
+        static const double testQuat[];
 
     public:
         double x;

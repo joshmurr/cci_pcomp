@@ -27,6 +27,10 @@ void Object::update(){
     //}
 }
 
+void Object::rotate(double w, double ax, double ay, double az){
+
+}
+
 void Object::follow(const Vec3d &v){
     Vec3d dir = this->origin - v;
     dir.normalise();

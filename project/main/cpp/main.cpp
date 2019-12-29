@@ -52,8 +52,9 @@ int main(int argc, char *argv[]) {
         screen.clearBlackScreen();
 
         if(arduino.serialport_read_teapot()){
-            quat.parseTeapotPacket(arduino.teapot);
+            //quat.parseTeapotPacket(arduino.teapot);
             quat.toAxisAngle();
+            //quat.TESTAxisAngle();
         }
         
         //quat.printQuat();
