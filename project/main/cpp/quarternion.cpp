@@ -4,7 +4,7 @@ Quarternion::Quarternion(){
     this->x = 0.0;
     this->y = 0.0;
     this->z = 0.0;
-    this->w = 0.0; 
+    this->w = 1.0; 
 }
 
 Quarternion::Quarternion(double _x, double _y, double _z, double _w){
@@ -35,4 +35,23 @@ double* Quarternion::quatToAxisAngle(){
 
         return axis;
     }
+}
+
+void Quarternion::parseTeapotPacket(uint8_t* teapot){
+    // This is taken from Jeff Rowbergs MPUTeapot Processing sketch
+    
+    this->q[0] = ((teapot[2] << 8) | teapot[3]) / 16384.0;
+    this->q[1] = ((teapot[4] << 8) | teapot[5]) / 16384.0;
+    this->q[2] = ((teapot[6] << 8) | teapot[7]) / 16384.0;
+    this->q[3] = ((teapot[8] << 8) | teapot[9]) / 16384.0;
+    for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
+
+    this->w = q[0];
+    this->x = q[1];
+    this->y = q[2];
+    this->z = q[3];
+}
+
+void Quarternion::print() { 
+    std::cout << "w: " << this->w << " x: " << this->x << " y: " << this->y << " z: " << this->z << std::endl;
 }

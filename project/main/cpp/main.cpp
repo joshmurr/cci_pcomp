@@ -7,6 +7,7 @@
 #include "vec3d.h"
 #include "targets.h"
 #include "object.h"
+#include "quarternion.h"
 
 using namespace std;
 
@@ -44,13 +45,18 @@ int main(int argc, char *argv[]) {
     Object room;
     room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
 
+    Quarternion quat;
+
     while(running  && !screen.QUIT){
         screen.handleEvents();
         screen.clearBlackScreen();
 
         if(arduino.serialport_read_teapot()){
             //cout << arduino.teapot << endl;
+            quat.parseTeapotPacket(arduino.teapot);
         }
+        
+        quat.print();
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);

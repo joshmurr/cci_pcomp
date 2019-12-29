@@ -3,6 +3,8 @@
 
 #include <math.h>
 #include <cmath>
+#include <stdint.h>
+#include <iostream>
 
 class Quarternion{
     private:
@@ -11,6 +13,8 @@ class Quarternion{
         Quarternion();
         Quarternion(double _x, double _y, double _z, double _w);
         double* quatToAxisAngle();
+        void parseTeapotPacket(uint8_t* teapot);
+        void print();
 
     private:
 
@@ -19,6 +23,7 @@ class Quarternion{
         double y;
         double z;
         double w;
+        double q[4];
 
 };
 
