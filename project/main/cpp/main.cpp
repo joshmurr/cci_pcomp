@@ -52,11 +52,12 @@ int main(int argc, char *argv[]) {
         screen.clearBlackScreen();
 
         if(arduino.serialport_read_teapot()){
-            //cout << arduino.teapot << endl;
             quat.parseTeapotPacket(arduino.teapot);
+            quat.toAxisAngle();
         }
         
-        quat.print();
+        //quat.printQuat();
+        quat.printAxis();
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);

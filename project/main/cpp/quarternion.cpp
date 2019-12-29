@@ -14,7 +14,7 @@ Quarternion::Quarternion(double _x, double _y, double _z, double _w){
     this->w = _w; 
 }
 
-double* Quarternion::quatToAxisAngle(){
+void Quarternion::toAxisAngle(){
     // [0] == Theta
     // [1] == ax
     // [2] == ay
@@ -23,22 +23,27 @@ double* Quarternion::quatToAxisAngle(){
     // If the Quaternion is [0,0,0.7071068,0.7071068]. You will get the Axis-Angle is [0,0,1] and degrees is 90. You could consider it rotated 90 degrees on Z axis.
     // https://stackoverflow.com/questions/52584715/how-can-i-convert-a-quaternion-to-an-angle
     
-    static double axis[4] = {0.0,0.0,0.0,0.0};
+    //static double axis[4] = {0.0,0.0,0.0,0.0};
 
     if(!this->x && !this->y && !this->z && !this->w) {
-        return axis;
+        //return axis;
     } else {
-        axis[0] = acos(this->w)*2.0; // Theta
-        axis[1] = this->x / sin(acos(this->w));
-        axis[2] = this->y / sin(acos(this->w));
-        axis[3] = this->z / sin(acos(this->w));
+        this->axis[0] = acos(this->w)*2.0; // Theta
+        this->axis[1] = this->x / sin(acos(this->w));
+        this->axis[2] = this->y / sin(acos(this->w));
+        this->axis[3] = this->z / sin(acos(this->w));
 
-        return axis;
+        //return axis;
     }
 }
 
 void Quarternion::parseTeapotPacket(uint8_t* teapot){
     // This is taken from Jeff Rowbergs MPUTeapot Processing sketch
+    //
+    // q[0] == w
+    // q[1] == x
+    // q[2] == y
+    // q[3] == z
     
     this->q[0] = ((teapot[2] << 8) | teapot[3]) / 16384.0;
     this->q[1] = ((teapot[4] << 8) | teapot[5]) / 16384.0;
@@ -52,6 +57,10 @@ void Quarternion::parseTeapotPacket(uint8_t* teapot){
     this->z = q[3];
 }
 
-void Quarternion::print() { 
+void Quarternion::printQuat() { 
     std::cout << "w: " << this->w << " x: " << this->x << " y: " << this->y << " z: " << this->z << std::endl;
+}
+
+void Quarternion::printAxis() { 
+    std::cout << "Theta: " << this->axis[0] << " ax: " << this->axis[1] << " ay: " << this->axis[2] << " az: " << this->axis[3] << std::endl;
 }
