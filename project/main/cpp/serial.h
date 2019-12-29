@@ -26,6 +26,7 @@ class Serial{
         int serialport_writechar(unsigned char b);
         int serialport_read_until(char until);
         int serialport_read_int_until(char until, int& data);
+        int serialport_read_teapot();
 
 
     // Variables    
@@ -37,6 +38,7 @@ class Serial{
 
     public:
         char buf[256];
+        uint8_t teapot[14];
         bool DEBUG;
 
     private:

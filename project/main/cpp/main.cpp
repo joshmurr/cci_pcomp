@@ -25,7 +25,6 @@ int main(int argc, char *argv[]) {
         exit(EXIT_SUCCESS);
     }
 
-    int data;
     bool running = false;
 
     int width = screen.getWidth();
@@ -49,8 +48,8 @@ int main(int argc, char *argv[]) {
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        if(arduino.serialport_read_int_until('\n', data)){
-            cout << data << endl;
+        if(arduino.serialport_read_teapot()){
+            //cout << arduino.teapot << endl;
         }
 
         headset.draw(screen, screen.YELLOW);

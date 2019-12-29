@@ -136,6 +136,24 @@ int Serial::serialport_read_until(char until)
     return 0;
 }
 
+int Serial::serialport_read_teapot()
+{
+    char b[1];
+    int i=0;
+    do { 
+        int n = read(fd, b, 1);  // read a char at a time
+        if( n==-1) return -1;    // couldn't read
+        if( n==0 ) {
+            //usleep( 10 * 1000 ); // wait 10 msec try again
+            //continue;
+            return 1; // read() == 0 means EOF
+        }
+        teapot[i] = b[0]; i++;
+    } while( b[0] != '\n' && i != 14 ); // '\n' is closing char in teapotPacket
+
+    return 0;
+}
+
 // takes the string name of the serial port (e.g. "/dev/tty.usbserial","COM1")
 // and a baud rate (bps) and connects to that port at that speed and 8N1.
 // opens the port in fully raw mode so you can send binary data.
