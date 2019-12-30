@@ -188,7 +188,7 @@ void setup() {
     // 38400 or slower in these cases, or use some kind of external separate
     // crystal solution for the UART timer.
 
-    // initialize device
+    // initialize devicetea
     Serial.println(F("Initializing I2C devices..."));
     mpu.initialize();
     pinMode(INTERRUPT_PIN, INPUT);

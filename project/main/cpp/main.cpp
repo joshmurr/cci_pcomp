@@ -51,18 +51,19 @@ int main(int argc, char *argv[]) {
         screen.handleEvents();
         screen.clearBlackScreen();
 
-        if(arduino.serialport_read_teapot()){
-            //quat.parseTeapotPacket(arduino.teapot);
-            quat.toAxisAngle();
-            //quat.TESTAxisAngle();
-        }
-        
-        //quat.printQuat();
-        quat.printAxis();
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
         headset.follow(screen.getMouseVec());
+        //headset.rotateX(0.01);
+
+        if(!arduino.DEBUG && arduino.serialport_read_teapot()){
+            quat.parseTeapotPacket(arduino.teapot);
+            quat.toAxisAngle();
+            quat.printAxis();
+        }
+
+        if(quat.axis[0]) headset.rotateAxisAngle(quat.axis);    
 
         //headset.moveUpAndDown(ticks);
         headset.update();

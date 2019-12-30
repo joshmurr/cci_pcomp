@@ -27,8 +27,40 @@ void Object::update(){
     //}
 }
 
-void Object::rotate(double w, double ax, double ay, double az){
+void Object::rotateX(double theta){
+    double cosTheta = cos(theta);
+    double sinTheta = sin(theta);
 
+    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
+        //p->x = p->x;
+        p->y = cosTheta*p->y - sinTheta*p->z;
+        p->z = sinTheta*p->y + cosTheta*p->z;
+    }
+}
+
+void Object::rotateAxisAngle(double* axis){
+    double theta = axis[0];
+    double ax    = axis[1];
+    double ay    = axis[2];
+    double az    = axis[3];
+
+    double cosT = cos(theta);
+    double sinT = sin(theta);
+
+    double ax2 = ax*ax;
+    double ay2 = ay*ay;
+    double az2 = az*az;
+
+    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
+        // Store as temps:
+        double tx = p->x;
+        double ty = p->y;
+        double tz = p->z;
+
+        p->x = (cosT+ax2*(1-cosT))*tx + (ax*ay*(1-cosT)-(az*sinT))*ty + (ax*az*(1-cosT)+(ay*sinT))*tz;
+        p->y = (ay*ax*(1-cosT)+az*sinT)*tx + (cosT+ay2*(1-cosT))*ty + (ay*az*(1-cosT)-(ax*sinT))*tz;
+        p->z = (az*ax*(1-cosT)-(ay*sinT))*tx + (az*ay*(1-cosT)+(ax*sinT))*ty + (cosT+az2*(1-cosT))*tz;
+    }
 }
 
 void Object::follow(const Vec3d &v){
