@@ -19,6 +19,8 @@ class Object{
         //void setFollowMouse(bool t);
         void follow(const Vec3d &v);
         void rotateX(double theta);
+        void rotateY(double theta);
+        void rotateZ(double theta);
         void rotateAxisAngle(double* axis);
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);

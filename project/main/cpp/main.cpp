@@ -27,6 +27,8 @@ int main(int argc, char *argv[]) {
     }
 
     bool running = false;
+    char trigger = 'r';
+    int interval = 0;
 
     int width = screen.getWidth();
     int height = screen.getHeight();
@@ -47,7 +49,20 @@ int main(int argc, char *argv[]) {
 
     Quarternion quat;
 
+    if(!arduino.DEBUG){
+        // Trigger MPU:
+        arduino.serialport_writechar(trigger);
+        usleep(10000);
+        //cout << "Running... " << endl;
+        //arduino.serialport_read_until('\n');
+        //cout << "End of setup." << endl;
+    }
+
     while(running  && !screen.QUIT){
+        if(!arduino.DEBUG && ticks - interval > 100000) {
+            arduino.serialport_writechar(trigger);
+            interval = ticks;
+        }
         screen.handleEvents();
         screen.clearBlackScreen();
 
@@ -55,15 +70,17 @@ int main(int argc, char *argv[]) {
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
         headset.follow(screen.getMouseVec());
-        //headset.rotateX(0.01);
 
-        if(!arduino.DEBUG && arduino.serialport_read_teapot()){
-            quat.parseTeapotPacket(arduino.teapot);
-            quat.toAxisAngle();
-            quat.printAxis();
+        if(!arduino.DEBUG){
+            arduino.serialport_read_teapot();
+            //cout << arduino.buf << endl;
+            if(arduino.synced){
+                quat.parseTeapotPacket(arduino.teapot);
+                quat.toAxisAngle();
+                //quat.printAxis();
+                headset.rotateAxisAngle(quat.axis);    
+            }
         }
-
-        if(quat.axis[0]) headset.rotateAxisAngle(quat.axis);    
 
         //headset.moveUpAndDown(ticks);
         headset.update();

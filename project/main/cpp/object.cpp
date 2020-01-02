@@ -32,24 +32,61 @@ void Object::rotateX(double theta){
     double sinTheta = sin(theta);
 
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
-        //p->x = p->x;
         p->y = cosTheta*p->y - sinTheta*p->z;
         p->z = sinTheta*p->y + cosTheta*p->z;
     }
 }
 
+void Object::rotateY(double theta){
+    double cosTheta = cos(theta);
+    double sinTheta = sin(theta);
+
+    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
+        p->x = cosTheta*p->x + sinTheta*p->z;
+        p->z = cosTheta*p->z - sinTheta*p->x;
+    }
+}
+
+void Object::rotateZ(double theta){
+    double cosTheta = cos(theta);
+    double sinTheta = sin(theta);
+
+    for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
+        p->x = cosTheta*p->x - sinTheta*p->y;
+        p->y = sinTheta*p->x + cosTheta*p->y;
+    }
+}
+
 void Object::rotateAxisAngle(double* axis){
     double theta = axis[0];
-    double ax    = axis[1];
+    double ax    = -axis[1];
     double ay    = axis[2];
     double az    = axis[3];
 
+    if(isnan(theta) || isnan(ax) || isnan(ay) || isnan(az)) {
+        std::cout<< "Found NaN" << std::endl;    
+        return;
+    }
+    
     double cosT = cos(theta);
     double sinT = sin(theta);
+    double t = 1.0 - cosT;
 
     double ax2 = ax*ax;
     double ay2 = ay*ay;
     double az2 = az*az;
+    
+    // Normalize Axis Components
+    double mag = sqrt(ax2+ay2+az2);
+
+    if(mag == 0) std::cout << "Magnitude is 0: ERROR!" << std::endl;
+    else { 
+        ax /= mag;
+        ay /= mag;
+        az /= mag;
+    }
+
+    //std::cout << ax + ay + az << std::endl;
 
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         // Store as temps:
@@ -57,9 +94,9 @@ void Object::rotateAxisAngle(double* axis){
         double ty = p->y;
         double tz = p->z;
 
-        p->x = (cosT+ax2*(1-cosT))*tx + (ax*ay*(1-cosT)-(az*sinT))*ty + (ax*az*(1-cosT)+(ay*sinT))*tz;
-        p->y = (ay*ax*(1-cosT)+az*sinT)*tx + (cosT+ay2*(1-cosT))*ty + (ay*az*(1-cosT)-(ax*sinT))*tz;
-        p->z = (az*ax*(1-cosT)-(ay*sinT))*tx + (az*ay*(1-cosT)+(ax*sinT))*ty + (cosT+az2*(1-cosT))*tz;
+        p->x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
+        p->y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
+        p->z = (az*ax*t-(ay*sinT))*tx + (az*ay*t+(ax*sinT))*ty + (cosT+az2*t)*tz;
     }
 }
 

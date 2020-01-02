@@ -35,11 +35,13 @@ class Serial{
         int fd;
         std::string serialport;
         int baudrate;
+        int serialCount;
 
     public:
-        char buf[256];
+        uint8_t buf[256];
         uint8_t teapot[14];
         bool DEBUG;
+        int synced;
 
     private:
         char* argv[];

@@ -60,10 +60,10 @@ void Quarternion::parseTeapotPacket(uint8_t* teapot){
     this->q[3] = ((teapot[8] << 8) | teapot[9]) / 16384.0;
     for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
 
-    this->w = q[0];
-    this->x = q[1];
-    this->y = q[2];
-    this->z = q[3];
+    this->w = this->q[0];
+    this->x = this->q[1];
+    this->y = this->q[2];
+    this->z = this->q[3];
 }
 
 void Quarternion::printQuat() { 

@@ -7,8 +7,10 @@ Serial::Serial(int argc, char* argv[]){
     argc = argc;
     argv = argv;
     fd = 0;
-    baudrate = B9600;
+    baudrate = B115200;
     DEBUG = false;
+    synced = 0;
+    serialCount = 0;
 }
 
 void Serial::usage(void) {
@@ -112,44 +114,81 @@ int Serial::serialport_read_int_until(char until, int& data)
 
     buf[i] = 0;  // null terminate the string
 
-    data = atoi(buf);
+    //data = atoi(buf);
     
     return 0;
 }
 
 int Serial::serialport_read_until(char until)
 {
-    char b[1];
+    uint8_t b[1];
     int i=0;
     do { 
-        int n = read(fd, b, 1);  // read a char at a time
-        if( n==-1) return -1;    // couldn't read
+        int n = read(fd, b, sizeof(uint8_t));  // read a char at a time
+        if( n==-1) {
+            std::cout << "returning A" << std::endl;
+            return -1;    // couldn't read
+        }
         if( n==0 ) {
             //usleep( 10 * 1000 ); // wait 10 msec try again
             //continue;
+            std::cout << "returning B" << std::endl;
             return 1; // read() == 0 means EOF
         }
         buf[i] = b[0]; i++;
+        //std::cout << b[0] << endl;
     } while( b[0] != until );
 
     buf[i] = 0;  // null terminate the string
+    std::cout << buf << std::endl;
     return 0;
 }
 
 int Serial::serialport_read_teapot()
 {
-    char b[1];
+    uint8_t b[1];
     int i=0;
-    do { 
-        int n = read(fd, b, 1);  // read a char at a time
-        if( n==-1) return -1;    // couldn't read
-        if( n==0 ) {
-            //usleep( 10 * 1000 ); // wait 10 msec try again
-            //continue;
-            return 1; // read() == 0 means EOF
+    // Read until end of packet '\n'
+    //int n = read(fd, b, sizeof(uint8_t));  // read a char at a time
+    //std::cout << (uint8_t)b[0] << std::endl;
+
+    int n;
+
+    while((n = read(fd, b, sizeof(uint8_t)))){ 
+        if(this->synced == 0 && b[0] != '$') {
+            std::cout << "Not synced A" << std::endl;
+            return -1;
         }
-        teapot[i] = b[0]; i++;
-    } while( b[0] != '\n' && i != 14 ); // '\n' is closing char in teapotPacket
+        this->synced = 1;
+
+
+        //// If any of the following are true, it is not synced:
+        if((this->serialCount==1 && b[0] != 2)
+                || (this->serialCount==12 && b[0] != '\r')
+                || (this->serialCount==13 && b[0] != '\n')) {
+            this->serialCount = 0;
+            this->synced = 0;
+            std::cout << "Not synced B" << std::endl;
+            return -1; // Return and try again
+        }
+
+        if(this->serialCount > 0 || b[0] == '$') {
+            // Copy into Teapot
+            this->teapot[this->serialCount++] = b[0];
+
+            if(this->serialCount == 14){
+                this->serialCount = 0;
+                //std::cout << "serialCount Reset" << std::endl;
+            }
+        }
+
+    } 
+    if( n==-1) return -1;    // couldn't read
+    if( n==0 ) {
+        //usleep( 10 * 1000 ); // wait 10 msec try again
+        std::cout << "Teapot EOL" << std::endl;
+        return 1; // read() == 0 means EOF
+    }
 
     return 0;
 }
@@ -163,8 +202,8 @@ int Serial::serialport_init(const char* serialport, int baud)
     struct termios toptions;
     int fd;
     
-    //fprintf(stderr,"init_serialport: opening port %s @ %d bps\n",
-    //        serialport,baud);
+    fprintf(stderr,"init_serialport: opening port %s @ %d bps\n",
+            serialport,baud);
 
     fd = open(serialport, O_RDWR | O_NOCTTY | O_NDELAY);
     if (fd == -1)  {

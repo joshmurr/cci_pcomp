@@ -36,7 +36,7 @@ import toxi.processing.*;
 
 // NOTE: requires ToxicLibs to be installed in order to run properly.
 // 1. Download from http://toxiclibs.org/downloads
-// 2. Extract into [userdir]/Processing/libraries
+// 2. Extract into [userdir]/Procressing/libraries
 //    (location may be different on Mac/Linux)
 // 3. Run and bask in awesomeness
 
@@ -190,12 +190,13 @@ void serialEvent(Serial port) {
                 ypr[0] = atan2(2*q[1]*q[2] - 2*q[0]*q[3], 2*q[0]*q[0] + 2*q[1]*q[1] - 1);
                 ypr[1] = atan(gravity[0] / sqrt(gravity[1]*gravity[1] + gravity[2]*gravity[2]));
                 ypr[2] = atan(gravity[1] / sqrt(gravity[0]*gravity[0] + gravity[2]*gravity[2]));
+                */
     
                 // output various components for debugging
-                //println("q:\t" + round(q[0]*100.0f)/100.0f + "\t" + round(q[1]*100.0f)/100.0f + "\t" + round(q[2]*100.0f)/100.0f + "\t" + round(q[3]*100.0f)/100.0f);
+                println("q:\t" + round(q[0]*100.0f)/100.0f + "\t" + round(q[1]*100.0f)/100.0f + "\t" + round(q[2]*100.0f)/100.0f + "\t" + round(q[3]*100.0f)/100.0f);
                 //println("euler:\t" + euler[0]*180.0f/PI + "\t" + euler[1]*180.0f/PI + "\t" + euler[2]*180.0f/PI);
                 //println("ypr:\t" + ypr[0]*180.0f/PI + "\t" + ypr[1]*180.0f/PI + "\t" + ypr[2]*180.0f/PI);
-                */
+                
             }
         }
     }
