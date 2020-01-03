@@ -36,6 +36,7 @@ private:
     int RESOLUTION;
     int mouseX, mouseY;
     Vec3d mouseVec;
+    Vec3d targetVec;
     int mouseClickX, mouseClickY;
 
     double getRoseX(int, double, double, double);
@@ -81,6 +82,7 @@ public:
     double getMouseX();
     double getMouseY();
     Vec3d getMouseVec();
+    Vec3d getTargetVec();
 
 public:
     SDL_Color WHITE      ; 

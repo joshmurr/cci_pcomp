@@ -29,6 +29,7 @@ Screen::Screen(int width, int height, int res){
     ANIMATION_RATE = 50; // 50 mSeconds
     QUIT = false;
     RESET_POS = false;
+    targetVec = Vec3d(0.0, 0.0, 0.0);
 }
 
 
@@ -72,7 +73,16 @@ void Screen::handleEvents(){
                     QUIT = true;
                 } else if (event.key.keysym.sym == SDLK_r){
                     RESET_POS = true;
+                } else if (event.key.keysym.sym == SDLK_UP){
+                    this->targetVec.y -= 10;
+                } else if (event.key.keysym.sym == SDLK_DOWN){
+                    this->targetVec.y += 10;
+                } else if (event.key.keysym.sym == SDLK_LEFT){
+                    this->targetVec.x -= 10;
+                } else if (event.key.keysym.sym == SDLK_RIGHT){
+                    this->targetVec.x += 10;
                 }
+
                 break;
             case SDL_MOUSEMOTION:
                 // Mouse Move
@@ -235,6 +245,10 @@ double Screen::getMouseY(){
 
 Vec3d Screen::getMouseVec(){
     return mouseVec;
+}
+
+Vec3d Screen::getTargetVec(){
+    return targetVec;
 }
 
 void Screen::draw3Dpoint(const Vec3d &v){

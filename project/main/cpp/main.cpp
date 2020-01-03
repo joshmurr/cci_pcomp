@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
         headset.draw(screen, screen.YELLOW);
         headset.drawOrigin(screen);
         room.draw(screen, screen.RED);
-        //headset.follow(screen.getMouseVec());
+        headset.follow(screen.getTargetVec());
 
         if(!arduino.DEBUG){
             arduino.serialport_read_teapot();
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
             if(arduino.synced){
                 quat.parseTeapotPacket(arduino.teapot);
                 quat.toAxisAngle();
-                quat.printLongQuat();
+                //quat.printLongQuat();
                 //quat.axisAngleTEST();
                 headset.rotateAxisAngle(quat.axis);    
             }
