@@ -38,11 +38,12 @@ int main(int argc, char *argv[]) {
 
     running = arduino.setup(argc, argv);
 
-    screen.hideCursor();
+    //screen.hideCursor();
     
     // MAKE RING
     Object headset;
-    headset.makeHeadset(Vec3d(width/2.0, height/2.0, 50.0));
+    Vec3d headsetOrigin = Vec3d(width/2.0, height/2.0, 50.0); 
+    headset.makeHeadset(headsetOrigin);
     // MAKE ROOM
     Object room;
     room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
@@ -53,12 +54,13 @@ int main(int argc, char *argv[]) {
     if(!arduino.DEBUG){
         // Trigger MPU:
         arduino.serialport_writechar(trigger);
-        usleep(10000);
-        //cout << "Running... " << endl;
+        usleep(100000);
+        cout << "Waiting for response from MPU" << endl;
         //arduino.serialport_read_until('\n');
         //cout << "End of setup." << endl;
     }
 
+    cout << "Running..." << endl;
     while(running  && !screen.QUIT){
         if(!arduino.DEBUG && ticks - interval > 100000) {
             arduino.serialport_writechar(trigger);
@@ -67,10 +69,15 @@ int main(int argc, char *argv[]) {
         screen.handleEvents();
         screen.clearBlackScreen();
 
+        if(screen.RESET_POS){
+            headset.resetHeadsetPosition(headsetOrigin);
+            screen.RESET_POS = false;
+        }
+
 
         headset.draw(screen, screen.YELLOW);
         room.draw(screen, screen.RED);
-        headset.follow(screen.getMouseVec());
+        //headset.follow(screen.getMouseVec());
 
         if(!arduino.DEBUG){
             arduino.serialport_read_teapot();
@@ -78,7 +85,7 @@ int main(int argc, char *argv[]) {
             if(arduino.synced){
                 quat.parseTeapotPacket(arduino.teapot);
                 quat.toAxisAngle();
-                //quat.printQuat();
+                quat.printLongQuat();
                 //quat.axisAngleTEST();
                 headset.rotateAxisAngle(quat.axis);    
             }

@@ -26,6 +26,13 @@ void Quarternion::toAxisAngle(){
     // https://stackoverflow.com/questions/52584715/how-can-i-convert-a-quaternion-to-an-angle
     
     if(this->q[0] > 1) this->normalise();
+
+    //for(int i=1; i<3; i++){
+        //if(this->q[i] < -0.01 || this->q[i] > 0.01){
+            //this->q[i] = 0.0;
+        //}
+    //}
+    
     this->axis[0] = acos(this->q[0])*2.0;
     float s = sqrt(1-this->q[0]*this->q[0]);
 
@@ -109,16 +116,20 @@ void Quarternion::parseTeapotPacket(uint8_t* teapot){
 }
 
 void Quarternion::printQuat() { 
-    float w1 = (int)(this->w*100 + .5);
+    float w1 = (int)(this->q[0]*100 + .5);
     float w2 = w1 / 100;
-    float x1 = (int)(this->x*100 + .5);
+    float x1 = (int)(this->q[1]*100 + .5);
     float x2 = x1 / 100;
-    float y1 = (int)(this->y*100 + .5);
+    float y1 = (int)(this->q[2]*100 + .5);
     float y2 = y1 / 100;
-    float z1 = (int)(this->z*100 + .5);
+    float z1 = (int)(this->q[3]*100 + .5);
     float z2 = z1 / 100;
 
     std::cout << "w: " << w2 << "\tx: " << x2 << "\ty: " << y2 << "\tz: " << z2 << std::endl;
+}
+
+void Quarternion::printLongQuat(){
+    std::cout << "w: " << this->q[0] << "\tx: " << this->axis[1] << "\ty: " << this->q[2] << "\tz: " << this->q[3] << std::endl;
 }
 
 void Quarternion::printAxis() { 

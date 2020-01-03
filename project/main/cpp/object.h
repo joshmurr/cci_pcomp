@@ -24,6 +24,7 @@ class Object{
         void rotateYPR(double* q);
         void rotateAxisAngle(float* axis);
         void makeHeadset(Vec3d _origin);
+        void resetHeadsetPosition(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);
         bool checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);

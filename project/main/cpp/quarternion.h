@@ -16,6 +16,7 @@ class Quarternion{
         void toAxisAngle();
         void parseTeapotPacket(uint8_t* teapot);
         void printQuat();
+        void printLongQuat();
         void printAxis();
         void TESTAxisAngle();
         void axisAngleTEST();

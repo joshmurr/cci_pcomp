@@ -49,6 +49,7 @@ public:
     Screen(int width, int height, int res);
     bool QUIT;
     bool ANIMATING;
+    bool RESET_POS;
     int ANIMATION_RATE;
 	bool init();
 	void update();

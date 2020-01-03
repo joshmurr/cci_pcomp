@@ -136,6 +136,37 @@ void Object::setVelocity(float v){
     this->velocity = v;
 }
 
+void Object::resetHeadsetPosition(Vec3d _origin){
+    std::cout << "Resetting headset position" << std::endl;
+    this->origin = _origin;
+    float size = 20.0;
+    int i=0;
+    double spacing = (M_PI * 2.0) / (float)8;
+    //Main Ring
+    for(; i<8; i++){
+        double x = size * cos(spacing * i);
+        double y = size * sin(spacing * i);
+        points[i].x = x;
+        points[i].y = y;
+        points[i].z = 0.0;
+    }
+    // Mid Ring
+    size = 12.0;
+    spacing = (M_PI * 2.0) / (float)6;
+    for(i=8; i<15; i++){
+        double x = size * cos(spacing * i);
+        double y = size * sin(spacing * i);
+        points[i].x = x;
+        points[i].y = y;
+        points[i].z = -4.0;
+    }
+    i=15;
+    // Top
+    points[i].x = 0.0;
+    points[i].y = 0.0;
+    points[i].z = -10.0;
+}
+
 void Object::makeHeadset(Vec3d _origin){
     this->origin = _origin;
     float size = 20.0;
@@ -162,8 +193,8 @@ void Object::makeHeadset(Vec3d _origin){
     // Top
     Vec3d p(0.0, 0.0, -10.0);
     points.push_back(p);
-    
 }
+
 
 void Object::makeWall(Vec3d pos, float width, float height, float spacing){
     //float height = 200.0;

@@ -16,6 +16,7 @@ Screen::Screen(){
     ANIMATING = false;
     ANIMATION_RATE = 60; // 50 mSeconds
     QUIT = false;
+    RESET_POS = false;
 }
 
 Screen::Screen(int width, int height, int res){
@@ -27,6 +28,7 @@ Screen::Screen(int width, int height, int res){
     ANIMATING = false;
     ANIMATION_RATE = 50; // 50 mSeconds
     QUIT = false;
+    RESET_POS = false;
 }
 
 
@@ -68,6 +70,8 @@ void Screen::handleEvents(){
                 } else if (event.key.keysym.sym == SDLK_q){
                     ANIMATING = false;
                     QUIT = true;
+                } else if (event.key.keysym.sym == SDLK_r){
+                    RESET_POS = true;
                 }
                 break;
             case SDL_MOUSEMOTION:
