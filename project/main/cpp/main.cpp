@@ -82,7 +82,6 @@ int main(int argc, char *argv[]) {
             screen.RESET_POS = false;
         }
 
-
         headset.draw(screen, screen.YELLOW);
         headset.drawOrigin(screen);
         room.draw(screen, screen.RED);
@@ -90,8 +89,6 @@ int main(int argc, char *argv[]) {
         screen.draw3Dpoint(screen.getTargetVec());
         headset.follow(screen.getTargetVec());
         //headset.follow(screen.getMouseVec());
-        //screen.printTarget();
-
 
         if(!arduino.DEBUG){
             arduino.serialport_read_teapot();

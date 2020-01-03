@@ -29,7 +29,6 @@ Screen::Screen(int width, int height, int res){
     ANIMATION_RATE = 50; // 50 mSeconds
     QUIT = false;
     RESET_POS = false;
-    //targetVec = Vec3d(0.0, 0.0, 0.0);
 }
 
 
@@ -289,8 +288,13 @@ void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2, const SDL_Color col){
 
 void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color &col){
     double FOV = 200.0;
+    SDL_Color c = col;
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
+        // Colour front point orange
+        if(p-obj.begin() == 0) c = this->ORANGE;
+        else c = col;
+
         Vec3d pUpdate = *p + _origin;
         double scale = FOV / (FOV + pUpdate.z);
 
@@ -301,7 +305,7 @@ void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL
         if(dColor < 1) dColor = 0;
         if(dColor > 254) dColor = 255;
 
-        SDL_SetRenderDrawColor(m_renderer, col.r, col.g, col.b-dColor, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(m_renderer, c.r, c.g, c.b-dColor, SDL_ALPHA_OPAQUE);
         SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
         SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
     }
