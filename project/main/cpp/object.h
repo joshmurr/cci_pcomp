@@ -16,21 +16,21 @@ class Object{
         void draw(Screen &screen, const SDL_Color &col);
         void drawOrigin(Screen &screen);
         void update();
-        void setVelocity(float v);
+        void setVelocity(double v);
         //void setFollowMouse(bool t);
         void follow(const Vec3d &v);
         void rotateX(double theta);
         void rotateY(double theta);
         void rotateZ(double theta);
         void rotateYPR(double* q);
-        void rotateAxisAngle(float* axis);
+        void rotateAxisAngle(double* axis);
         void makeHeadset(Vec3d _origin);
         void resetHeadsetPosition(Vec3d _origin);
-        void makeWall(Vec3d pos, float width, float height, float spacing);
-        void makeSimpleRoom(Vec3d _origin, float width, float spacing);
+        void makeWall(Vec3d pos, double width, double height, double spacing);
+        void makeSimpleRoom(Vec3d _origin, double width, double spacing);
         bool checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);
         bool checkOriginCollision(Object &obj);
-        void makeStarField(float width, float height);
+        void makeStarField(double width, double height);
 
         void moveUpAndDown(const Uint32 &ticks);
 
@@ -44,9 +44,9 @@ class Object{
 
     private:
         Vec3d origin;
-        float velocity;
+        double velocity;
         //bool followMouse;
-        float oldTheta;
+        double oldTheta;
         unsigned char dataArray[9];
         double gravity[3];
         double ypr[3];

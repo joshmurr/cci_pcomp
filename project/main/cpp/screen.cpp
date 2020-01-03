@@ -158,15 +158,15 @@ void Screen::displayGrid(){
     }
 }
 
-void Screen::circle(float x, float y, float r, int segs){
-    float spacing = (PI*2)/segs;
+void Screen::circle(double x, double y, double r, int segs){
+    double spacing = (PI*2)/segs;
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 
-    float currentX = x+(cos(0) * r);
-    float currentY = y+(sin(0) * r);
+    double currentX = x+(cos(0) * r);
+    double currentY = y+(sin(0) * r);
     for(int i=0; i<segs; i++){
-        float nextX = x+(cos(spacing * i) * r);
-        float nextY = y+(sin(spacing * i) * r);
+        double nextX = x+(cos(spacing * i) * r);
+        double nextY = y+(sin(spacing * i) * r);
         SDL_RenderDrawLine(m_renderer, currentX, currentY, nextX, nextY);
         currentX = nextX;
         currentY = nextY;
@@ -200,24 +200,24 @@ void Screen::bresenham_circle(int cx, int cy, int r, SDL_Color color){
     }
 }
 
-double Screen::getRoseX(int i, float s, float p1, float p2){
+double Screen::getRoseX(int i, double s, double p1, double p2){
     return sin(i*s*p1)*cos(i*s*p2);
 }
-double Screen::getRoseY(int i, float s, float p1, float p2){
+double Screen::getRoseY(int i, double s, double p1, double p2){
     return sin(i*s*p1)*sin(i*s*p2);
 }
 
-void Screen::rose(float x, float y, float r, float segs, float p1, float p2){
-    float spacing = (PI*2)/segs;
+void Screen::rose(double x, double y, double r, double segs, double p1, double p2){
+    double spacing = (PI*2)/segs;
 
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 
-    float currentX = x + getRoseX(0, spacing, p1, p2)*r;
-    float currentY = y + getRoseY(0, spacing, p1, p2)*r;
+    double currentX = x + getRoseX(0, spacing, p1, p2)*r;
+    double currentY = y + getRoseY(0, spacing, p1, p2)*r;
 
     for(int i=0; i<segs; i++){
-        float nextX = x + getRoseX(i, spacing, p1, p2)*r;
-        float nextY = y + getRoseY(i, spacing, p1, p2)*r;
+        double nextX = x + getRoseX(i, spacing, p1, p2)*r;
+        double nextY = y + getRoseY(i, spacing, p1, p2)*r;
         SDL_RenderDrawLine(m_renderer, currentX, currentY, nextX, nextY);
         currentX = nextX;
         currentY = nextY;
@@ -225,11 +225,11 @@ void Screen::rose(float x, float y, float r, float segs, float p1, float p2){
     SDL_RenderDrawLine(m_renderer, currentX, currentY, x + getRoseX(0, spacing, p1, p2)*r, y+getRoseY(0, spacing, p1, p2)*r);
 }
 
-float Screen::getMouseX(){
+double Screen::getMouseX(){
     return mouseX;
 }
 
-float Screen::getMouseY(){
+double Screen::getMouseY(){
     return mouseY;
 }
 
@@ -238,12 +238,12 @@ Vec3d Screen::getMouseVec(){
 }
 
 void Screen::draw3Dpoint(const Vec3d &v){
-    float FOV = 200.0;
+    double FOV = 200.0;
 
-    float scale = FOV / (FOV + v.z);
+    double scale = FOV / (FOV + v.z);
 
-    float x2d = (v.x*scale);
-    float y2d = (v.y*scale);
+    double x2d = (v.x*scale);
+    double y2d = (v.y*scale);
 
     SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
@@ -251,29 +251,29 @@ void Screen::draw3Dpoint(const Vec3d &v){
 }
 
 void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2, const SDL_Color col){
-    float FOV = 200.0;
-    float scale1 = FOV / (FOV + v1.z);
-    float scale2 = FOV / (FOV + v2.z);
+    double FOV = 200.0;
+    double scale1 = FOV / (FOV + v1.z);
+    double scale2 = FOV / (FOV + v2.z);
 
-    float v1_x2d = (v1.x*scale1);
-    float v1_y2d = (v1.y*scale1);
+    double v1_x2d = (v1.x*scale1);
+    double v1_y2d = (v1.y*scale1);
 
-    float v2_x2d = (v2.x*scale2);
-    float v2_y2d = (v2.y*scale2);
+    double v2_x2d = (v2.x*scale2);
+    double v2_y2d = (v2.y*scale2);
 
     SDL_SetRenderDrawColor(m_renderer, col.r, col.g, col.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(m_renderer, v1_x2d, v1_y2d, v2_x2d, v2_y2d);
 }
 
 void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color &col){
-    float FOV = 200.0;
+    double FOV = 200.0;
 
     for(std::vector<Vec3d>::iterator p=obj.begin(); p!=obj.end(); ++p){
         Vec3d pUpdate = *p + _origin;
-        float scale = FOV / (FOV + pUpdate.z);
+        double scale = FOV / (FOV + pUpdate.z);
 
-        float x2d = (pUpdate.x*scale);
-        float y2d = (pUpdate.y*scale);
+        double x2d = (pUpdate.x*scale);
+        double y2d = (pUpdate.y*scale);
 
         int dColor = 255 - floor(p->z + 200);
         if(dColor < 1) dColor = 0;
@@ -286,8 +286,8 @@ void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL
 }
 
 void Screen::starfield(std::vector<Star> &stars){
-    float FOV = 200.0;
-    float x3d=0.0, y3d=0.0, z3d=0.0;
+    double FOV = 200.0;
+    double x3d=0.0, y3d=0.0, z3d=0.0;
     for(std::vector<Star>::iterator s=stars.begin(); s!=stars.end(); ++s){
         z3d = s->z;
         z3d -= 2.0;
@@ -297,9 +297,9 @@ void Screen::starfield(std::vector<Star> &stars){
         x3d = s->x;
         y3d = s->y;
         
-        float scale = FOV / (FOV + z3d);
-        float x2d = (x3d*scale)+SCREEN_WIDTH/2;
-        float y2d = (y3d*scale)+SCREEN_HEIGHT/2;
+        double scale = FOV / (FOV + z3d);
+        double x2d = (x3d*scale)+SCREEN_WIDTH/2;
+        double y2d = (y3d*scale)+SCREEN_HEIGHT/2;
 
         int dColor = 255 - floor(z3d + 200);
         if(dColor < 1) dColor = 0;

@@ -35,7 +35,7 @@ void Quarternion::toAxisAngle(){
     //}
     
     this->axis[0] = acos(this->q[0])*2.0;
-    float s = sqrt(1-this->q[0]*this->q[0]);
+    double s = sqrt(1-this->q[0]*this->q[0]);
 
     if(s < 0.01){
         this->axis[1] = this->q[1]; 
@@ -61,11 +61,11 @@ void Quarternion::toAxisAngle(){
 }
 
 void Quarternion::axisAngleTEST(){
-    //float t[4] = {0.7071068, 0, 0, 0.7071068};
-    float t[4] = {1, 0, 0, 0};
+    //double t[4] = {0.7071068, 0, 0, 0.7071068};
+    double t[4] = {1, 0, 0, 0};
 
     this->axis[0] = acos(t[0])*2.0;
-    float s = sqrt(1-t[0]*t[0]);
+    double s = sqrt(1-t[0]*t[0]);
 
     if(s < 0.01){
         this->axis[1] = t[1]; 
@@ -79,12 +79,12 @@ void Quarternion::axisAngleTEST(){
 }
 
 void Quarternion::normalise(){
-    float w2 = this->q[0] * this->q[0];
-    float x2 = this->q[1] * this->q[1];
-    float y2 = this->q[2] * this->q[2];
-    float z2 = this->q[3] * this->q[3];
+    double w2 = this->q[0] * this->q[0];
+    double x2 = this->q[1] * this->q[1];
+    double y2 = this->q[2] * this->q[2];
+    double z2 = this->q[3] * this->q[3];
 
-    float mag = sqrt(w2 + x2 + y2 + z2);
+    double mag = sqrt(w2 + x2 + y2 + z2);
 
     this->q[0] = this->q[0] / mag;
     this->q[1] = this->q[1] / mag;
@@ -98,9 +98,9 @@ void Quarternion::calculateQuatMean(){
     this->w_AVG = this->calculateMean(this->w_avg);
 }
 
-float Quarternion::calculateMean(std::list<float> &list){
-    float avg = 0;
-    std::list<float>::iterator it;
+double Quarternion::calculateMean(std::list<double> &list){
+    double avg = 0;
+    std::list<double>::iterator it;
     for(it = list.begin(); it != list.end(); it++) avg += *it;
     return avg/= list.size();
 }
@@ -134,14 +134,14 @@ void Quarternion::parseTeapotPacket(uint8_t* teapot){
 }
 
 void Quarternion::printQuat() { 
-    float w1 = (int)(this->q[0]*100 + .5);
-    float w2 = w1 / 100;
-    float x1 = (int)(this->q[1]*100 + .5);
-    float x2 = x1 / 100;
-    float y1 = (int)(this->q[2]*100 + .5);
-    float y2 = y1 / 100;
-    float z1 = (int)(this->q[3]*100 + .5);
-    float z2 = z1 / 100;
+    double w1 = (int)(this->q[0]*100 + .5);
+    double w2 = w1 / 100;
+    double x1 = (int)(this->q[1]*100 + .5);
+    double x2 = x1 / 100;
+    double y1 = (int)(this->q[2]*100 + .5);
+    double y2 = y1 / 100;
+    double z1 = (int)(this->q[3]*100 + .5);
+    double z2 = z1 / 100;
 
     std::cout << "w: " << w2 << "\tx: " << x2 << "\ty: " << y2 << "\tz: " << z2 << std::endl;
 }

@@ -80,12 +80,12 @@ void Object::rotateYPR(double* q){
     this->rotateX(-ypr[2]);
 }
 
-void Object::rotateAxisAngle(float* axis){
-    float theta = axis[0] - oldTheta;
+void Object::rotateAxisAngle(double* axis){
+    double theta = axis[0] - oldTheta;
     this->oldTheta = axis[0];
-    float ax    = axis[2];
-    float ay    = axis[1];
-    float az    = -axis[3];
+    double ax    = axis[2];
+    double ay    = axis[1];
+    double az    = -axis[3];
 
     //std::cout << theta << std::endl;
 
@@ -94,13 +94,13 @@ void Object::rotateAxisAngle(float* axis){
         return;
     }
     
-    float cosT = cos(theta);
-    float sinT = sin(theta);
-    float t = 1.0 - cosT;
+    double cosT = cos(theta);
+    double sinT = sin(theta);
+    double t = 1.0 - cosT;
 
-    float ax2 = ax*ax;
-    float ay2 = ay*ay;
-    float az2 = az*az;
+    double ax2 = ax*ax;
+    double ay2 = ay*ay;
+    double az2 = az*az;
     
     //// Normalize Axis Components
     //double mag = sqrt(ax2+ay2+az2);
@@ -120,9 +120,9 @@ void Object::rotateAxisAngle(float* axis){
 
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         // Store as temps:
-        float tx = p->x;
-        float ty = p->y;
-        float tz = p->z;
+        double tx = p->x;
+        double ty = p->y;
+        double tz = p->z;
 
         p->x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
         p->y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
@@ -131,18 +131,18 @@ void Object::rotateAxisAngle(float* axis){
 
     for(std::vector<Vec3d>::iterator p=this->axes.begin(); p!=this->axes.end(); ++p){
         // Store as temps:
-        float tx = p->x;
-        float ty = p->y;
-        float tz = p->z;
+        double tx = p->x;
+        double ty = p->y;
+        double tz = p->z;
 
         p->x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
         p->y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
         p->z = (az*ax*t-(ay*sinT))*tx + (az*ay*t+(ax*sinT))*ty + (cosT+az2*t)*tz;
     }
 
-    //float tx = this->origin.x;
-    //float ty = this->origin.y;
-    //float tz = this->origin.z;
+    //double tx = this->origin.x;
+    //double ty = this->origin.y;
+    //double tz = this->origin.z;
 
     //this->origin.x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
     //this->origin.y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
@@ -160,7 +160,7 @@ void Object::moveUpAndDown(const Uint32 &ticks){
     this->origin = this->origin + ud; 
 }
 
-void Object::setVelocity(float v){
+void Object::setVelocity(double v){
     this->velocity = v;
 }
 
@@ -173,9 +173,9 @@ void Object::resetHeadsetPosition(Vec3d _origin){
     this->axes[1] = Vec3d(0, 10, 0);
     this->axes[2] = Vec3d(0, 0, -10);
 
-    float size = 20.0;
+    double size = 20.0;
     int i=0;
-    double spacing = (M_PI * 2.0) / (float)8;
+    double spacing = (M_PI * 2.0) / (double)8;
     //Main Ring
     for(; i<8; i++){
         double x = size * cos(spacing * i);
@@ -186,7 +186,7 @@ void Object::resetHeadsetPosition(Vec3d _origin){
     }
     // Mid Ring
     size = 12.0;
-    spacing = (M_PI * 2.0) / (float)6;
+    spacing = (M_PI * 2.0) / (double)6;
     for(i=8; i<15; i++){
         double x = size * cos(spacing * i);
         double y = size * sin(spacing * i);
@@ -212,10 +212,10 @@ void Object::makeHeadset(Vec3d _origin){
     this->axes.push_back(y_);
     this->axes.push_back(z_);
 
-    float size = 20.0;
+    double size = 20.0;
     int i=0;
     int num=8;
-    double spacing = (M_PI * 2.0) / (float)num;
+    double spacing = (M_PI * 2.0) / (double)num;
     //Main Ring
     for(; i<num; i++){
         double x = size * cos(spacing * i);
@@ -226,7 +226,7 @@ void Object::makeHeadset(Vec3d _origin){
     // Mid Ring
     size = 12.0;
     num = 6;
-    spacing = (M_PI * 2.0) / (float)num;
+    spacing = (M_PI * 2.0) / (double)num;
     for(i=0; i<num; i++){
         double x = size * cos(spacing * i);
         double y = size * sin(spacing * i);
@@ -239,14 +239,14 @@ void Object::makeHeadset(Vec3d _origin){
 }
 
 
-void Object::makeWall(Vec3d pos, float width, float height, float spacing){
-    //float height = 200.0;
-    //float width = 200.0;
-    //float spacing = 20.0;
-    float origin_x = -width/2;
-    float origin_y = -height/2;
-    for(float i=0.0; i<width; i+=spacing){
-        for(float j=0.0; j<height; j+=spacing){
+void Object::makeWall(Vec3d pos, double width, double height, double spacing){
+    //double height = 200.0;
+    //double width = 200.0;
+    //double spacing = 20.0;
+    double origin_x = -width/2;
+    double origin_y = -height/2;
+    for(double i=0.0; i<width; i+=spacing){
+        for(double j=0.0; j<height; j+=spacing){
             Vec3d p(i+origin_x, origin_y, j);
             points.push_back(p);
         }
@@ -254,12 +254,12 @@ void Object::makeWall(Vec3d pos, float width, float height, float spacing){
 
 }
 
-void Object::makeSimpleRoom(Vec3d _origin, float width, float spacing){
+void Object::makeSimpleRoom(Vec3d _origin, double width, double spacing){
     this->origin = _origin;
-    float offset_x = width/2.0;
-    float offset_y = width/2.0;
-    for(float i=0.0; i<width; i+=spacing){
-        for(float z=0.0; z<width/2.0; z+=spacing){
+    double offset_x = width/2.0;
+    double offset_y = width/2.0;
+    for(double i=0.0; i<width; i+=spacing){
+        for(double z=0.0; z<width/2.0; z+=spacing){
             Vec3d p_L(-offset_x, offset_y-i, z);
             Vec3d p_R(offset_x, -offset_y+i, z);
             Vec3d p_T(-offset_x+i, -offset_y, z);
@@ -303,7 +303,7 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
     return false;
 }
 
-void Object::makeStarField(float width, float height){
+void Object::makeStarField(double width, double height){
     for(int i=0; i<100; i++){
         Vec3d s(
             rand()%(int)width - width/2,

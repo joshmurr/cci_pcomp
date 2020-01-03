@@ -9,7 +9,7 @@
 
 class Quarternion{
     private:
-        float calculateMean(std::list<float> &list);
+        double calculateMean(std::list<double> &list);
 
     public:
         Quarternion();
@@ -28,20 +28,20 @@ class Quarternion{
     private:
         static const double testQuat[];
         int avg_limit;
-        std::list<float> w_avg;
-        std::list<float> x_avg;
-        std::list<float> y_avg;
-        std::list<float> z_avg;
+        std::list<double> w_avg;
+        std::list<double> x_avg;
+        std::list<double> y_avg;
+        std::list<double> z_avg;
 
     public:
         double x;
         double y;
         double z;
         double w;
-        float q[4];
-        float axis[4];
+        double q[4];
+        double axis[4];
 
-        float w_AVG; 
+        double w_AVG; 
 
 };
 

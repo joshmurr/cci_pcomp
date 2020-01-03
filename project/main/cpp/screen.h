@@ -19,9 +19,9 @@
 #define PI 3.14159265359
 
 struct Star {
-    float x;
-    float y;
-    float z;
+    double x;
+    double y;
+    double z;
 };
 
 class Screen {
@@ -38,8 +38,8 @@ private:
     Vec3d mouseVec;
     int mouseClickX, mouseClickY;
 
-    double getRoseX(int, float, float, float);
-    double getRoseY(int, float, float, float);
+    double getRoseX(int, double, double, double);
+    double getRoseY(int, double, double, double);
 
     void bresenham_draw_lines(int cx, int cy, int x, int y);
     void init_colors();
@@ -65,8 +65,8 @@ public:
     void writeInfo();
     void drawLine(const Vec3d &v1, const Vec3d &v2, const SDL_Color col);
     void rect(int x, int y, int w, int h, SDL_Color color);
-    void circle(float x, float y, float r, int segs);
-    void rose(float x, float y, float r, float segs, float p1, float p2);
+    void circle(double x, double y, double r, int segs);
+    void rose(double x, double y, double r, double segs, double p1, double p2);
     void bresenham_circle(int cx, int cy, int r, SDL_Color color);
     
     // 3D Stuff:
@@ -78,8 +78,8 @@ public:
     int getWidth();
     int getHeight();
 
-    float getMouseX();
-    float getMouseY();
+    double getMouseX();
+    double getMouseY();
     Vec3d getMouseVec();
 
 public:
