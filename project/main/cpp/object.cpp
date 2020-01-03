@@ -164,6 +164,10 @@ void Object::setVelocity(double v){
     this->velocity = v;
 }
 
+void Object::setLocation(Vec3d loc){
+    this->origin = loc;
+}
+
 void Object::resetHeadsetPosition(Vec3d _origin){
     std::cout << "Resetting headset position" << std::endl;
     this->origin = _origin;
@@ -301,6 +305,14 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
         byte2 = 0x00;
     }
     return false;
+}
+
+void Object::makeSun(Vec3d _origin){
+    this->points.push_back(_origin); 
+}
+
+void Object::makeTarget(Vec3d _origin){
+    this->points.push_back(_origin); 
 }
 
 void Object::makeStarField(double width, double height){

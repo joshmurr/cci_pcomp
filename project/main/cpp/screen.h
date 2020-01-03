@@ -84,6 +84,9 @@ public:
     Vec3d getMouseVec();
     Vec3d getTargetVec();
 
+    void setTarget(Vec3d loc);
+    void printTarget();
+
 public:
     SDL_Color WHITE      ; 
     SDL_Color RED        ;

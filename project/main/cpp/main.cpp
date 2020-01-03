@@ -42,11 +42,19 @@ int main(int argc, char *argv[]) {
     
     // MAKE RING
     Object headset;
-    Vec3d headsetOrigin = Vec3d(width/2.0, height/2.0, 50.0); 
+    Vec3d headsetOrigin = Vec3d(width/2.0, height/2.0, 10.0); 
     headset.makeHeadset(headsetOrigin);
     // MAKE ROOM
     Object room;
     room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
+    // MAKE SUN
+    Object sun;
+    Vec3d sunOrigin = Vec3d(width/8.0, height/8.0, 0.0); 
+    sun.makeSun(sunOrigin);
+
+    //MAKE TARGET (to follow)
+    Vec3d targetLoc = Vec3d(100.0, 100.0, 0.0); 
+    screen.setTarget(targetLoc);
 
     Quarternion quat;
 
@@ -78,7 +86,12 @@ int main(int argc, char *argv[]) {
         headset.draw(screen, screen.YELLOW);
         headset.drawOrigin(screen);
         room.draw(screen, screen.RED);
+        sun.draw(screen, screen.YELLOW);
+        screen.draw3Dpoint(screen.getTargetVec());
         headset.follow(screen.getTargetVec());
+        //headset.follow(screen.getMouseVec());
+        //screen.printTarget();
+
 
         if(!arduino.DEBUG){
             arduino.serialport_read_teapot();
@@ -91,9 +104,6 @@ int main(int argc, char *argv[]) {
                 headset.rotateAxisAngle(quat.axis);    
             }
         }
-
-        //headset.moveUpAndDown(ticks);
-        headset.update();
 
         if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) cout << "Collision!" << std::endl;
 

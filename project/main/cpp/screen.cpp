@@ -29,7 +29,7 @@ Screen::Screen(int width, int height, int res){
     ANIMATION_RATE = 50; // 50 mSeconds
     QUIT = false;
     RESET_POS = false;
-    targetVec = Vec3d(0.0, 0.0, 0.0);
+    //targetVec = Vec3d(0.0, 0.0, 0.0);
 }
 
 
@@ -50,6 +50,14 @@ bool Screen::init() {
     ROWS = SCREEN_HEIGHT/RESOLUTION;
     init_colors();
     return true;
+}
+
+void Screen::setTarget(Vec3d loc){
+    this->targetVec = loc;
+}
+
+void Screen::printTarget(){
+    std::cout << "TARGET x: " << this->targetVec.x << "\ty: " << this->targetVec.y << "\tz: " << this->targetVec.z << std::endl;
 }
 
 

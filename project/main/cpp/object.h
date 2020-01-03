@@ -17,6 +17,7 @@ class Object{
         void drawOrigin(Screen &screen);
         void update();
         void setVelocity(double v);
+        void setLocation(Vec3d loc);
         //void setFollowMouse(bool t);
         void follow(const Vec3d &v);
         void rotateX(double theta);
@@ -31,6 +32,8 @@ class Object{
         bool checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);
         bool checkOriginCollision(Object &obj);
         void makeStarField(double width, double height);
+        void makeSun(Vec3d _origin);
+        void makeTarget(Vec3d _origin);
 
         void moveUpAndDown(const Uint32 &ticks);
 
