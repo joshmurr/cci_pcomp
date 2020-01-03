@@ -63,7 +63,7 @@ public:
     void displayGrid();
 	void close();
     void writeInfo();
-    void drawLine(const Vec3d &v1, const Vec3d &v2);
+    void drawLine(const Vec3d &v1, const Vec3d &v2, const SDL_Color col);
     void rect(int x, int y, int w, int h, SDL_Color color);
     void circle(float x, float y, float r, int segs);
     void rose(float x, float y, float r, float segs, float p1, float p2);
@@ -72,7 +72,7 @@ public:
     // 3D Stuff:
     void draw3Dpoint(const Vec3d &v);
     void drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color &col);
-    void draw3Dline(const Vec3d &v1, const Vec3d &v2);
+    void draw3Dline(const Vec3d &v1, const Vec3d &v2, const SDL_Color col);
     void starfield(std::vector<Star> &stars);
 
     int getWidth();

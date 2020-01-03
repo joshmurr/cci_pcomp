@@ -250,7 +250,7 @@ void Screen::draw3Dpoint(const Vec3d &v){
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }
 
-void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2){
+void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2, const SDL_Color col){
     float FOV = 200.0;
     float scale1 = FOV / (FOV + v1.z);
     float scale2 = FOV / (FOV + v2.z);
@@ -261,7 +261,7 @@ void Screen::draw3Dline(const Vec3d &v1, const Vec3d &v2){
     float v2_x2d = (v2.x*scale2);
     float v2_y2d = (v2.y*scale2);
 
-    SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(m_renderer, col.r, col.g, col.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(m_renderer, v1_x2d, v1_y2d, v2_x2d, v2_y2d);
 }
 
@@ -343,8 +343,8 @@ void Screen::rect(int x, int y, int w, int h, SDL_Color color){
     SDL_RenderFillRect(m_renderer, &rect);
 }
 
-void Screen::drawLine(const Vec3d &v1, const Vec3d &v2){
-    SDL_SetRenderDrawColor(m_renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+void Screen::drawLine(const Vec3d &v1, const Vec3d &v2, const SDL_Color col){
+    SDL_SetRenderDrawColor(m_renderer, col.r, col.g, col.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(m_renderer, v1.x, v1.y, v2.x, v2.y);
 }
 

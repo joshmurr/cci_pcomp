@@ -5,9 +5,11 @@
 #include <cmath>
 #include <stdint.h>
 #include <iostream>
+#include <list>
 
 class Quarternion{
     private:
+        float calculateMean(std::list<float> &list);
 
     public:
         Quarternion();
@@ -21,9 +23,15 @@ class Quarternion{
         void TESTAxisAngle();
         void axisAngleTEST();
         void normalise();
+        void calculateQuatMean();
 
     private:
         static const double testQuat[];
+        int avg_limit;
+        std::list<float> w_avg;
+        std::list<float> x_avg;
+        std::list<float> y_avg;
+        std::list<float> z_avg;
 
     public:
         double x;
@@ -32,6 +40,8 @@ class Quarternion{
         double w;
         float q[4];
         float axis[4];
+
+        float w_AVG; 
 
 };
 

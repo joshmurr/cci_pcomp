@@ -21,6 +21,15 @@ void Object::draw(Screen &screen, const SDL_Color &col){
     screen.drawObject(this->points, this->origin, col);
 }
 
+void Object::drawOrigin(Screen &screen){
+    Vec3d x_ = this->axes[0] + this->origin;
+    screen.draw3Dline(this->origin, x_, screen.RED);
+    Vec3d y_ = this->axes[1] + this->origin;
+    screen.draw3Dline(this->origin, y_, screen.GREEN);
+    Vec3d z_ = this->axes[2] + this->origin;
+    screen.draw3Dline(this->origin, z_, screen.BLUE);
+}
+
 void Object::update(){
     //if(this->velocity){
         //this->origin = this->origin + Vec3d(0.0, 0.1, 0.0);
@@ -119,6 +128,25 @@ void Object::rotateAxisAngle(float* axis){
         p->y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
         p->z = (az*ax*t-(ay*sinT))*tx + (az*ay*t+(ax*sinT))*ty + (cosT+az2*t)*tz;
     }
+
+    for(std::vector<Vec3d>::iterator p=this->axes.begin(); p!=this->axes.end(); ++p){
+        // Store as temps:
+        float tx = p->x;
+        float ty = p->y;
+        float tz = p->z;
+
+        p->x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
+        p->y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
+        p->z = (az*ax*t-(ay*sinT))*tx + (az*ay*t+(ax*sinT))*ty + (cosT+az2*t)*tz;
+    }
+
+    //float tx = this->origin.x;
+    //float ty = this->origin.y;
+    //float tz = this->origin.z;
+
+    //this->origin.x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
+    //this->origin.y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;
+    //this->origin.z = (az*ax*t-(ay*sinT))*tx + (az*ay*t+(ax*sinT))*ty + (cosT+az2*t)*tz;
 }
 
 void Object::follow(const Vec3d &v){
@@ -139,6 +167,12 @@ void Object::setVelocity(float v){
 void Object::resetHeadsetPosition(Vec3d _origin){
     std::cout << "Resetting headset position" << std::endl;
     this->origin = _origin;
+    
+    // Origin Axes:
+    this->axes[0] = Vec3d(10, 0, 0);
+    this->axes[1] = Vec3d(0, 10, 0);
+    this->axes[2] = Vec3d(0, 0, -10);
+
     float size = 20.0;
     int i=0;
     double spacing = (M_PI * 2.0) / (float)8;
@@ -169,6 +203,15 @@ void Object::resetHeadsetPosition(Vec3d _origin){
 
 void Object::makeHeadset(Vec3d _origin){
     this->origin = _origin;
+
+    // Origin Axes:
+    Vec3d x_ = Vec3d(10, 0, 0);
+    Vec3d y_ = Vec3d(0, 10, 0);
+    Vec3d z_ = Vec3d(0, 0, -10);
+    this->axes.push_back(x_);
+    this->axes.push_back(y_);
+    this->axes.push_back(z_);
+
     float size = 20.0;
     int i=0;
     int num=8;
@@ -243,7 +286,7 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
             if(dist < 25.0) {
-                screen.draw3Dline(pUpdate, qUpdate);
+                screen.draw3Dline(pUpdate, qUpdate, screen.GREEN);
                 // VIBRATE MOTORS
                 int collision = p-points.begin();
                 if(collision < 8) byte1 = byte1 + this->dataArray[p-points.begin()];

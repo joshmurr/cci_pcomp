@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
 
 
         headset.draw(screen, screen.YELLOW);
+        headset.drawOrigin(screen);
         room.draw(screen, screen.RED);
         //headset.follow(screen.getMouseVec());
 

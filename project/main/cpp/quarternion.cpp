@@ -7,6 +7,7 @@ Quarternion::Quarternion(){
     this->y = 0.0;
     this->z = 0.0;
     this->w = 1.0; 
+    this->avg_limit = 100;
 }
 
 Quarternion::Quarternion(double _x, double _y, double _z, double _w){
@@ -92,6 +93,19 @@ void Quarternion::normalise(){
 
 }
 
+// UNUSED AVERAGES ------------------------------------------- //
+void Quarternion::calculateQuatMean(){
+    this->w_AVG = this->calculateMean(this->w_avg);
+}
+
+float Quarternion::calculateMean(std::list<float> &list){
+    float avg = 0;
+    std::list<float>::iterator it;
+    for(it = list.begin(); it != list.end(); it++) avg += *it;
+    return avg/= list.size();
+}
+// ----------------------------------------------------------- //
+
 void Quarternion::TESTAxisAngle(){
     this->axis[0] = acos(this->testQuat[0])*2.0; // Theta
     this->axis[1] = testQuat[1] / sin(acos(this->testQuat[0]));
@@ -113,6 +127,10 @@ void Quarternion::parseTeapotPacket(uint8_t* teapot){
     this->q[3] = ((teapot[8] << 8) | teapot[9]) / 16384.0;
     for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
 
+    //if(this->w_avg.size() == this->avg_limit){
+        //this->w_avg.pop_front();
+    //}
+    //this->w_avg.push_back(this->q[0]);
 }
 
 void Quarternion::printQuat() { 

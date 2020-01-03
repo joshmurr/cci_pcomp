@@ -14,6 +14,7 @@ class Object{
         Object(); // Blank Object
         Object(std::vector<Vec3d> &points); // Predefined points
         void draw(Screen &screen, const SDL_Color &col);
+        void drawOrigin(Screen &screen);
         void update();
         void setVelocity(float v);
         //void setFollowMouse(bool t);
@@ -38,6 +39,7 @@ class Object{
 
     public:
         std::vector<Vec3d> points;
+        std::vector<Vec3d> axes;
         std::vector<Vec3d> *referredPoints;
 
     private:
