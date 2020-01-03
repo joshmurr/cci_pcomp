@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 
     Quarternion quat;
 
+
     if(!arduino.DEBUG){
         // Trigger MPU:
         arduino.serialport_writechar(trigger);
@@ -77,7 +78,8 @@ int main(int argc, char *argv[]) {
             if(arduino.synced){
                 quat.parseTeapotPacket(arduino.teapot);
                 quat.toAxisAngle();
-                //quat.printAxis();
+                //quat.printQuat();
+                //quat.axisAngleTEST();
                 headset.rotateAxisAngle(quat.axis);    
             }
         }

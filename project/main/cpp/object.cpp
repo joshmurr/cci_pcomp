@@ -57,42 +57,63 @@ void Object::rotateZ(double theta){
     }
 }
 
-void Object::rotateAxisAngle(double* axis){
-    double theta = axis[0];
-    double ax    = -axis[1];
-    double ay    = axis[2];
-    double az    = axis[3];
+void Object::rotateYPR(double* q){
+    this->gravity[0] = 2.0 * (q[1]*q[3] - q[0]*q[2]);
+    this->gravity[1] = 2.0 * (q[0]*q[1] + q[2]*q[3]);
+    this->gravity[2] = q[0]*q[0] - q[1]*q[1] - q[2]*q[2] - q[3]*q[3];
+
+    this->ypr[0] = atan2(2*q[1]*q[2] - 2*q[0]*q[3], 2*q[0]*q[0] + 2*q[1]*q[1] - 1);
+    this->ypr[1] = atan(gravity[0] / sqrt(gravity[1]*gravity[1] + gravity[2]*gravity[2]));
+    this->ypr[2] = atan(gravity[1] / sqrt(gravity[0]*gravity[0] + gravity[2]*gravity[2]));
+
+    this->rotateY(-ypr[0]);
+    this->rotateZ(-ypr[1]);
+    this->rotateX(-ypr[2]);
+}
+
+void Object::rotateAxisAngle(float* axis){
+    float theta = axis[0] - oldTheta;
+    this->oldTheta = axis[0];
+    float ax    = axis[2];
+    float ay    = axis[1];
+    float az    = -axis[3];
+
+    //std::cout << theta << std::endl;
 
     if(isnan(theta) || isnan(ax) || isnan(ay) || isnan(az)) {
         std::cout<< "Found NaN" << std::endl;    
         return;
     }
     
-    double cosT = cos(theta);
-    double sinT = sin(theta);
-    double t = 1.0 - cosT;
+    float cosT = cos(theta);
+    float sinT = sin(theta);
+    float t = 1.0 - cosT;
 
-    double ax2 = ax*ax;
-    double ay2 = ay*ay;
-    double az2 = az*az;
+    float ax2 = ax*ax;
+    float ay2 = ay*ay;
+    float az2 = az*az;
     
-    // Normalize Axis Components
-    double mag = sqrt(ax2+ay2+az2);
+    //// Normalize Axis Components
+    //double mag = sqrt(ax2+ay2+az2);
 
-    if(mag == 0) std::cout << "Magnitude is 0: ERROR!" << std::endl;
-    else { 
-        ax /= mag;
-        ay /= mag;
-        az /= mag;
-    }
+    //if(mag == 0) {
+        //std::cout << "Magnitude is 0: ERROR!" << std::endl;
+        //return;
+    //} else { 
+        //ax /= mag;
+        //ay /= mag;
+        //az /= mag;
+    //}
 
-    //std::cout << ax + ay + az << std::endl;
+    //ax2 = ax*ax;
+    //ay2 = ay*ay;
+    //az2 = az*az;
 
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         // Store as temps:
-        double tx = p->x;
-        double ty = p->y;
-        double tz = p->z;
+        float tx = p->x;
+        float ty = p->y;
+        float tz = p->z;
 
         p->x = (cosT+ax2*t)*tx + (ax*ay*t-(az*sinT))*ty + (ax*az*t+(ay*sinT))*tz;
         p->y = (ay*ax*t+az*sinT)*tx + (cosT+ay2*t)*ty + (ay*az*t-(ax*sinT))*tz;

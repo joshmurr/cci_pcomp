@@ -21,7 +21,8 @@ class Object{
         void rotateX(double theta);
         void rotateY(double theta);
         void rotateZ(double theta);
-        void rotateAxisAngle(double* axis);
+        void rotateYPR(double* q);
+        void rotateAxisAngle(float* axis);
         void makeHeadset(Vec3d _origin);
         void makeWall(Vec3d pos, float width, float height, float spacing);
         void makeSimpleRoom(Vec3d _origin, float width, float spacing);
@@ -42,7 +43,10 @@ class Object{
         Vec3d origin;
         float velocity;
         //bool followMouse;
+        float oldTheta;
         unsigned char dataArray[9];
+        double gravity[3];
+        double ypr[3];
 
 
 };

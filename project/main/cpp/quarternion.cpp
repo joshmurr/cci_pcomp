@@ -25,18 +25,64 @@ void Quarternion::toAxisAngle(){
     // If the Quaternion is [0,0,0.7071068,0.7071068]. You will get the Axis-Angle is [0,0,1] and degrees is 90. You could consider it rotated 90 degrees on Z axis.
     // https://stackoverflow.com/questions/52584715/how-can-i-convert-a-quaternion-to-an-angle
     
-    //static double axis[4] = {0.0,0.0,0.0,0.0};
+    if(this->q[0] > 1) this->normalise();
+    this->axis[0] = acos(this->q[0])*2.0;
+    float s = sqrt(1-this->q[0]*this->q[0]);
 
-    if(!this->x && !this->y && !this->z && !this->w) {
-        //return axis;
+    if(s < 0.01){
+        this->axis[1] = this->q[1]; 
+        this->axis[2] = this->q[2]; 
+        this->axis[3] = this->q[3]; 
     } else {
-        this->axis[0] = acos(this->w)*2.0; // Theta
-        this->axis[1] = this->x / sin(acos(this->w));
-        this->axis[2] = this->y / sin(acos(this->w));
-        this->axis[3] = this->z / sin(acos(this->w));
-
-        //return axis;
+        this->axis[1] = this->q[1] / s; 
+        this->axis[2] = this->q[2] / s; 
+        this->axis[3] = this->q[3] / s; 
     }
+
+
+    //if(!this->x && !this->y && !this->z && !this->w) {
+        ////return axis;
+    //} else {
+        //this->axis[0] = acos(this->q[0])*2.0; // Theta
+        //this->axis[1] = this->q[1] / sin(acos(this->w));
+        //this->axis[2] = this->q[2] / sin(acos(this->w));
+        //this->axis[3] = this->q[3] / sin(acos(this->w));
+
+        ////return axis;
+    //}
+}
+
+void Quarternion::axisAngleTEST(){
+    //float t[4] = {0.7071068, 0, 0, 0.7071068};
+    float t[4] = {1, 0, 0, 0};
+
+    this->axis[0] = acos(t[0])*2.0;
+    float s = sqrt(1-t[0]*t[0]);
+
+    if(s < 0.01){
+        this->axis[1] = t[1]; 
+        this->axis[2] = t[2]; 
+        this->axis[3] = t[3]; 
+    } else {
+        this->axis[1] = t[1] / s; 
+        this->axis[2] = t[2] / s; 
+        this->axis[3] = t[3] / s; 
+    }
+}
+
+void Quarternion::normalise(){
+    float w2 = this->q[0] * this->q[0];
+    float x2 = this->q[1] * this->q[1];
+    float y2 = this->q[2] * this->q[2];
+    float z2 = this->q[3] * this->q[3];
+
+    float mag = sqrt(w2 + x2 + y2 + z2);
+
+    this->q[0] = this->q[0] / mag;
+    this->q[1] = this->q[1] / mag;
+    this->q[2] = this->q[2] / mag;
+    this->q[3] = this->q[3] / mag;
+
 }
 
 void Quarternion::TESTAxisAngle(){
@@ -60,16 +106,21 @@ void Quarternion::parseTeapotPacket(uint8_t* teapot){
     this->q[3] = ((teapot[8] << 8) | teapot[9]) / 16384.0;
     for (int i = 0; i < 4; i++) if (q[i] >= 2) q[i] = -4 + q[i];
 
-    this->w = this->q[0];
-    this->x = this->q[1];
-    this->y = this->q[2];
-    this->z = this->q[3];
 }
 
 void Quarternion::printQuat() { 
-    std::cout << "w: " << this->w << " x: " << this->x << " y: " << this->y << " z: " << this->z << std::endl;
+    float w1 = (int)(this->w*100 + .5);
+    float w2 = w1 / 100;
+    float x1 = (int)(this->x*100 + .5);
+    float x2 = x1 / 100;
+    float y1 = (int)(this->y*100 + .5);
+    float y2 = y1 / 100;
+    float z1 = (int)(this->z*100 + .5);
+    float z2 = z1 / 100;
+
+    std::cout << "w: " << w2 << "\tx: " << x2 << "\ty: " << y2 << "\tz: " << z2 << std::endl;
 }
 
 void Quarternion::printAxis() { 
-    std::cout << "Theta: " << this->axis[0] << " ax: " << this->axis[1] << " ay: " << this->axis[2] << " az: " << this->axis[3] << std::endl;
+    std::cout << "Theta:\t" << this->axis[0] << "\tax: " << this->axis[1] << "\tay: " << this->axis[2] << "\taz: " << this->axis[3] << std::endl;
 }

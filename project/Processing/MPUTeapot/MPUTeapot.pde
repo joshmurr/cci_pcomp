@@ -65,7 +65,7 @@ void setup() {
     smooth();
   
     // display serial port list for debugging/clarity
-    println(Serial.list());
+    //println(Serial.list());
 
     // get the first available port (use EITHER this OR the specific port code below)
     //String portName = Serial.list()[0];
@@ -107,7 +107,7 @@ void draw() {
     // different coordinate system orientation assumptions between Processing
     // and InvenSense DMP)
     float[] axis = quat.toAxisAngle();
-    rotate(axis[0], -axis[1], axis[3], axis[2]);
+    rotate(axis[0], -axis[2], axis[3], -axis[1]);
 
     // draw main body in red
     fill(255, 0, 0, 200);
@@ -173,24 +173,24 @@ void serialEvent(Serial port) {
                 // set our toxilibs quaternion to new data
                 quat.set(q[0], q[1], q[2], q[3]);
 
-                /*
+                
                 // below calculations unnecessary for orientation only using toxilibs
                 
                 // calculate gravity vector
-                gravity[0] = 2 * (q[1]*q[3] - q[0]*q[2]);
-                gravity[1] = 2 * (q[0]*q[1] + q[2]*q[3]);
-                gravity[2] = q[0]*q[0] - q[1]*q[1] - q[2]*q[2] + q[3]*q[3];
+                //gravity[0] = 2 * (q[1]*q[3] - q[0]*q[2]);
+                //gravity[1] = 2 * (q[0]*q[1] + q[2]*q[3]);
+                //gravity[2] = q[0]*q[0] - q[1]*q[1] - q[2]*q[2] + q[3]*q[3];
     
                 // calculate Euler angles
-                euler[0] = atan2(2*q[1]*q[2] - 2*q[0]*q[3], 2*q[0]*q[0] + 2*q[1]*q[1] - 1);
-                euler[1] = -asin(2*q[1]*q[3] + 2*q[0]*q[2]);
-                euler[2] = atan2(2*q[2]*q[3] - 2*q[0]*q[1], 2*q[0]*q[0] + 2*q[3]*q[3] - 1);
+                //euler[0] = atan2(2*q[1]*q[2] - 2*q[0]*q[3], 2*q[0]*q[0] + 2*q[1]*q[1] - 1);
+                //euler[1] = -asin(2*q[1]*q[3] + 2*q[0]*q[2]);
+                //euler[2] = atan2(2*q[2]*q[3] - 2*q[0]*q[1], 2*q[0]*q[0] + 2*q[3]*q[3] - 1);
     
                 // calculate yaw/pitch/roll angles
-                ypr[0] = atan2(2*q[1]*q[2] - 2*q[0]*q[3], 2*q[0]*q[0] + 2*q[1]*q[1] - 1);
-                ypr[1] = atan(gravity[0] / sqrt(gravity[1]*gravity[1] + gravity[2]*gravity[2]));
-                ypr[2] = atan(gravity[1] / sqrt(gravity[0]*gravity[0] + gravity[2]*gravity[2]));
-                */
+                //ypr[0] = atan2(2*q[1]*q[2] - 2*q[0]*q[3], 2*q[0]*q[0] + 2*q[1]*q[1] - 1);
+                //ypr[1] = atan(gravity[0] / sqrt(gravity[1]*gravity[1] + gravity[2]*gravity[2]));
+                //ypr[2] = atan(gravity[1] / sqrt(gravity[0]*gravity[0] + gravity[2]*gravity[2]));
+                
     
                 // output various components for debugging
                 println("q:\t" + round(q[0]*100.0f)/100.0f + "\t" + round(q[1]*100.0f)/100.0f + "\t" + round(q[2]*100.0f)/100.0f + "\t" + round(q[3]*100.0f)/100.0f);

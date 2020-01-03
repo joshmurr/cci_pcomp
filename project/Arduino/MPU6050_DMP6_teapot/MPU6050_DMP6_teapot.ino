@@ -149,7 +149,6 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 
 // packet structure for InvenSense teapot demo
 uint8_t teapotPacket[14] = { '$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n' };
-unsigned char altpacket[14] = { '$', 'h', 'e','l', 'l','0', ' ','w', 'o','r', 'l', 'd', '\r', '\n' };
 
 
 

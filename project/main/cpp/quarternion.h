@@ -18,6 +18,8 @@ class Quarternion{
         void printQuat();
         void printAxis();
         void TESTAxisAngle();
+        void axisAngleTEST();
+        void normalise();
 
     private:
         static const double testQuat[];
@@ -27,8 +29,8 @@ class Quarternion{
         double y;
         double z;
         double w;
-        double q[4];
-        double axis[4];
+        float q[4];
+        float axis[4];
 
 };
 

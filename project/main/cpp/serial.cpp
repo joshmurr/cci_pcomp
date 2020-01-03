@@ -186,7 +186,7 @@ int Serial::serialport_read_teapot()
     if( n==-1) return -1;    // couldn't read
     if( n==0 ) {
         //usleep( 10 * 1000 ); // wait 10 msec try again
-        std::cout << "Teapot EOL" << std::endl;
+        //std::cout << "Teapot EOL" << std::endl;
         return 1; // read() == 0 means EOF
     }
 
