@@ -1,3 +1,5 @@
+#define _USE_MATH_CONSTANTS
+
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <stdlib.h> 
@@ -117,11 +119,19 @@ int main(int argc, char *argv[]) {
         //headset.follow(screen.getMouseVec());
         
         lookingAtSunVal = headset.lookingAtSun(sunOrigin);
-        if(lookingAtSunVal < -0.95 && lookingAtSunVal > -1.05){
-            //cout << "sun" << endl;
+        if(lookingAtSunVal < -0.7 && lookingAtSunVal > -1.3){
+            double dVal = lookingAtSunVal + 1.3;
+            dVal *= 1.67;
+            dVal = 1.0 - dVal + 0.5;
+            dVal *= dVal;
+            if(dVal > 1.0) dVal = 1.0;
+            if(dVal < 0) dVal = 0;
+            int val = dVal * 255;
+            cout << val << endl;
+            lightsOn[2] = val;
             lookingAtSun = true;
         } else {
-            //cout << "no sun" << endl;    
+            lightsOn[3] = 0;
             lookingAtSun = false;
         }
 
