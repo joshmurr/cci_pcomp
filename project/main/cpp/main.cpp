@@ -10,6 +10,7 @@
 #include "targets.h"
 #include "object.h"
 #include "quarternion.h"
+#include "datapacket.h"
 
 using namespace std;
 
@@ -73,6 +74,8 @@ int main(int argc, char *argv[]) {
     // [4] = Vibration Motor Byte2
     uint8_t lightsOn[8] = {'l', 'v', 0, 0, 0, 0, 0, 0};
     uint8_t lightsOff[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+    Datapacket data(arduino);
     // ------------------------------------------------------------------ //
 
     if(!arduino.DEBUG){
@@ -132,11 +135,15 @@ int main(int argc, char *argv[]) {
             if(dVal > 1.0) dVal = 1.0;
             if(dVal < 0) dVal = 0;
             int val = dVal * 255;
-            cout << val << endl;
-            lightsOn[2] = val;
+            //cout << val << endl;
+            //lightsOn[2] = val;
+
+            data.lightsOn(val);
+
             lookingAtSun = true;
         } else {
-            lightsOn[2] = 0;
+            data.lightsOff();
+            //lightsOn[2] = 0;
             lookingAtSun = false;
         }
 
@@ -153,9 +160,14 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        uint16_t coll = headset.checkCollisions(screen, arduino, room, arduino.DEBUG);
-        uint8_t byte2 = coll;
-        uint8_t byte1 = coll >> 8;
+        //uint16_t coll = headset.checkCollisions(screen, arduino, room, arduino.DEBUG);
+        //uint8_t byte2 = coll;
+        //uint8_t byte1 = coll >> 8;
+
+        if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) data.setCollision(true);
+        else data.setCollision(false);
+
+        data.sendPacket();
         
         // See bits to shift:
         //std::bitset<8> b1(byte1);
@@ -163,11 +175,11 @@ int main(int argc, char *argv[]) {
         //cout << "B1: " << b1 << '\n';
         //cout << "B2: " << b2 << endl;
         
-        lightsOn[3] = byte1;
-        lightsOn[4] = byte2;
+        //lightsOn[3] = byte1;
+        //lightsOn[4] = byte2;
 
-        if(lookingAtSun) arduino.serialport_write_teapot(lightsOn);
-        else if(!lookingAtSun) arduino.serialport_write_teapot(lightsOff);
+        //if(lookingAtSun) arduino.serialport_write_teapot(lightsOn);
+        //else if(!lookingAtSun) arduino.serialport_write_teapot(lightsOff);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

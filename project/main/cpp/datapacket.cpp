@@ -1,6 +1,7 @@
 #include "datapacket.h"
 
-Datapacket::Datapacket(){
+Datapacket::Datapacket(Serial &arduino){
+    this->arduino = &arduino;
     this->packet[0] = '$';
     this->packet[1] = 0x02;
     this->packet[2] = 0; // Lights Value
@@ -36,7 +37,15 @@ void Datapacket::setByte(int which, uint8_t byte){
 
 void Datapacket::setCollision(bool c){
     this->collision = c;
-    this->packet[3] = 'C'; // C means turn all motors on
+    if(c) {
+        this->packet[3] = 'C'; // C means turn all motors on
+        this->packet[4] = 0xFF;
+        this->packet[5] = 0xFF;
+    } else {
+        this->packet[3] = 0; // C means turn all motors on
+        this->packet[4] = 0x00;
+        this->packet[5] = 0x00;
+    }
 }
 
 void Datapacket::setCollision(bool c, uint8_t b1, uint8_t b2){
@@ -44,4 +53,8 @@ void Datapacket::setCollision(bool c, uint8_t b1, uint8_t b2){
     this->packet[3] = 'c'; // c means check the next two bytes for which motors
     this->packet[4] = b1;
     this->packet[5] = b2;
+}
+
+void Datapacket::sendPacket(){
+    this->arduino->serialport_write_teapot(this->packet);
 }

@@ -5,18 +5,20 @@
 
 class Datapacket{
     public:
-        Datapacket();
+        Datapacket(Serial &arduino);
         void lightsOn(int val);
         void lightsOff();
         void setByte(int which, uint8_t byte);
         void setCollision(bool c);
         void setCollision(bool c, uint8_t b1, uint8_t b2);
+        void sendPacket();
 
     private:
 
     public:
 
     private:
+        Serial *arduino;
         uint8_t packet[14];
         bool lights;
         int lightsVal;

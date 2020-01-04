@@ -191,17 +191,17 @@ int Serial::serialport_read_teapot() {
 int Serial::serialport_write_teapot(uint8_t *packet){
     uint8_t teapot[14] = {'$', 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0x00, 0x00, '\r', '\n' };
 
-    teapot[2] = packet[0];
-    teapot[3] = packet[1];
-    teapot[4] = packet[2];
-    teapot[5] = packet[3];
-    teapot[6] = packet[4];
-    teapot[7] = packet[5];
-    teapot[8] = packet[6];
-    teapot[9] = packet[7];
+    //teapot[2] = packet[0];
+    //teapot[3] = packet[1];
+    //teapot[4] = packet[2];
+    //teapot[5] = packet[3];
+    //teapot[6] = packet[4];
+    //teapot[7] = packet[5];
+    //teapot[8] = packet[6];
+    //teapot[9] = packet[7];
 
     int len = 14;
-    int n = write(fd, teapot, len);
+    int n = write(fd, packet, len);
     if(n != len) return -1;
     return 0;
 }
