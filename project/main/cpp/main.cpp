@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
 
     //screen.hideCursor();
     
+    // MAKE OBJECTS ----------------------------------------------------- //
     // MAKE RING
     Object headset;
     Vec3d headsetOrigin = Vec3d(width/2.0, height/2.0, 10.0); 
@@ -55,14 +56,17 @@ int main(int argc, char *argv[]) {
     //MAKE TARGET (to follow)
     Vec3d targetLoc = Vec3d(200.0, 200.0, 0.0); 
     screen.setTarget(targetLoc);
+    // ------------------------------------------------------------------ //
 
     Quarternion quat;
 
     bool lookingAtSun = false;
     double lookingAtSunVal = 0.0;
 
-    uint8_t lightsOn[8] = {'l', 0, 0, 0, 0, 0, 0, 0};
-    uint8_t lightsOff[8] = {'o', 0, 0, 0, 0, 0, 0, 0};
+    // DATA PACKETS TO SEND TO ARDUINO ---------------------------------- //
+    uint8_t lightsOn[8] = {'l', 'v', 0, 0, 0, 0, 0, 0};
+    uint8_t lightsOff[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    // ------------------------------------------------------------------ //
 
     if(!arduino.DEBUG){
         // Trigger MPU:
@@ -76,6 +80,7 @@ int main(int argc, char *argv[]) {
 
     cout << "Running..." << endl;
     while(running  && !screen.QUIT){
+        // CHECK INTERVALS AND RESEND TRIGGER TO MPU IF NEEDED -------------- //
         if(!arduino.DEBUG && ticks - interval > 5000 && !arduino.synced) {
             cout << "Not yet synced, re-sending trigger..." << endl;
             arduino.serialport_writechar(trigger);
@@ -86,18 +91,19 @@ int main(int argc, char *argv[]) {
             arduino.serialport_writechar(trigger);
             interval = ticks;
         }
+        if(screen.SEND_TRIGGER){
+            cout << "User re-sending trigger..." << endl;
+            arduino.serialport_writechar(trigger);
+            screen.SEND_TRIGGER = false;
+        }
+        // ------------------------------------------------------------------ //
+        
         screen.handleEvents();
         screen.clearBlackScreen();
 
         if(screen.RESET_POS){
             headset.resetHeadsetPosition(headsetOrigin);
             screen.RESET_POS = false;
-        }
-
-        if(screen.SEND_TRIGGER){
-            cout << "User re-sending trigger..." << endl;
-            arduino.serialport_writechar(trigger);
-            screen.SEND_TRIGGER = false;
         }
 
         targetLoc = screen.getTargetVec();
@@ -112,10 +118,10 @@ int main(int argc, char *argv[]) {
         
         lookingAtSunVal = headset.lookingAtSun(sunOrigin);
         if(lookingAtSunVal < -0.95 && lookingAtSunVal > -1.05){
-            cout << "sun" << endl;
+            //cout << "sun" << endl;
             lookingAtSun = true;
         } else {
-            cout << "no sun" << endl;    
+            //cout << "no sun" << endl;    
             lookingAtSun = false;
         }
 
@@ -143,7 +149,6 @@ int main(int argc, char *argv[]) {
         }
 
         screen.update();
-
 
         usleep(10000);
     }
