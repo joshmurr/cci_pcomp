@@ -59,9 +59,10 @@ int main(int argc, char *argv[]) {
     Quarternion quat;
 
     bool lookingAtSun = false;
+    double lookingAtSunVal = 0.0;
 
-    //uint8_t lightsOn[8] = {'l', 0, 0, 0, 0, 0, 0, 0};
-    //uint8_t lightsOff[8] = {'o', 0, 0, 0, 0, 0, 0, 0};
+    uint8_t lightsOn[8] = {'l', 0, 0, 0, 0, 0, 0, 0};
+    uint8_t lightsOff[8] = {'o', 0, 0, 0, 0, 0, 0, 0};
 
     if(!arduino.DEBUG){
         // Trigger MPU:
@@ -75,7 +76,13 @@ int main(int argc, char *argv[]) {
 
     cout << "Running..." << endl;
     while(running  && !screen.QUIT){
-        if(!arduino.DEBUG && ticks - interval > 100000) {
+        if(!arduino.DEBUG && ticks - interval > 5000 && !arduino.synced) {
+            cout << "Not yet synced, re-sending trigger..." << endl;
+            arduino.serialport_writechar(trigger);
+            interval = ticks;
+        }
+        if(!arduino.DEBUG && ticks - interval > 100000 && !arduino.synced) {
+            cout << "Long interval, re-sending trigger..." << endl;
             arduino.serialport_writechar(trigger);
             interval = ticks;
         }
@@ -87,6 +94,12 @@ int main(int argc, char *argv[]) {
             screen.RESET_POS = false;
         }
 
+        if(screen.SEND_TRIGGER){
+            cout << "User re-sending trigger..." << endl;
+            arduino.serialport_writechar(trigger);
+            screen.SEND_TRIGGER = false;
+        }
+
         targetLoc = screen.getTargetVec();
 
         headset.draw(screen, screen.YELLOW);
@@ -94,23 +107,23 @@ int main(int argc, char *argv[]) {
         room.draw(screen, screen.RED);
         sun.draw(screen, screen.YELLOW);
         screen.draw3Dpoint(targetLoc);
-        //headset.follow(targetLoc);
+        headset.follow(targetLoc);
         //headset.follow(screen.getMouseVec());
         
-        //double lookingAtSunVal = headset.lookingAtSun(sunOrigin);
-        //if(lookingAtSunVal < -0.95 && lookingAtSunVal > -1.05){
-            //cout << "sun" << endl;
-            //lookingAtSun = true;
-        //} else {
-            //cout << "no sun" << endl;    
-            //lookingAtSun = false;
-        //}
+        lookingAtSunVal = headset.lookingAtSun(sunOrigin);
+        if(lookingAtSunVal < -0.95 && lookingAtSunVal > -1.05){
+            cout << "sun" << endl;
+            lookingAtSun = true;
+        } else {
+            cout << "no sun" << endl;    
+            lookingAtSun = false;
+        }
 
         if(!arduino.DEBUG){
             int n = arduino.serialport_read_teapot();
-            cout << n << endl;
+            //cout << n << endl;
             if(arduino.synced){
-                cout << "SYNCED" << endl;
+                //cout << "SYNCED" << endl;
                 quat.parseTeapotPacket(arduino.teapot);
                 quat.toAxisAngle();
                 quat.printLongQuat();
@@ -130,6 +143,7 @@ int main(int argc, char *argv[]) {
         }
 
         screen.update();
+
 
         usleep(10000);
     }

@@ -17,6 +17,7 @@ Screen::Screen(){
     ANIMATION_RATE = 60; // 50 mSeconds
     QUIT = false;
     RESET_POS = false;
+    SEND_TRIGGER = false;
 }
 
 Screen::Screen(int width, int height, int res){
@@ -80,6 +81,8 @@ void Screen::handleEvents(){
                     QUIT = true;
                 } else if (event.key.keysym.sym == SDLK_r){
                     RESET_POS = true;
+                } else if (event.key.keysym.sym == SDLK_t){
+                    SEND_TRIGGER = true;
                 } else if (event.key.keysym.sym == SDLK_UP){
                     this->targetVec.y -= 10;
                 } else if (event.key.keysym.sym == SDLK_DOWN){

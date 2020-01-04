@@ -51,6 +51,7 @@ public:
     bool QUIT;
     bool ANIMATING;
     bool RESET_POS;
+    bool SEND_TRIGGER;
     int ANIMATION_RATE;
 	bool init();
 	void update();
