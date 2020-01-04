@@ -74,9 +74,12 @@ int serialCount = 0;
 int synced = 0;
 int interval = 0;
 
+// 74HC595 Stuff
+const int latchPin = 8; // YELLOW WIRE to pin 12
+const int clockPin = 12; // GREEN WIRE - to pin 11
+const int dataPin = 11; // BLUE WIRE - to pin 14
 
 // FUNCTIONS:
-
 void fadeEyes();
 void flashEyes(int n);
 
@@ -110,6 +113,7 @@ void setup() {
   pinMode(RIGHT_EYE, OUTPUT);
 
   flashEyes(5);
+  vibrateAllMotors(1,500);
 
   analogWrite(LEFT_EYE, dim_eyes);
   analogWrite(RIGHT_EYE, dim_eyes);
@@ -256,12 +260,19 @@ void loop() {
   // --- MY STUFF ---------------------------------------------------------//
 
   if(rx_packet[2] == 'l') {
-    analogWrite(LEFT_EYE, 255);
-    analogWrite(RIGHT_EYE, 255);
-  } else if(rx_packet[2] == 'o'){
+    analogWrite(LEFT_EYE, (int)rx_packet[4]);
+    analogWrite(RIGHT_EYE, (int)rx_packet[4]);
+  } else if(rx_packet[2] == 0){
     analogWrite(LEFT_EYE, 15);
     analogWrite(RIGHT_EYE, 15);
   }
+  /*
+  if(rx_packet[3] == 'v') {
+    vibrateAllMotors(1, 500);
+  } else if(rx_packet[3] == 0){
+    turnOffAllMotors();
+  }
+  */
   
   // ----------------------------------------------------------------------//
 
@@ -296,7 +307,79 @@ void flashEyes(int n) {
   analogWrite(RIGHT_EYE, 0);
 }
 
-/*void serialEvent(){
+void vibrateAllMotors(int n, int d) {
+  digitalWrite(latchPin, 0);
+  // Clear both registers with 0's
+  shiftOut(dataPin, clockPin, 0);
+  shiftOut(dataPin, clockPin, 0);
+  digitalWrite(latchPin, 1);
+  delay(30);
+  for (int x = 0; x < n; x++) {
+    digitalWrite(latchPin, 0);
+    // Write all 1's to both registers
+    shiftOut(dataPin, clockPin, 255);
+    shiftOut(dataPin, clockPin, 255);
+    digitalWrite(latchPin, 1);
+    delay(d);
+    digitalWrite(latchPin, 0);
+    // Clear both registers with 0's
+    shiftOut(dataPin, clockPin, 0);
+    shiftOut(dataPin, clockPin, 0);
+    digitalWrite(latchPin, 1);
+    delay(d);
+  }
+}
+
+void turnOffAllMotors(){
+  digitalWrite(latchPin, 0);
+  shiftOut(dataPin, clockPin, 0);
+  shiftOut(dataPin, clockPin, 0);
+  digitalWrite(latchPin, 1);
+  delay(30);
+}
+
+void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
+  int i = 0;
+  int pinState;
+  pinMode(myClockPin, OUTPUT);
+  pinMode(myDataPin, OUTPUT);
+
+  //clear everything out just in case to
+  //prepare shift register for bit shifting
+  digitalWrite(myDataPin, 0);
+  digitalWrite(myClockPin, 0);
+
+  //for each bit in the byte myDataOut�
+  //NOTICE THAT WE ARE COUNTING DOWN in our for loop
+  //This means that %00000001 or "1" will go through such
+  //that it will be pin Q0 that lights.
+  for (i = 7; i >= 0; i--)  {
+    digitalWrite(myClockPin, 0);
+
+    //if the value passed to myDataOut and a bitmask result
+    // true then... so if we are at i=6 and our value is
+    // %11010100 it would the code compares it to %01000000
+    // and proceeds to set pinState to 1.
+    if ( myDataOut & (1 << i) ) {
+      pinState = 1;
+    }
+    else {
+      pinState = 0;
+    }
+
+    //Sets the pin to HIGH or LOW depending on pinState
+    digitalWrite(myDataPin, pinState);
+    //register shifts bits on upstroke of clock pin
+    digitalWrite(myClockPin, 1);
+    //zero the data pin after shift to prevent bleed through
+    digitalWrite(myDataPin, 0);
+  }
+
+  //stop shifting
+  digitalWrite(myClockPin, 0);
+}
+
+void serialEvent(){
   interval = millis();
     while (Serial.available() > 0) {
         uint8_t ch = Serial.read();
@@ -320,4 +403,4 @@ void flashEyes(int n) {
             }
         }
     }
-}*/
+}
