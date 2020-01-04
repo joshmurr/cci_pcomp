@@ -2,15 +2,15 @@
 
 Object::Object(){
     this->velocity = 0.0;
-    this->dataArray[0] = 0x00; //0b00000000
-    this->dataArray[1] = 0x80; //0b10000000
-    this->dataArray[2] = 0x40; //0b01000000
-    this->dataArray[3] = 0x20; //0b00100000
+    //this->dataArray[0] = 0x00; //0b00000000
+    this->dataArray[7] = 0x80; //0b10000000
+    this->dataArray[6] = 0x40; //0b01000000
+    this->dataArray[5] = 0x20; //0b00100000
     this->dataArray[4] = 0x10; //0b00010000
-    this->dataArray[5] = 0x08; //0b00001000
-    this->dataArray[6] = 0x04; //0b00000100
-    this->dataArray[7] = 0x02; //0b00000010
-    this->dataArray[8] = 0x01; //0b00000001
+    this->dataArray[3] = 0x08; //0b00001000
+    this->dataArray[2] = 0x04; //0b00000100
+    this->dataArray[1] = 0x02; //0b00000010
+    this->dataArray[0] = 0x01; //0b00000001
 }
 
 Object::Object(std::vector<Vec3d> &points){
@@ -290,12 +290,12 @@ uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, b
             Vec3d pUpdate = *p + this->origin;
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
-            if(dist < 25.0) {
+            if(dist < 15.0) {
                 screen.draw3Dline(pUpdate, qUpdate, screen.GREEN);
                 // VIBRATE MOTORS
-                int collision = p-points.begin()+1;
-                if(collision < 9) byte1 = byte1 + this->dataArray[p-points.begin()];
-                else byte2 = byte2 + this->dataArray[p-points.begin()];
+                int collision = p-points.begin();
+                if(collision < 8) byte1 = byte1 + this->dataArray[p-points.begin()];
+                else byte2 = byte2 + this->dataArray[p-points.begin() - 8];
             }
         }
     }

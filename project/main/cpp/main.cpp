@@ -59,6 +59,9 @@ int main(int argc, char *argv[]) {
     //MAKE TARGET (to follow)
     Vec3d targetLoc = Vec3d(200.0, 200.0, 0.0); 
     screen.setTarget(targetLoc);
+
+    // OFFSET FOR RESETTING HEADSET
+    Vec3d targetOffset;
     // ------------------------------------------------------------------ //
 
     Quarternion quat;
@@ -66,15 +69,7 @@ int main(int argc, char *argv[]) {
     bool lookingAtSun = false;
     double lookingAtSunVal = 0.0;
 
-    // DATA PACKETS TO SEND TO ARDUINO ---------------------------------- //
-    // [0] = Lights Toggle
-    // [1] = Vibration Toggle
-    // [2] = Lights Brightness (0 - 255)
-    // [3] = Vibration Motor Byte1
-    // [4] = Vibration Motor Byte2
-    uint8_t lightsOn[8] = {'l', 'v', 0, 0, 0, 0, 0, 0};
-    uint8_t lightsOff[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-
+    // DATA PACKET TO SEND TO ARDUINO ----------------------------------- //
     Datapacket data(arduino);
     // ------------------------------------------------------------------ //
 
@@ -111,20 +106,22 @@ int main(int argc, char *argv[]) {
         screen.handleEvents();
         screen.clearBlackScreen();
 
+        targetLoc = screen.getTargetVec();
+        targetOffset = targetLoc + Vec3d(1, 1, 0);
+
         if(screen.RESET_POS){
-            headset.resetHeadsetPosition(headsetOrigin);
+            headset.resetHeadsetPosition(targetLoc);
             screen.RESET_POS = false;
         }
 
-        targetLoc = screen.getTargetVec();
-
         headset.draw(screen, screen.YELLOW);
-        headset.drawOrigin(screen);
+        //headset.drawOrigin(screen);
         room.draw(screen, screen.RED);
         sun.draw(screen, screen.YELLOW);
-        screen.draw3Dpoint(targetLoc);
-        headset.follow(targetLoc);
+        screen.draw3Dpoint(targetLoc, screen.GREY);
+        headset.follow(targetOffset);
         //headset.follow(screen.getMouseVec());
+
         
         lookingAtSunVal = headset.lookingAtSun(sunOrigin);
         if(lookingAtSunVal < -0.7 && lookingAtSunVal > -1.3){
@@ -160,14 +157,14 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        //uint16_t coll = headset.checkCollisions(screen, arduino, room, arduino.DEBUG);
-        //uint8_t byte2 = coll;
-        //uint8_t byte1 = coll >> 8;
+        uint16_t coll = headset.checkCollisions(screen, arduino, sun, arduino.DEBUG);
+        uint8_t byte2 = coll;
+        uint8_t byte1 = coll >> 8;
 
-        if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG) != 0) data.setCollision(true);
+        if(coll) data.setCollision(true, byte1, byte2);
         else data.setCollision(false);
 
-        data.printPacket();
+        //data.printPacket();
 
         data.sendPacket();
         

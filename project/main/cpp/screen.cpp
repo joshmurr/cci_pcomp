@@ -84,13 +84,13 @@ void Screen::handleEvents(){
                 } else if (event.key.keysym.sym == SDLK_t){
                     SEND_TRIGGER = true;
                 } else if (event.key.keysym.sym == SDLK_UP){
-                    this->targetVec.y -= 10;
+                    this->targetVec.y -= 2;
                 } else if (event.key.keysym.sym == SDLK_DOWN){
-                    this->targetVec.y += 10;
+                    this->targetVec.y += 2;
                 } else if (event.key.keysym.sym == SDLK_LEFT){
-                    this->targetVec.x -= 10;
+                    this->targetVec.x -= 2;
                 } else if (event.key.keysym.sym == SDLK_RIGHT){
-                    this->targetVec.x += 10;
+                    this->targetVec.x += 2;
                 }
 
                 break;
@@ -261,7 +261,7 @@ Vec3d Screen::getTargetVec(){
     return targetVec;
 }
 
-void Screen::draw3Dpoint(const Vec3d &v){
+void Screen::draw3Dpoint(const Vec3d &v, const SDL_Color col){
     double FOV = 200.0;
 
     double scale = FOV / (FOV + v.z);
@@ -269,7 +269,7 @@ void Screen::draw3Dpoint(const Vec3d &v){
     double x2d = (v.x*scale);
     double y2d = (v.y*scale);
 
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(m_renderer, col.r, col.g, col.b, SDL_ALPHA_OPAQUE);
     SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
     SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
 }

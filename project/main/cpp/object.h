@@ -50,7 +50,7 @@ class Object{
         Vec3d origin;
         double velocity;
         double oldTheta;
-        unsigned char dataArray[9];
+        unsigned char dataArray[8];
         double gravity[3];
         double ypr[3];
 

@@ -72,7 +72,7 @@ public:
     void bresenham_circle(int cx, int cy, int r, SDL_Color color);
     
     // 3D Stuff:
-    void draw3Dpoint(const Vec3d &v);
+    void draw3Dpoint(const Vec3d &v, const SDL_Color col);
     void drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL_Color &col);
     void draw3Dline(const Vec3d &v1, const Vec3d &v2, const SDL_Color col);
     void starfield(std::vector<Star> &stars);

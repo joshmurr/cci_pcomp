@@ -80,14 +80,6 @@ const int clockPin = 12; // GREEN WIRE - to pin 11
 const int dataPin = 11; // BLUE WIRE - to pin 14
 bool vibrating = false;
 
-// FUNCTIONS:
-void fadeEyes();
-void flashEyes(int n);
-void shiftOut(int myDataPin, int myClockPin, byte myDataOut);
-void motorsOn();
-void motorsOff();
-
-
 
 // ================================================================
 // ===               INTERRUPT DETECTION ROUTINE                ===
@@ -272,17 +264,17 @@ void loop() {
     analogWrite(LEFT_EYE, (int)rx_packet[2]);
     analogWrite(RIGHT_EYE, (int)rx_packet[2]);
   }
-  if (rx_packet[3] == 67) {
-    digitalWrite(latchPin, 0);
-    shiftOut(dataPin, clockPin, 255);
-    shiftOut(dataPin, clockPin, 255);
-    digitalWrite(latchPin, 1);
+  if (rx_packet[3] == 67) { // C
+    motorsOn();
   } else if(rx_packet[3] != 67){
-    digitalWrite(latchPin, 0);
-    shiftOut(dataPin, clockPin, 0);
-    shiftOut(dataPin, clockPin, 0);
-    digitalWrite(latchPin, 1);
+    motorsOff();
   }
+  if (rx_packet[3] == 99) { // c
+    shiftBytes((byte)rx_packet[4], (byte)rx_packet[5]);
+  } else if(rx_packet[3] != 99){
+    motorsOff();
+  }
+    
   /*
     if(rx_packet[3] == 'v') {
     vibrateAllMotors(1, 500);
@@ -324,15 +316,15 @@ void flashEyes(int n) {
   analogWrite(RIGHT_EYE, 0);
 }
 
+void shiftBytes(byte byte1, byte byte2){
+  digitalWrite(latchPin, 0);
+  shiftOut(dataPin, clockPin, byte1);
+  shiftOut(dataPin, clockPin, byte2);
+  digitalWrite(latchPin, 1);
+}
+
 void motorsOn() {
   digitalWrite(latchPin, 0);
-  // Clear both registers with 0's
-  shiftOut(dataPin, clockPin, 0);
-  shiftOut(dataPin, clockPin, 0);
-  digitalWrite(latchPin, 1);
-  delay(30);
-  digitalWrite(latchPin, 0);
-  // Write all 1's to both registers
   shiftOut(dataPin, clockPin, 255);
   shiftOut(dataPin, clockPin, 255);
   digitalWrite(latchPin, 1);
@@ -340,7 +332,6 @@ void motorsOn() {
 
 void motorsOff() {
   digitalWrite(latchPin, 0);
-  // Clear both registers with 0's
   shiftOut(dataPin, clockPin, 0);
   shiftOut(dataPin, clockPin, 0);
   digitalWrite(latchPin, 1);
