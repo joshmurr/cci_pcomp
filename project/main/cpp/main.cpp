@@ -66,6 +66,11 @@ int main(int argc, char *argv[]) {
     double lookingAtSunVal = 0.0;
 
     // DATA PACKETS TO SEND TO ARDUINO ---------------------------------- //
+    // [0] = Lights Toggle
+    // [1] = Vibration Toggle
+    // [2] = Lights Brightness (0 - 255)
+    // [3] = Vibration Motor Byte1
+    // [4] = Vibration Motor Byte2
     uint8_t lightsOn[8] = {'l', 'v', 0, 0, 0, 0, 0, 0};
     uint8_t lightsOff[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     // ------------------------------------------------------------------ //
@@ -131,7 +136,7 @@ int main(int argc, char *argv[]) {
             lightsOn[2] = val;
             lookingAtSun = true;
         } else {
-            lightsOn[3] = 0;
+            lightsOn[2] = 0;
             lookingAtSun = false;
         }
 
@@ -148,8 +153,18 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        //bool collision = headset.checkCollisions(screen, arduino, room, arduino.DEBUG);
-        //if(lookingAtSun) arduino.serialport_writechar(0xFF);
+        uint16_t coll = headset.checkCollisions(screen, arduino, room, arduino.DEBUG);
+        uint8_t byte2 = coll;
+        uint8_t byte1 = coll >> 8;
+        
+        // See bits to shift:
+        //std::bitset<8> b1(byte1);
+        //std::bitset<8> b2(byte2);
+        //cout << "B1: " << b1 << '\n';
+        //cout << "B2: " << b2 << endl;
+        
+        lightsOn[3] = byte1;
+        lightsOn[4] = byte2;
 
         if(lookingAtSun) arduino.serialport_write_teapot(lightsOn);
         else if(!lookingAtSun) arduino.serialport_write_teapot(lightsOff);

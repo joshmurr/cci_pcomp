@@ -30,7 +30,7 @@ class Object{
         void resetHeadsetPosition(Vec3d _origin);
         void makeWall(Vec3d pos, double width, double height, double spacing);
         void makeSimpleRoom(Vec3d _origin, double width, double spacing);
-        bool checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);
+        uint16_t checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG);
         bool checkOriginCollision(Object &obj);
         void makeStarField(double width, double height);
         void makeSun(Vec3d _origin);

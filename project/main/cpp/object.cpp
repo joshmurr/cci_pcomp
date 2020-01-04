@@ -282,8 +282,9 @@ bool Object::checkOriginCollision(Object &obj){
     return false;
 }
 
-bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG){
-    unsigned char byte1 = 0x00, byte2 = 0x00;
+uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG){
+    uint8_t byte1 = 0x00, byte2 = 0x00;
+    uint16_t ret = 0x00;
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
         for(std::vector<Vec3d>::iterator q=obj.points.begin(); q!=obj.points.end(); ++q){
             Vec3d pUpdate = *p + this->origin;
@@ -298,14 +299,16 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
             }
         }
     }
+    //std::bitset<8> b1(byte1);
+    //std::bitset<8> b2(byte2);
+
+    //std::cout << b1 << '\n';
+    //std::cout << b2 << '\n';
     if(!DEBUG){
-        arduino.serialport_writechar(byte1);
-        arduino.serialport_writechar(byte2);
-        byte1 = 0x00;
-        byte2 = 0x00;
-        return true;
+        ret = byte1 << 8 | byte2;
+        return ret;
     }
-    return false;
+    return 0x00;
 }
 
 double Object::lookingAtSun(Vec3d &sun){
