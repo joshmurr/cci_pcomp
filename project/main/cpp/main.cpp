@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
                 //cout << "SYNCED" << endl;
                 quat.parseTeapotPacket(arduino.teapot);
                 quat.toAxisAngle();
-                quat.printLongQuat();
+                //quat.printLongQuat();
                 //quat.axisAngleTEST();
                 headset.rotateAxisAngle(quat.axis);    
             }
@@ -135,8 +135,8 @@ int main(int argc, char *argv[]) {
         //bool collision = headset.checkCollisions(screen, arduino, room, arduino.DEBUG);
         //if(lookingAtSun) arduino.serialport_writechar(0xFF);
 
-        //if(lookingAtSun) arduino.serialport_write_teapot(lightsOn);
-        //else if(!lookingAtSun) arduino.serialport_write_teapot(lightsOff);
+        if(lookingAtSun) arduino.serialport_write_teapot(lightsOn);
+        else if(!lookingAtSun) arduino.serialport_write_teapot(lightsOff);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();
