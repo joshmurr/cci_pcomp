@@ -27,6 +27,7 @@ class Serial{
         int serialport_read_until(char until);
         int serialport_read_int_until(char until, int& data);
         int serialport_read_teapot();
+        int serialport_write_teapot(uint8_t *packet);
 
 
     // Variables    

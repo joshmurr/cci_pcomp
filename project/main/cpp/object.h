@@ -18,7 +18,8 @@ class Object{
         void update();
         void setVelocity(double v);
         void setLocation(Vec3d loc);
-        //void setFollowMouse(bool t);
+        double checkDot(Vec3d &vec);
+        double lookingAtSun(Vec3d &sun);
         void follow(const Vec3d &v);
         void rotateX(double theta);
         void rotateY(double theta);
@@ -48,7 +49,6 @@ class Object{
     private:
         Vec3d origin;
         double velocity;
-        //bool followMouse;
         double oldTheta;
         unsigned char dataArray[9];
         double gravity[3];

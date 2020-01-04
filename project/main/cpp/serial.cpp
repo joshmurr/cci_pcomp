@@ -144,14 +144,9 @@ int Serial::serialport_read_until(char until)
     return 0;
 }
 
-int Serial::serialport_read_teapot()
-{
+int Serial::serialport_read_teapot() {
     uint8_t b[1];
     int i=0;
-    // Read until end of packet '\n'
-    //int n = read(fd, b, sizeof(uint8_t));  // read a char at a time
-    //std::cout << (uint8_t)b[0] << std::endl;
-
     int n;
 
     while((n = read(fd, b, sizeof(uint8_t)))){ 
@@ -193,6 +188,23 @@ int Serial::serialport_read_teapot()
     return 0;
 }
 
+//int Serial::serialport_write_teapot(uint8_t *packet){
+    //uint8_t teapot[14] = {'$', 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0x00, 0x00, '\r', '\n' };
+
+    //teapot[2] = packet[0];
+    //teapot[3] = packet[1];
+    //teapot[4] = packet[2];
+    //teapot[5] = packet[3];
+    //teapot[6] = packet[4];
+    //teapot[7] = packet[5];
+    //teapot[8] = packet[6];
+    //teapot[9] = packet[7];
+
+    //int len = 14;
+    //int n = write(fd, teapot, len);
+    //if(n != len) return -1;
+    //return 0;
+//}
 // takes the string name of the serial port (e.g. "/dev/tty.usbserial","COM1")
 // and a baud rate (bps) and connects to that port at that speed and 8N1.
 // opens the port in fully raw mode so you can send binary data.

@@ -5,6 +5,10 @@ const int clockPin = 12; // GREEN WIRE - to pin 11
 ////Pin connected to Data in (DS) of 74HC595
 const int dataPin = 11; // BLUE WIRE - to pin 14
 unsigned char rx_char[1];
+unsigned char rx2_char[1];
+
+byte d = 0xff;
+byte b = 0x00;
 
 void setup() {
   //set pins to output because they are addressed in the main loop
@@ -13,6 +17,8 @@ void setup() {
   pinMode(clockPin, OUTPUT);
   Serial.begin(9600);
   Serial.println("reset");
+
+  blinkAll_2Bytes(10, 300);
 }
 
 void loop() {
@@ -21,18 +27,18 @@ void loop() {
     while (Serial.available()) {
       delay(3);
       Serial.readBytes(rx_char, sizeof(unsigned char));
+      delay(3);
+      Serial.readBytes(rx2_char, sizeof(unsigned char));
       //rx_buf[i] = c;
       //i++;
     }
     //rx_buf[i] = '\0';
     //rx = atoi(rx_buf);
   }
-  //Serial.println((int)rx_byte[0]);
-
-  //rx_char[0] = 0b00001111;
   
   digitalWrite(latchPin, 0);
-  shiftOut(dataPin, clockPin, *rx_char);
+  shiftOut(dataPin, clockPin, rx_char);
+  shiftOut(dataPin, clockPin, rx2_char);
   digitalWrite(latchPin, 1);
   delay(10);
 }

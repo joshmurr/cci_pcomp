@@ -292,8 +292,8 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
             if(dist < 25.0) {
                 screen.draw3Dline(pUpdate, qUpdate, screen.GREEN);
                 // VIBRATE MOTORS
-                int collision = p-points.begin();
-                if(collision < 8) byte1 = byte1 + this->dataArray[p-points.begin()];
+                int collision = p-points.begin()+1;
+                if(collision < 9) byte1 = byte1 + this->dataArray[p-points.begin()];
                 else byte2 = byte2 + this->dataArray[p-points.begin()];
             }
         }
@@ -303,8 +303,26 @@ bool Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool 
         arduino.serialport_writechar(byte2);
         byte1 = 0x00;
         byte2 = 0x00;
+        return true;
     }
     return false;
+}
+
+double Object::lookingAtSun(Vec3d &sun){
+    // If close to -1 then they are pretty aligned
+    Vec3d heading = this->axes[0];
+    Vec3d sunHeading = sun - this->origin;
+
+    heading.normalise();
+    sunHeading.normalise();
+
+    double alignment = sunHeading.dot(heading);
+
+    return alignment;
+}
+
+double Object::checkDot(Vec3d &vec){
+    return this->origin.dot(vec);
 }
 
 void Object::makeSun(Vec3d _origin){
