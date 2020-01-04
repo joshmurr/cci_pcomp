@@ -49,15 +49,16 @@ int main(int argc, char *argv[]) {
     room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
     // MAKE SUN
     Object sun;
-    Vec3d sunOrigin = Vec3d(width/8.0, height/8.0, 0.0); 
+    Vec3d sunOrigin = Vec3d(100.0, 100.0, 0.0); 
     sun.makeSun(sunOrigin);
 
     //MAKE TARGET (to follow)
-    Vec3d targetLoc = Vec3d(100.0, 100.0, 0.0); 
+    Vec3d targetLoc = Vec3d(200.0, 200.0, 0.0); 
     screen.setTarget(targetLoc);
 
     Quarternion quat;
 
+    double lookingAtSunVal = 0.0;
 
     if(!arduino.DEBUG){
         // Trigger MPU:
@@ -70,7 +71,8 @@ int main(int argc, char *argv[]) {
 
     cout << "Running..." << endl;
     while(running  && !screen.QUIT){
-        if(!arduino.DEBUG && ticks - interval > 100000) {
+        if(!arduino.DEBUG && ticks - interval > 10000) {
+            cout << "Re-sending trigger" << endl;
             arduino.serialport_writechar(trigger);
             interval = ticks;
         }
@@ -102,7 +104,9 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) cout << "Collision!" << std::endl;
+        //if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) cout << "Collision!" << std::endl;
+        lookingAtSunVal = headset.lookingAtSun(sunOrigin);
+        if(lookingAtSunVal > -0.95 && lookingAtSunVal < -1.05) cout << "Looking at sun" << endl;
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

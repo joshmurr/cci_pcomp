@@ -37,6 +37,8 @@ class Object{
 
         void moveUpAndDown(const Uint32 &ticks);
 
+        double lookingAtSun(Vec3d &sun);
+
 
     private:
 

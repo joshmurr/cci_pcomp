@@ -149,6 +149,19 @@ void Object::rotateAxisAngle(double* axis){
     //this->origin.z = (az*ax*t-(ay*sinT))*tx + (az*ay*t+(ax*sinT))*ty + (cosT+az2*t)*tz;
 }
 
+double Object::lookingAtSun(Vec3d &sun){
+    // If close to -1 then they are pretty aligned
+    Vec3d heading = this->axes[0];
+    Vec3d sunHeading = sun - this->origin;
+
+    heading.normalise();
+    sunHeading.normalise();
+
+    double alignment = sunHeading.dot(heading);
+
+    return alignment;
+}
+
 void Object::follow(const Vec3d &v){
     Vec3d dir = this->origin - v;
     dir.normalise();
