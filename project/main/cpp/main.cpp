@@ -164,8 +164,10 @@ int main(int argc, char *argv[]) {
         //uint8_t byte2 = coll;
         //uint8_t byte1 = coll >> 8;
 
-        if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG)) data.setCollision(true);
+        if(headset.checkCollisions(screen, arduino, room, arduino.DEBUG) != 0) data.setCollision(true);
         else data.setCollision(false);
+
+        data.printPacket();
 
         data.sendPacket();
         

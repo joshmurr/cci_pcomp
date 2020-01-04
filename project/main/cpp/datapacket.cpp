@@ -58,3 +58,12 @@ void Datapacket::setCollision(bool c, uint8_t b1, uint8_t b2){
 void Datapacket::sendPacket(){
     this->arduino->serialport_write_teapot(this->packet);
 }
+
+void Datapacket::printPacket(){
+    for(int i=2; i<10; i++){
+        int c = this->packet[i];
+        if(c) std::cout << c << ' ';
+        else std::cout << '_';
+    }
+    std::cout << std::endl;
+}

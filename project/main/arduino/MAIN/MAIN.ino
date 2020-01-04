@@ -78,10 +78,15 @@ int interval = 0;
 const int latchPin = 8; // YELLOW WIRE to pin 12
 const int clockPin = 12; // GREEN WIRE - to pin 11
 const int dataPin = 11; // BLUE WIRE - to pin 14
+bool vibrating = false;
 
 // FUNCTIONS:
 void fadeEyes();
 void flashEyes(int n);
+void shiftOut(int myDataPin, int myClockPin, byte myDataOut);
+void motorsOn();
+void motorsOff();
+
 
 
 // ================================================================
@@ -107,13 +112,17 @@ void setup() {
 #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
   Fastwire::setup(400, true);
 #endif
-  
-  // EYE SETUP SEQUENCE:
+
+  // EYE SETUP
   pinMode(LEFT_EYE, OUTPUT);
   pinMode(RIGHT_EYE, OUTPUT);
+  // 74HC595 SETUP
+  pinMode(latchPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);  
+  pinMode(clockPin, OUTPUT);
 
   flashEyes(5);
-  vibrateAllMotors(1,500);
+  vibrateAllMotors(3, 300);
 
   analogWrite(LEFT_EYE, dim_eyes);
   analogWrite(RIGHT_EYE, dim_eyes);
@@ -259,24 +268,32 @@ void loop() {
 
   // --- MY STUFF ---------------------------------------------------------//
 
-  if(rx_packet[2] == 'l') {
-    analogWrite(LEFT_EYE, (int)rx_packet[4]);
-    analogWrite(RIGHT_EYE, (int)rx_packet[4]);
-  } else if(rx_packet[2] == 0){
-    analogWrite(LEFT_EYE, 15);
-    analogWrite(RIGHT_EYE, 15);
+  if (rx_packet[2]) {
+    analogWrite(LEFT_EYE, (int)rx_packet[2]);
+    analogWrite(RIGHT_EYE, (int)rx_packet[2]);
+  }
+  if (rx_packet[3] == 67) {
+    digitalWrite(latchPin, 0);
+    shiftOut(dataPin, clockPin, 255);
+    shiftOut(dataPin, clockPin, 255);
+    digitalWrite(latchPin, 1);
+  } else if(rx_packet[3] != 67){
+    digitalWrite(latchPin, 0);
+    shiftOut(dataPin, clockPin, 0);
+    shiftOut(dataPin, clockPin, 0);
+    digitalWrite(latchPin, 1);
   }
   /*
-  if(rx_packet[3] == 'v') {
+    if(rx_packet[3] == 'v') {
     vibrateAllMotors(1, 500);
-  } else if(rx_packet[3] == 0){
+    } else if(rx_packet[3] == 0){
     turnOffAllMotors();
-  }
+    }
   */
-  
+
   // ----------------------------------------------------------------------//
 
-  
+
 }
 
 void fadeEyes() {
@@ -307,6 +324,28 @@ void flashEyes(int n) {
   analogWrite(RIGHT_EYE, 0);
 }
 
+void motorsOn() {
+  digitalWrite(latchPin, 0);
+  // Clear both registers with 0's
+  shiftOut(dataPin, clockPin, 0);
+  shiftOut(dataPin, clockPin, 0);
+  digitalWrite(latchPin, 1);
+  delay(30);
+  digitalWrite(latchPin, 0);
+  // Write all 1's to both registers
+  shiftOut(dataPin, clockPin, 255);
+  shiftOut(dataPin, clockPin, 255);
+  digitalWrite(latchPin, 1);
+}
+
+void motorsOff() {
+  digitalWrite(latchPin, 0);
+  // Clear both registers with 0's
+  shiftOut(dataPin, clockPin, 0);
+  shiftOut(dataPin, clockPin, 0);
+  digitalWrite(latchPin, 1);
+}
+
 void vibrateAllMotors(int n, int d) {
   digitalWrite(latchPin, 0);
   // Clear both registers with 0's
@@ -328,14 +367,6 @@ void vibrateAllMotors(int n, int d) {
     digitalWrite(latchPin, 1);
     delay(d);
   }
-}
-
-void turnOffAllMotors(){
-  digitalWrite(latchPin, 0);
-  shiftOut(dataPin, clockPin, 0);
-  shiftOut(dataPin, clockPin, 0);
-  digitalWrite(latchPin, 1);
-  delay(30);
 }
 
 void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
@@ -379,28 +410,28 @@ void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
   digitalWrite(myClockPin, 0);
 }
 
-void serialEvent(){
+void serialEvent() {
   interval = millis();
-    while (Serial.available() > 0) {
-        uint8_t ch = Serial.read();
+  while (Serial.available() > 0) {
+    uint8_t ch = Serial.read();
 
-        if (synced == 0 && ch != '$') return;   // initial synchronization - also used to resync/realign if needed
-        synced = 1;
-        //Serial.println((char)ch);
+    if (synced == 0 && ch != '$') return;   // initial synchronization - also used to resync/realign if needed
+    synced = 1;
+    //Serial.println((char)ch);
 
-        if ((serialCount == 1 && ch != 2)
-            || (serialCount == 12 && ch != '\r')
-            || (serialCount == 13 && ch != '\n'))  {
-            serialCount = 0;
-            synced = 0;
-            return;
-        }
-
-        if (serialCount > 0 || ch == '$') {
-            rx_packet[serialCount++] = ch;
-            if (serialCount == 14) {
-                serialCount = 0; // restart packet byte position
-            }
-        }
+    if ((serialCount == 1 && ch != 2)
+        || (serialCount == 12 && ch != '\r')
+        || (serialCount == 13 && ch != '\n'))  {
+      serialCount = 0;
+      synced = 0;
+      return;
     }
+
+    if (serialCount > 0 || ch == '$') {
+      rx_packet[serialCount++] = ch;
+      if (serialCount == 14) {
+        serialCount = 0; // restart packet byte position
+      }
+    }
+  }
 }

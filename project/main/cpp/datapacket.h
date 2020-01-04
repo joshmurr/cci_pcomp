@@ -12,6 +12,7 @@ class Datapacket{
         void setCollision(bool c);
         void setCollision(bool c, uint8_t b1, uint8_t b2);
         void sendPacket();
+        void printPacket();
 
     private:
 
