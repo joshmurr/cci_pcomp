@@ -270,7 +270,11 @@ void loop() {
     motorsOff();
   }
   if (rx_packet[3] == 99) { // c
-    shiftBytes((byte)rx_packet[4], (byte)rx_packet[5]);
+    shiftBytes(rx_packet[4], rx_packet[5]);
+    /*Serial.print("[4]: ");
+    Serial.println(rx_packet[4]);
+    Serial.print("[5]: ");
+    Serial.println(rx_packet[5]);*/
   } else if(rx_packet[3] != 99){
     motorsOff();
   }

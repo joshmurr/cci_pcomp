@@ -290,7 +290,7 @@ uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, b
             Vec3d pUpdate = *p + this->origin;
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
-            if(dist < 15.0) {
+            if(dist < 35.0) {
                 screen.draw3Dline(pUpdate, qUpdate, screen.GREEN);
                 // VIBRATE MOTORS
                 int collision = p-points.begin();
