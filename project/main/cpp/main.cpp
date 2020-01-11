@@ -50,14 +50,14 @@ int main(int argc, char *argv[]) {
     headset.makeHeadset(headsetOrigin);
     // MAKE ROOM
     Object room;
-    room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
+    room.makeSimpleRoom(Vec3d(width/2, height/2, -20.0), 200, 20);
     // MAKE SUN
     Object sun;
-    Vec3d sunOrigin = Vec3d(width-100.0, 100.0, 0.0); 
+    Vec3d sunOrigin = Vec3d(width-100.0, 100.0, 30.0); 
     sun.makeSun(sunOrigin);
 
     //MAKE TARGET (to follow)
-    Vec3d targetLoc = Vec3d(200.0, 200.0, 0.0); 
+    Vec3d targetLoc = Vec3d(1 + width/2, 1 + height/2, 30); 
     screen.setTarget(targetLoc);
 
     // OFFSET FOR RESETTING HEADSET
@@ -85,6 +85,17 @@ int main(int argc, char *argv[]) {
     }
 
     cout << "Running..." << endl;
+    cout << endl;
+
+    cout << "--- KEYBOARD CONTROLS ---\n";
+    cout << "q - Quit\n";
+    cout << "o - View headset origin\n";
+    cout << "r - Rest headset position\n";
+    cout << "t - Send trigger char to Arduino if not connecting\n";
+    cout << "m - Toggle ALL motors on collision, or only colliding motors\n";
+    cout << "d - Print data packet being sent to Arduino to console\n";
+    cout << endl;
+
     while(running  && !screen.QUIT){
         // CHECK INTERVALS AND RESEND TRIGGER TO MPU IF NEEDED -------------- //
         if(!arduino.DEBUG && ticks - interval > 5000 && !arduino.synced) {
@@ -116,13 +127,13 @@ int main(int argc, char *argv[]) {
         }
 
         headset.draw(screen, screen.YELLOW);
-        //headset.drawOrigin(screen);
         room.draw(screen, screen.RED);
         sun.draw(screen, screen.YELLOW);
         screen.draw3Dpoint(targetLoc, screen.GREY);
         headset.follow(targetOffset);
         //headset.follow(screen.getMouseVec());
 
+        if(screen.DRAW_ORIGINS) headset.drawOrigin(screen);
         
         lookingAtSunVal = headset.lookingAtSun(sunOrigin);
         if(lookingAtSunVal < -0.7 && lookingAtSunVal > -1.3){
@@ -163,7 +174,7 @@ int main(int argc, char *argv[]) {
             if(coll) data.setCollision(true, byte1, byte2);
             else data.setCollision(false);
 
-            data.printPacket();
+            if(screen.PRINT_DATA_PACKET) data.printPacket();
 
             data.sendPacket();
         }

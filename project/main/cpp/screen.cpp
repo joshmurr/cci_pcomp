@@ -19,6 +19,8 @@ Screen::Screen(){
     RESET_POS = false;
     SEND_TRIGGER = false;
     ALL_MOTORS = false;
+    DRAW_ORIGINS = false;
+    PRINT_DATA_PACKET = false;
 }
 
 Screen::Screen(int width, int height, int res){
@@ -33,6 +35,8 @@ Screen::Screen(int width, int height, int res){
     RESET_POS = false;
     SEND_TRIGGER = false;
     ALL_MOTORS = false;
+    DRAW_ORIGINS = false;
+    PRINT_DATA_PACKET = false;
 }
 
 
@@ -86,19 +90,22 @@ void Screen::handleEvents(){
                     RESET_POS = true;
                 } else if (event.key.keysym.sym == SDLK_t){
                     SEND_TRIGGER = true;
-                } else if (event.key.keysym.sym == SDLK_UP){
-                    this->targetVec.y -= 2;
-                } else if (event.key.keysym.sym == SDLK_DOWN){
-                    this->targetVec.y += 2;
-                } else if (event.key.keysym.sym == SDLK_LEFT){
-                    this->targetVec.x -= 2;
-                } else if (event.key.keysym.sym == SDLK_RIGHT){
-                    this->targetVec.x += 2;
                 } else if (event.key.keysym.sym == SDLK_m){
                     this->ALL_MOTORS = !ALL_MOTORS;
                     std::cout << "ALL_MOTORS: " << ALL_MOTORS << std::endl;
-                }
-
+                } else if(event.key.keysym.sym == SDLK_o){
+                    this->DRAW_ORIGINS = !DRAW_ORIGINS;
+                } else if(event.key.keysym.sym == SDLK_d){
+                    this->PRINT_DATA_PACKET = !PRINT_DATA_PACKET;
+                } else if (event.key.keysym.sym == SDLK_UP){
+                    this->targetVec.x += 5;
+                } else if (event.key.keysym.sym == SDLK_DOWN){
+                    this->targetVec.x -= 5;
+                } else if (event.key.keysym.sym == SDLK_LEFT){
+                    this->targetVec.y -= 5;
+                } else if (event.key.keysym.sym == SDLK_RIGHT){
+                    this->targetVec.y += 5;
+                } 
 
                 break;
             case SDL_MOUSEMOTION:

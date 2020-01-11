@@ -265,7 +265,7 @@ void loop() {
 
   // EYE BALL LEDS:
   if (rx_packet[2]) {
-    if(rx_packet[2] > 128) digitalWrite(LED_YEL, HIGH);
+    if(rx_packet[2] > 215) digitalWrite(LED_YEL, HIGH);
     else digitalWrite(LED_YEL, LOW);
     analogWrite(LEFT_EYE, (int)rx_packet[2]);
     analogWrite(RIGHT_EYE, (int)rx_packet[2]);
@@ -294,7 +294,7 @@ void loop() {
   // LDR
   LDR_val = analogRead(0);
   Serial.write(LDR_val);
-  if(LDR_val < 300) {
+  if(LDR_val < 60) {
     userWearing = true;
     digitalWrite(LED_RED_BOT, HIGH);
   } else {

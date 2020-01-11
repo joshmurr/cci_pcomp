@@ -53,6 +53,8 @@ public:
     bool RESET_POS;
     bool SEND_TRIGGER;
     bool ALL_MOTORS;
+    bool DRAW_ORIGINS;
+    bool PRINT_DATA_PACKET;
     int ANIMATION_RATE;
 	bool init();
 	void update();

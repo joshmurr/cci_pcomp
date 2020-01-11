@@ -151,7 +151,7 @@ int Serial::serialport_read_teapot() {
 
     while((n = read(fd, b, sizeof(uint8_t)))){ 
         if(this->synced == 0 && b[0] != '$') {
-            std::cout << "Not synced A" << std::endl;
+            //std::cout << "Not synced A" << std::endl;
             return -1;
         }
         this->synced = 1;
@@ -163,7 +163,7 @@ int Serial::serialport_read_teapot() {
                 || (this->serialCount==13 && b[0] != '\n')) {
             this->serialCount = 0;
             this->synced = 0;
-            std::cout << "Not synced B" << std::endl;
+            //std::cout << "Not synced B" << std::endl;
             return -1; // Return and try again
         }
 

@@ -83,8 +83,8 @@ void Object::rotateYPR(double* q){
 void Object::rotateAxisAngle(double* axis){
     double theta = axis[0] - oldTheta;
     this->oldTheta = axis[0];
-    double ax    = axis[2];
-    double ay    = axis[1];
+    double ax    = -axis[1];
+    double ay    = axis[2];
     double az    = -axis[3];
 
     //std::cout << theta << std::endl;
@@ -290,7 +290,7 @@ uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, b
             Vec3d pUpdate = *p + this->origin;
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
-            if(dist < 10.0) {
+            if(dist < 25.0) {
                 screen.draw3Dline(pUpdate, qUpdate, screen.GREEN);
                 // VIBRATE MOTORS
                 if(!all_motors) {
