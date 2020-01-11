@@ -46,14 +46,14 @@ int main(int argc, char *argv[]) {
     // MAKE OBJECTS ----------------------------------------------------- //
     // MAKE RING
     Object headset;
-    Vec3d headsetOrigin = Vec3d(width/2.0, height/2.0, 10.0); 
+    Vec3d headsetOrigin = Vec3d(width/2.0, height/2.0, 20.0); 
     headset.makeHeadset(headsetOrigin);
     // MAKE ROOM
     Object room;
     room.makeSimpleRoom(Vec3d(width/2, height/2, 0.0), 200, 20);
     // MAKE SUN
     Object sun;
-    Vec3d sunOrigin = Vec3d(100.0, 100.0, 0.0); 
+    Vec3d sunOrigin = Vec3d(width-100.0, 100.0, 0.0); 
     sun.makeSun(sunOrigin);
 
     //MAKE TARGET (to follow)
@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
 
     // DATA PACKET TO SEND TO ARDUINO ----------------------------------- //
     Datapacket data(arduino);
+    data.setSynced(false);
     // ------------------------------------------------------------------ //
 
     if(!arduino.DEBUG){
@@ -132,15 +133,11 @@ int main(int argc, char *argv[]) {
             if(dVal > 1.0) dVal = 1.0;
             if(dVal < 0) dVal = 0;
             int val = dVal * 255;
-            //cout << val << endl;
-            //lightsOn[2] = val;
 
             data.lightsOn(val);
-
             lookingAtSun = true;
         } else {
             data.lightsOff();
-            //lightsOn[2] = 0;
             lookingAtSun = false;
         }
 
@@ -148,6 +145,7 @@ int main(int argc, char *argv[]) {
             int n = arduino.serialport_read_teapot();
             //cout << n << endl;
             if(arduino.synced){
+                data.setSynced(true);
                 //cout << "SYNCED" << endl;
                 quat.parseTeapotPacket(arduino.teapot);
                 quat.toAxisAngle();
@@ -157,28 +155,24 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        uint16_t coll = headset.checkCollisions(screen, arduino, sun, arduino.DEBUG);
+        uint16_t coll = headset.checkCollisions(screen, arduino, room, arduino.DEBUG, screen.ALL_MOTORS);
         uint8_t byte2 = coll;
         uint8_t byte1 = coll >> 8;
 
-        if(coll) data.setCollision(true, byte1, byte2);
-        else data.setCollision(false);
+        if(!arduino.DEBUG){
+            if(coll) data.setCollision(true, byte1, byte2);
+            else data.setCollision(false);
 
-        //data.printPacket();
+            data.printPacket();
 
-        data.sendPacket();
+            data.sendPacket();
+        }
         
         // See bits to shift:
         //std::bitset<8> b1(byte1);
         //std::bitset<8> b2(byte2);
         //cout << "B1: " << b1 << '\n';
         //cout << "B2: " << b2 << endl;
-        
-        //lightsOn[3] = byte1;
-        //lightsOn[4] = byte2;
-
-        //if(lookingAtSun) arduino.serialport_write_teapot(lightsOn);
-        //else if(!lookingAtSun) arduino.serialport_write_teapot(lightsOff);
 
         if(screen.ANIMATING && (SDL_GetTicks() - ticks) > screen.ANIMATION_RATE){
             ticks = SDL_GetTicks();

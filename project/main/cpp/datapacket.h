@@ -13,6 +13,7 @@ class Datapacket{
         void setCollision(bool c, uint8_t b1, uint8_t b2);
         void sendPacket();
         void printPacket();
+        void setSynced(bool sync);
 
     private:
 
@@ -25,6 +26,7 @@ class Datapacket{
         int lightsVal;
         bool vibrate;
         bool collision;
+        bool synced;
         uint8_t byte1;
         uint8_t byte2;
 

@@ -11,7 +11,7 @@ Datapacket::Datapacket(Serial &arduino){
     this->packet[6] = 0;
     this->packet[7] = 0;
     this->packet[8] = 0;
-    this->packet[9] = 0;
+    this->packet[9] = 0; // Sync Status
     this->packet[10] = 0x00;
     this->packet[11] = 0x00;
     this->packet[12] = '\r';
@@ -28,6 +28,12 @@ void Datapacket::lightsOff(){
     this->lights = false;
     this->lightsVal = 10;
     this->packet[2] = 10;
+}
+
+void Datapacket::setSynced(bool sync){
+    this->synced = sync;
+    if(sync)this->packet[9] = 1;
+    else this->packet[9] = 0;
 }
 
 void Datapacket::setByte(int which, uint8_t byte){

@@ -52,6 +52,7 @@ public:
     bool ANIMATING;
     bool RESET_POS;
     bool SEND_TRIGGER;
+    bool ALL_MOTORS;
     int ANIMATION_RATE;
 	bool init();
 	void update();

@@ -282,7 +282,7 @@ bool Object::checkOriginCollision(Object &obj){
     return false;
 }
 
-uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG){
+uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, bool DEBUG, bool all_motors){
     uint8_t byte1 = 0x00, byte2 = 0x00;
     uint16_t ret = 0x00;
     for(std::vector<Vec3d>::iterator p=this->points.begin(); p!=this->points.end(); ++p){
@@ -290,12 +290,19 @@ uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, b
             Vec3d pUpdate = *p + this->origin;
             Vec3d qUpdate = *q + obj.origin;
             double dist = pUpdate.dist(qUpdate);
-            if(dist < 35.0) {
+            if(dist < 10.0) {
                 screen.draw3Dline(pUpdate, qUpdate, screen.GREEN);
                 // VIBRATE MOTORS
-                int collision = p-points.begin();
-                if(collision < 8) byte1 = byte1 + this->dataArray[p-points.begin()];
-                else byte2 = byte2 + this->dataArray[p-points.begin() - 8];
+                if(!all_motors) {
+                    // Vibrate individual motors
+                    int collision = p-points.begin();
+                    if(collision < 8) byte1 = byte1 + this->dataArray[p-points.begin()];
+                    else byte2 = byte2 + this->dataArray[p-points.begin() - 8];
+                } else {
+                    // Vibrate all motors
+                    byte1 = 0xFF;
+                    byte2 = 0xFF;
+                }
             }
         }
     }
@@ -307,8 +314,9 @@ uint16_t Object::checkCollisions(Screen &screen, Serial &arduino, Object &obj, b
     if(!DEBUG){
         ret = byte1 << 8 | byte2;
         return ret;
+    } else {
+        return 0x00;
     }
-    return 0x00;
 }
 
 double Object::lookingAtSun(Vec3d &sun){

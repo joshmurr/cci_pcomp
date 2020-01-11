@@ -10,14 +10,15 @@
 Screen::Screen(){
     m_window = NULL;
     m_renderer = NULL;
-    SCREEN_WIDTH = 800;
-    SCREEN_HEIGHT = 600;
+    SCREEN_WIDTH = 1280;
+    SCREEN_HEIGHT = 960;
     RESOLUTION = 20;
     ANIMATING = false;
     ANIMATION_RATE = 60; // 50 mSeconds
     QUIT = false;
     RESET_POS = false;
     SEND_TRIGGER = false;
+    ALL_MOTORS = false;
 }
 
 Screen::Screen(int width, int height, int res){
@@ -30,6 +31,8 @@ Screen::Screen(int width, int height, int res){
     ANIMATION_RATE = 50; // 50 mSeconds
     QUIT = false;
     RESET_POS = false;
+    SEND_TRIGGER = false;
+    ALL_MOTORS = false;
 }
 
 
@@ -91,7 +94,11 @@ void Screen::handleEvents(){
                     this->targetVec.x -= 2;
                 } else if (event.key.keysym.sym == SDLK_RIGHT){
                     this->targetVec.x += 2;
+                } else if (event.key.keysym.sym == SDLK_m){
+                    this->ALL_MOTORS = !ALL_MOTORS;
+                    std::cout << "ALL_MOTORS: " << ALL_MOTORS << std::endl;
                 }
+
 
                 break;
             case SDL_MOUSEMOTION:
@@ -308,7 +315,8 @@ void Screen::drawObject(std::vector<Vec3d> &obj, const Vec3d &_origin, const SDL
         if(dColor < 1) dColor = 0;
         if(dColor > 254) dColor = 255;
 
-        SDL_SetRenderDrawColor(m_renderer, c.r, c.g, c.b-dColor, SDL_ALPHA_OPAQUE);
+        // c.b-dColor ???
+        SDL_SetRenderDrawColor(m_renderer, c.r, c.g, c.b, SDL_ALPHA_OPAQUE);
         SDL_RenderDrawLine(m_renderer, x2d-scale, y2d, x2d+scale, y2d);
         SDL_RenderDrawLine(m_renderer, x2d, y2d-scale, x2d, y2d+scale);
     }

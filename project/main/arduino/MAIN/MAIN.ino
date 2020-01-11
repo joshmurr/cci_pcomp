@@ -18,24 +18,6 @@
 MPU6050 mpu;
 //MPU6050 mpu(0x69); // <-- use for AD0 high
 
-/* =========================================================================
-   NOTE: In addition to connection 3.3v, GND, SDA, and SCL, this sketch
-   depends on the MPU-6050's INT pin being connected to the Arduino's
-   external interrupt #0 pin. On the Arduino Uno and Mega 2560, this is
-   digital I/O pin 2.
-   ========================================================================= */
-
-/* =========================================================================
-   NOTE: Arduino v1.0.1 with the Leonardo board generates a compile error
-   when using Serial.write(buf, len). The Teapot output uses this method.
-   The solution requires a modification to the Arduino USBAPI.h file, which
-   is fortunately simple, but annoying. This will be fixed in the next IDE
-   release. For more info, see these links:
-
-   http://arduino.cc/forum/index.php/topic,109987.0.html
-   http://code.google.com/p/arduino/issues/detail?id=958
-   ========================================================================= */
-
 #define OUTPUT_TEAPOT
 
 #define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
@@ -73,12 +55,25 @@ uint8_t rx_packet[14];
 int serialCount = 0;
 int synced = 0;
 int interval = 0;
+bool syncedWithComputer = false;
 
 // 74HC595 Stuff
-const int latchPin = 8; // YELLOW WIRE to pin 12
-const int clockPin = 12; // GREEN WIRE - to pin 11
-const int dataPin = 11; // BLUE WIRE - to pin 14
+#define latchPin 8 // YELLOW WIRE to pin 12
+#define clockPin 12 // GREEN WIRE - to pin 11
+#define dataPin 11 // BLUE WIRE - to pin 14
 bool vibrating = false;
+
+// Front Panel LEDs
+#define LED_YEL 3
+#define LED_GRN 4
+#define LED_BLU 7
+#define LED_RED_TOP 9
+#define LED_RED_BOT 10
+
+// LDR
+#define LDR_PIN 0
+int LDR_val;
+bool userWearing = false;
 
 
 // ================================================================
@@ -112,9 +107,17 @@ void setup() {
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);  
   pinMode(clockPin, OUTPUT);
+  // Panel LEDs
+  pinMode(LED_YEL, OUTPUT);
+  pinMode(LED_GRN, OUTPUT);  
+  pinMode(LED_BLU, OUTPUT);
+  pinMode(LED_RED_TOP, OUTPUT);
+  pinMode(LED_RED_BOT, OUTPUT);
+  
 
   flashEyes(5);
   vibrateAllMotors(3, 300);
+  digitalWrite(LED_RED_TOP, HIGH);
 
   analogWrite(LEFT_EYE, dim_eyes);
   analogWrite(RIGHT_EYE, dim_eyes);
@@ -260,35 +263,46 @@ void loop() {
 
   // --- MY STUFF ---------------------------------------------------------//
 
+  // EYE BALL LEDS:
   if (rx_packet[2]) {
+    if(rx_packet[2] > 128) digitalWrite(LED_YEL, HIGH);
+    else digitalWrite(LED_YEL, LOW);
     analogWrite(LEFT_EYE, (int)rx_packet[2]);
     analogWrite(RIGHT_EYE, (int)rx_packet[2]);
   }
-  if (rx_packet[3] == 67) { // C
-    motorsOn();
-  } else if(rx_packet[3] != 67){
-    motorsOff();
-  }
-  if (rx_packet[3] == 99) { // c
+
+  // MOTORS:
+  // only vibrate if user is wearing
+  if (rx_packet[3] == 99 && userWearing) {
+    // 'c' : Vibrate only the motors in collision
+    digitalWrite(LED_GRN, HIGH);
     shiftBytes(rx_packet[4], rx_packet[5]);
-    /*Serial.print("[4]: ");
-    Serial.println(rx_packet[4]);
-    Serial.print("[5]: ");
-    Serial.println(rx_packet[5]);*/
   } else if(rx_packet[3] != 99){
+    digitalWrite(LED_GRN, LOW);
     motorsOff();
   }
-    
-  /*
-    if(rx_packet[3] == 'v') {
-    vibrateAllMotors(1, 500);
-    } else if(rx_packet[3] == 0){
-    turnOffAllMotors();
-    }
-  */
+
+  // Synced LED - BLUE
+  if(rx_packet[9]) {
+    syncedWithComputer = true;
+    digitalWrite(LED_BLU, HIGH);
+  } else {
+    syncedWithComputer = false;
+    digitalWrite(LED_BLU, LOW);
+  }
+
+  // LDR
+  LDR_val = analogRead(0);
+  Serial.write(LDR_val);
+  if(LDR_val < 300) {
+    userWearing = true;
+    digitalWrite(LED_RED_BOT, HIGH);
+  } else {
+    userWearing = false;
+    digitalWrite(LED_RED_BOT, LOW);
+  }
 
   // ----------------------------------------------------------------------//
-
 
 }
 
@@ -369,23 +383,11 @@ void shiftOut(int myDataPin, int myClockPin, byte myDataOut) {
   int pinState;
   pinMode(myClockPin, OUTPUT);
   pinMode(myDataPin, OUTPUT);
-
-  //clear everything out just in case to
-  //prepare shift register for bit shifting
   digitalWrite(myDataPin, 0);
   digitalWrite(myClockPin, 0);
 
-  //for each bit in the byte myDataOut�
-  //NOTICE THAT WE ARE COUNTING DOWN in our for loop
-  //This means that %00000001 or "1" will go through such
-  //that it will be pin Q0 that lights.
   for (i = 7; i >= 0; i--)  {
     digitalWrite(myClockPin, 0);
-
-    //if the value passed to myDataOut and a bitmask result
-    // true then... so if we are at i=6 and our value is
-    // %11010100 it would the code compares it to %01000000
-    // and proceeds to set pinState to 1.
     if ( myDataOut & (1 << i) ) {
       pinState = 1;
     }
