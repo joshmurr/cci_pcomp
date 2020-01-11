@@ -3,4 +3,4 @@
 
 Week by week submissions in each given folder.
 
-Final project found [in the project folder](./project).
+Final project found [in the /_project_ folder](./project).
