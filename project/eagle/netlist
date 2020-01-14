@@ -1,0 +1,400 @@
+Netlist
+
+Exported from main.sch at 14/01/2020 13:57
+
+EAGLE Version 9.5.1 Copyright (c) 1988-2019 Autodesk, Inc.
+
+Net         Part     Pad      Pin        Sheet
+
+3.3V_REG    C12      1        1          1
+            IC1      2        OUT        1
+            Q1       3        C          1
+            Q2       3        C          1
+
+5V          B1       5V       5V         1
+            PH1      1        1          1
+            U3       13       VDD        1
+
+9V          BT1      +        +          1
+            T1       C        C          1
+            T10      C        C          1
+            T11      C        C          1
+            T12      C        C          1
+            T13      C        C          1
+            T14      C        C          1
+            T15      C        C          1
+            T2       C        C          1
+            T3       C        C          1
+            T4       C        C          1
+            T5       C        C          1
+            T6       C        C          1
+            T7       C        C          1
+            T8       C        C          1
+            T9       C        C          1
+
+595_CLOCK   B1       D12      D12        1
+
+595_DATA    B1       D11      *D11       1
+
+595_LATCH   B1       D8       D8         1
+
+A0          PH1      2        2          1
+            R23      P$2      2          1
+
+DATAOUT     OUTPUT   1        1          1
+            OUTPUT1  1        1          1
+            U1       9        QH*        1
+            U2       9        QH*        1
+
+EP          U3       25       EP         1
+
+GND         BT1      -        -          1
+            BT2      -        -          1
+            C1       1        1          1
+            C10      2        2          1
+            C11      2        2          1
+            C12      2        2          1
+            C19      1        1          1
+            C2       1        1          1
+            C20      1        1          1
+            C21      1        1          1
+            C22      1        1          1
+            C23      1        1          1
+            C24      1        1          1
+            C25      1        1          1
+            C3       1        1          1
+            C4       1        1          1
+            C5       1        1          1
+            C6       1        1          1
+            C7       1        1          1
+            C8       1        1          1
+            C9       2        2          1
+            D1       C        C          1
+            D10      K        C          1
+            D11      K        C          1
+            D12      K        C          1
+            D13      K        C          1
+            D14      C        C          1
+            D15      C        C          1
+            D17      C        C          1
+            D18      C        C          1
+            D19      C        C          1
+            D2       C        C          1
+            D20      C        C          1
+            D21      C        C          1
+            D22      C        C          1
+            D23      C        C          1
+            D3       C        C          1
+            D4       C        C          1
+            D5       C        C          1
+            D6       C        C          1
+            D7       C        C          1
+            D8       C        C          1
+            D9       K        C          1
+            IC1      1        ADJ        1
+            M1       -        -          1
+            M10      -        -          1
+            M11      -        -          1
+            M12      -        -          1
+            M13      -        -          1
+            M14      -        -          1
+            M15      -        -          1
+            M2       -        -          1
+            M3       -        -          1
+            M4       -        -          1
+            M5       -        -          1
+            M6       -        -          1
+            M7       -        -          1
+            M8       -        -          1
+            M9       -        -          1
+            R23      P$1      1          1
+            U1       13       G          1
+            U1       8        GND        1
+            U2       13       G          1
+            U2       8        GND        1
+            U3       18       GND        1
+
+LDR         B1       A0       A0         1
+
+LED_BLU     B1       D7       D7         1
+
+LED_GRN     B1       D4       D4         1
+
+LED_RED_BOT B1       D10      *D10       1
+
+LED_RED_TOP B1       D9       *D9        1
+
+LED_YEL     B1       D3       *D3        1
+
+LEFT_EYE    B1       D6       *D6        1
+            R21      P$2      2          1
+
+N$1         R12      P$1      1          1
+            U2       3        QD         1
+
+N$2         R4       P$1      1          1
+            U1       3        QD         1
+
+N$3         R5       P$1      1          1
+            U1       4        QE         1
+
+N$4         R6       P$1      1          1
+            U1       5        QF         1
+
+N$5         R7       P$1      1          1
+            U1       6        QG         1
+
+N$6         R8       P$1      1          1
+            U1       7        QH         1
+
+N$7         R3       P$1      1          1
+            U1       2        QC         1
+
+N$8         R2       P$1      1          1
+            U1       1        QB         1
+
+N$9         R1       P$1      1          1
+            U1       15       QA         1
+
+N$10        R1       P$2      2          1
+            T1       B        B          1
+
+N$11        R2       P$2      2          1
+            T2       B        B          1
+
+N$12        R3       P$2      2          1
+            T3       B        B          1
+
+N$13        R4       P$2      2          1
+            T4       B        B          1
+
+N$14        R5       P$2      2          1
+            T5       B        B          1
+
+N$15        R6       P$2      2          1
+            T6       B        B          1
+
+N$16        R7       P$2      2          1
+            T7       B        B          1
+
+N$17        R8       P$2      2          1
+            T8       B        B          1
+
+N$18        C2       2        2          1
+            D2       A        A          1
+            J1       3        3          1
+            M3       +        +          1
+            T3       E        E          1
+
+N$19        C3       2        2          1
+            D3       A        A          1
+            J1       4        4          1
+            M4       +        +          1
+            T4       E        E          1
+
+N$20        C8       2        2          1
+            D8       A        A          1
+            J1       1        1          1
+            M1       +        +          1
+            T1       E        E          1
+
+N$21        C1       2        2          1
+            D1       A        A          1
+            J1       2        2          1
+            M2       +        +          1
+            T2       E        E          1
+
+N$22        C4       2        2          1
+            D4       A        A          1
+            J1       5        5          1
+            M5       +        +          1
+            T5       E        E          1
+
+N$23        C5       2        2          1
+            D5       A        A          1
+            J1       6        6          1
+            M6       +        +          1
+            T6       E        E          1
+
+N$24        C6       2        2          1
+            D6       A        A          1
+            J1       7        7          1
+            M7       +        +          1
+            T7       E        E          1
+
+N$25        C7       2        2          1
+            D7       A        A          1
+            J1       8        8          1
+            M8       +        +          1
+            T8       E        E          1
+
+N$26        R13      P$1      1          1
+            U2       4        QE         1
+
+N$27        R14      P$1      1          1
+            U2       5        QF         1
+
+N$28        INPUT    1        1          1
+            U1       14       SER        1
+
+N$29        C11      1        1          1
+            INPUT    3        3          1
+            OUTPUT   3        3          1
+            U1       12       RCK        1
+
+N$30        INPUT    2        2          1
+            OUTPUT   2        2          1
+            U1       11       SCK        1
+
+N$31        R15      P$1      1          1
+            U2       6        QG         1
+
+N$32        J2       5        5          1
+            R16      P$2      2          1
+
+N$33        R11      P$1      1          1
+            U2       2        QC         1
+
+N$34        R10      P$1      1          1
+            U2       1        QB         1
+
+N$35        R9       P$1      1          1
+            U2       15       QA         1
+
+N$36        R9       P$2      2          1
+            T9       B        B          1
+
+N$37        R10      P$2      2          1
+            T10      B        B          1
+
+N$38        R11      P$2      2          1
+            T11      B        B          1
+
+N$39        R12      P$2      2          1
+            T12      B        B          1
+
+N$40        R13      P$2      2          1
+            T13      B        B          1
+
+N$41        R14      P$2      2          1
+            T14      B        B          1
+
+N$42        R15      P$2      2          1
+            T15      B        B          1
+
+N$43        D9       A        A          1
+            R16      P$1      1          1
+
+N$44        INPUT1   1        1          1
+            U2       14       SER        1
+
+N$45        C9       1        1          1
+            INPUT1   3        3          1
+            OUTPUT1  3        3          1
+            U2       12       RCK        1
+
+N$46        INPUT1   2        2          1
+            OUTPUT1  2        2          1
+            U2       11       SCK        1
+
+N$47        BT2      +        +          1
+            C10      1        1          1
+            IC1      3        IN         1
+
+N$48        J2       4        4          1
+            R17      P$2      2          1
+
+N$49        D10      A        A          1
+            R17      P$1      1          1
+
+N$50        J2       3        3          1
+            R18      P$2      2          1
+
+N$51        D11      A        A          1
+            R18      P$1      1          1
+
+N$52        J2       2        2          1
+            R19      P$2      2          1
+
+N$53        J2       1        1          1
+            R20      P$2      2          1
+
+N$54        D13      A        A          1
+            R20      P$1      1          1
+
+N$55        D12      A        A          1
+            R19      P$1      1          1
+
+N$56        C19      2        2          1
+            D17      A        A          1
+            J1       15       15         1
+            M9       +        +          1
+            T15      E        E          1
+
+N$57        C20      2        2          1
+            D18      A        A          1
+            J1       14       14         1
+            M10      +        +          1
+            T14      E        E          1
+
+N$58        C21      2        2          1
+            D19      A        A          1
+            J1       13       13         1
+            M11      +        +          1
+            T13      E        E          1
+
+N$59        C22      2        2          1
+            D20      A        A          1
+            J1       12       12         1
+            M12      +        +          1
+            T12      E        E          1
+
+N$60        C23      2        2          1
+            D21      A        A          1
+            J1       11       11         1
+            M13      +        +          1
+            T11      E        E          1
+
+N$61        C24      2        2          1
+            D22      A        A          1
+            J1       10       10         1
+            M14      +        +          1
+            T10      E        E          1
+
+N$62        C25      2        2          1
+            D23      A        A          1
+            J1       9        9          1
+            M15      +        +          1
+            T9       E        E          1
+
+N$63        Q1       2        B          1
+            R21      P$1      1          1
+
+N$64        B1       D2       D2         1
+            U3       12       INT        1
+
+N$65        D14      A        A          1
+            Q1       1        E          1
+
+N$66        B1       A4       A4         1
+            U3       24       SDA        1
+
+N$67        Q2       2        B          1
+            R22      P$1      1          1
+
+N$68        B1       A5       A5         1
+            U3       23       SCL        1
+
+N$69        D15      A        A          1
+            Q2       1        E          1
+
+RIGHT_EYE   B1       D5       *D5        1
+            R22      P$2      2          1
+
+VCC         U1       10       SCL        1
+            U1       16       VCC        1
+            U2       10       SCL        1
+            U2       16       VCC        1
+
+VLOGIC      U3       8        VLOGIC     1
+

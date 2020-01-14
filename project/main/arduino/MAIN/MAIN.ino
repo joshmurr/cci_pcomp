@@ -294,7 +294,7 @@ void loop() {
   // LDR
   LDR_val = analogRead(0);
   Serial.write(LDR_val);
-  if(LDR_val < 60) {
+  if(LDR_val < 300) {
     userWearing = true;
     digitalWrite(LED_RED_BOT, HIGH);
   } else {

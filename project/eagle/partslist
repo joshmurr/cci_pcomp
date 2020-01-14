@@ -1,0 +1,120 @@
+Partlist
+
+Exported from main.sch at 14/01/2020 13:55
+
+EAGLE Version 9.5.1 Copyright (c) 1988-2019 Autodesk, Inc.
+
+Assembly variant: 
+
+Part     Value          Device                   Package           Library                    Sheet
+
+B1       ARDUINO_UNO_R3 ARDUINO_UNO_R3           ARDUINO_R3        SparkFun-Boards            1
+BT1                     BATTERY-9V               BATTCON_9V        SparkFun-Batteries         1
+BT2                     BATTERY-9V               BATTCON_9V        SparkFun-Batteries         1
+C1       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C2       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C3       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C4       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C5       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C6       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C7       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C8       0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C9       100nF          10NF-PTH-10MM-10000V-1-% CAP-PTH-10MM      SparkFun-Capacitors        1
+C10      100nF          10NF-PTH-10MM-10000V-1-% CAP-PTH-10MM      SparkFun-Capacitors        1
+C11      100nF          10NF-PTH-10MM-10000V-1-% CAP-PTH-10MM      SparkFun-Capacitors        1
+C12      10?F           10NF-PTH-10MM-10000V-1-% CAP-PTH-10MM      SparkFun-Capacitors        1
+C19      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C20      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C21      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C22      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C23      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C24      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+C25      0.1uF          0.1UF-KIT-EZ-50V-20%     CAP-PTH-SMALL-KIT SparkFun-Capacitors        1
+D1       1N4004         1N4004                   DO41-10           diode                      1
+D2       1N4004         1N4004                   DO41-10           diode                      1
+D3       1N4004         1N4004                   DO41-10           diode                      1
+D4       1N4004         1N4004                   DO41-10           diode                      1
+D5       1N4004         1N4004                   DO41-10           diode                      1
+D6       1N4004         1N4004                   DO41-10           diode                      1
+D7       1N4004         1N4004                   DO41-10           diode                      1
+D8       1N4004         1N4004                   DO41-10           diode                      1
+D9                      LED5MM                   LED_5MM           SparkFun-LED               1
+D10                     LED5MM                   LED_5MM           SparkFun-LED               1
+D11                     LED5MM                   LED_5MM           SparkFun-LED               1
+D12                     LED5MM                   LED_5MM           SparkFun-LED               1
+D13                     LED5MM                   LED_5MM           SparkFun-LED               1
+D14                     LED10MM                  LED_10MM          SparkFun-LED               1
+D15                     LED10MM                  LED_10MM          SparkFun-LED               1
+D17      1N4004         1N4004                   DO41-10           diode                      1
+D18      1N4004         1N4004                   DO41-10           diode                      1
+D19      1N4004         1N4004                   DO41-10           diode                      1
+D20      1N4004         1N4004                   DO41-10           diode                      1
+D21      1N4004         1N4004                   DO41-10           diode                      1
+D22      1N4004         1N4004                   DO41-10           diode                      1
+D23      1N4004         1N4004                   DO41-10           diode                      1
+IC1      LD117AV33      LD117AV33                TO220L1           v-reg                      1
+INPUT                   PINHD-1X3                1X03              pinhead                    1
+INPUT1                  PINHD-1X3                1X03              pinhead                    1
+J1                      CONN_16                  1X16              SparkFun-Connectors        1
+J2                      CONN_05                  1X05              SparkFun-Connectors        1
+M1       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M2       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M3       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M4       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M5       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M6       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M7       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M8       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M9       MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M10      MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M11      MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M12      MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M13      MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M14      MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+M15      MOTOR10MM      MOTOR10MM                VIBE-MOTOR-10MM   SparkFun-Electromechanical 1
+OUTPUT                  PINHD-1X3                1X03              pinhead                    1
+OUTPUT1                 PINHD-1X3                1X03              pinhead                    1
+PH1      A1050_09       A1050_09                 T0-46-A10XX       photo-elements             1
+Q1       200mA/40V      TRANS_NPN-2N3904         TO-92             SparkFun-DiscreteSemi      1
+Q2       200mA/40V      TRANS_NPN-2N3904         TO-92             SparkFun-DiscreteSemi      1
+R1       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R2       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R3       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R4       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R5       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R6       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R7       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R8       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R9       10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R10      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R11      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R12      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R13      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R14      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R15      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R16      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R17      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R18      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R19      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R20      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+R21      1k             1KOHM-HORIZ-1/4W-1%      AXIAL-0.3         SparkFun-Resistors         1
+R22      1k             1KOHM-HORIZ-1/4W-1%      AXIAL-0.3         SparkFun-Resistors         1
+R23      10k            10KOHM-HORIZ-1/4W-1%     AXIAL-0.3         SparkFun-Resistors         1
+T1                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T2                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T3                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T4                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T5                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T6                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T7                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T8                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T9                      2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T10                     2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T11                     2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T12                     2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T13                     2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T14                     2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+T15                     2N3904-NPN-TO92-EBC      TO92-EBC          transistor-neu-to92        1
+U1       SN74HC595N     74HC595N                 DIP16             SparkFun-IC-Logic          1
+U2       SN74HC595N     74HC595N                 DIP16             SparkFun-IC-Logic          1
+U3       MPU-6050       MPU-6050                 24-VFQFN          Sensor                     1
