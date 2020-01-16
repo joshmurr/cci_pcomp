@@ -4,7 +4,7 @@ project/img
 *.o
 project/STLs/v6/GCODE_TO_PRINT
 *.pdf
-gif
-video
+project/gif
+project/video
 presentation
-eagle/img
+project/eagle/img
